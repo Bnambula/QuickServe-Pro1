@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuickServe Pro — Admin Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── TOKENS ── */
+:root{
+  --blue:#0A2540;--blue-mid:#0D3361;--blue-light:#1A4A8A;--blue-pale:#E8F0FE;
+  --green:#00C853;--green-dark:#00A040;--green-pale:#E6FFF0;
+  --gray-bg:#F5F7FA;--gray-100:#EEF1F6;--gray-200:#D8DDE8;
+  --gray-400:#9AA3B4;--gray-600:#5A6478;--gray-800:#2D3548;
+  --white:#FFFFFF;--red:#FF3B30;--red-pale:#FFF0EE;
+  --yellow:#FFC107;--yellow-pale:#FFFBEE;--orange:#FF6B35;
+  --purple:#7C3AED;--purple-pale:#F3EFFE;
+  --font-head:'Poppins',sans-serif;--font-body:'Plus Jakarta Sans',sans-serif;
+  --r:12px;--r-sm:8px;--r-lg:20px;
+  --sh:0 4px 20px rgba(10,37,64,.1);--sh-lg:0 12px 40px rgba(10,37,64,.15);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px}
+body{font-family:var(--font-body);background:var(--gray-bg);color:var(--gray-800);-webkit-font-smoothing:antialiased;display:flex;min-height:100vh}
+
+/* ── LOGIN SCREEN ── */
+.login-screen{
+  position:fixed;inset:0;z-index:9999;
+  background:linear-gradient(145deg,var(--blue),var(--blue-mid));
+  display:flex;align-items:center;justify-content:center;padding:1rem;
+}
+.login-box{
+  background:var(--white);border-radius:24px;padding:2.5rem;
+  max-width:420px;width:100%;box-shadow:var(--sh-lg);text-align:center;
+}
+.login-logo{width:56px;height:56px;background:linear-gradient(135deg,var(--blue),var(--blue-light));border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;font-family:var(--font-head);font-size:20px;font-weight:900;color:#fff;letter-spacing:-.5px}
+.login-title{font-family:var(--font-head);font-size:1.5rem;font-weight:800;color:var(--blue);margin-bottom:.35rem}
+.login-sub{font-size:.84rem;color:var(--gray-600);margin-bottom:1.75rem}
+.login-field{display:flex;flex-direction:column;gap:.3rem;margin-bottom:1rem;text-align:left}
+.login-field label{font-size:.72rem;font-weight:700;color:var(--gray-600);text-transform:uppercase;letter-spacing:.05em}
+.login-field input{padding:.75rem 1rem;border:1.5px solid var(--gray-200);border-radius:var(--r-sm);font-family:var(--font-body);font-size:.9rem;color:var(--gray-800);width:100%;transition:border-color .2s}
+.login-field input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(10,37,64,.08)}
+.login-btn{width:100%;background:var(--blue);color:#fff;border:none;padding:.9rem;border-radius:9999px;font-family:var(--font-head);font-size:.95rem;font-weight:700;cursor:pointer;transition:all .25s;margin-top:.5rem}
+.login-btn:hover{background:var(--blue-mid)}
+.login-warning{background:var(--yellow-pale);border:1.5px solid var(--yellow);border-radius:var(--r-sm);padding:.75rem;font-size:.78rem;color:#665200;margin-bottom:1rem}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:240px;background:var(--blue);min-height:100vh;
+  padding:1.25rem 0;flex-shrink:0;
+  display:flex;flex-direction:column;
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:.75rem 1.25rem 1.25rem;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:1rem}
+.sidebar-logo-mark{width:32px;height:32px;background:linear-gradient(135deg,var(--green),var(--green-dark));border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:12px;font-weight:900;color:#fff;letter-spacing:-.5px}
+.sidebar-logo-text{font-family:var(--font-head);font-size:.9rem;font-weight:800;color:#fff;letter-spacing:-.02em}
+.sidebar-logo-text span{color:var(--green)}
+.sidebar-label{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);padding:.5rem 1.25rem .35rem;display:block}
+.nav-item{display:flex;align-items:center;gap:.75rem;padding:.7rem 1.25rem;cursor:pointer;transition:all .2s;color:rgba(255,255,255,.65);font-size:.84rem;font-weight:500;border-left:3px solid transparent}
+.nav-item:hover{background:rgba(255,255,255,.06);color:#fff}
+.nav-item.active{background:rgba(255,255,255,.1);color:#fff;border-left-color:var(--green)}
+.nav-item .ni-icon{font-size:1rem;width:20px;flex-shrink:0}
+.nav-badge{margin-left:auto;background:var(--red);color:#fff;padding:.1rem .45rem;border-radius:9999px;font-size:.65rem;font-weight:700}
+.nav-badge.green{background:var(--green)}
+.sidebar-footer{margin-top:auto;padding:1rem 1.25rem;border-top:1px solid rgba(255,255,255,.08)}
+.admin-profile{display:flex;align-items:center;gap:.75rem}
+.admin-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--green-dark));display:flex;align-items:center;justify-content:center;font-size:.875rem}
+.admin-name{font-size:.78rem;font-weight:600;color:#fff}
+.admin-role{font-size:.65rem;color:rgba(255,255,255,.45)}
+
+/* ── MAIN ── */
+.main-content{flex:1;overflow-x:hidden;min-height:100vh}
+.topbar{
+  background:var(--white);border-bottom:1px solid var(--gray-100);
+  padding:.875rem 1.5rem;display:flex;align-items:center;gap:1rem;
+  position:sticky;top:0;z-index:100;box-shadow:var(--sh);
+}
+.topbar-title{font-family:var(--font-head);font-size:1.05rem;font-weight:700;color:var(--blue)}
+.topbar-search{flex:1;max-width:400px;position:relative}
+.topbar-search input{width:100%;padding:.55rem .875rem .55rem 2.25rem;border:1.5px solid var(--gray-100);border-radius:var(--r-sm);font-size:.84rem;color:var(--gray-800);background:var(--gray-bg);font-family:var(--font-body)}
+.topbar-search input:focus{outline:none;border-color:var(--blue)}
+.topbar-search-icon{position:absolute;left:.75rem;top:50%;transform:translateY(-50%);color:var(--gray-400);font-size:.875rem}
+.topbar-actions{display:flex;align-items:center;gap:.75rem;margin-left:auto}
+.topbar-notif{position:relative;cursor:pointer;padding:.35rem;background:var(--gray-bg);border-radius:var(--r-sm);font-size:1.1rem}
+.notif-dot{position:absolute;top:2px;right:2px;width:8px;height:8px;border-radius:50%;background:var(--red);border:2px solid var(--white)}
+
+/* ── PAGES ── */
+.admin-page{display:none;padding:1.5rem}
+.admin-page.active{display:block}
+
+/* ── STAT CARDS ── */
+.stat-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-bottom:1.5rem}
+.stat-card{background:var(--white);border-radius:var(--r);padding:1.25rem;border:1.5px solid var(--gray-100);transition:all .25s}
+.stat-card:hover{box-shadow:var(--sh);border-color:var(--gray-200);transform:translateY(-2px)}
+.sc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:.875rem}
+.sc-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.25rem}
+.sc-icon.blue{background:var(--blue-pale)}.sc-icon.green{background:var(--green-pale)}.sc-icon.red{background:var(--red-pale)}.sc-icon.yellow{background:var(--yellow-pale)}.sc-icon.purple{background:var(--purple-pale)}
+.sc-change{font-size:.72rem;font-weight:700;padding:.2rem .5rem;border-radius:9999px}
+.sc-change.up{background:var(--green-pale);color:var(--green-dark)}
+.sc-change.down{background:var(--red-pale);color:var(--red)}
+.sc-val{font-family:var(--font-head);font-size:1.875rem;font-weight:800;color:var(--blue);line-height:1;margin-bottom:.25rem}
+.sc-label{font-size:.78rem;color:var(--gray-600);font-weight:500}
+
+/* ── TABLES ── */
+.table-wrap{background:var(--white);border-radius:var(--r);border:1.5px solid var(--gray-100);overflow:hidden;margin-bottom:1.5rem}
+.table-head{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;border-bottom:1px solid var(--gray-100)}
+.table-title{font-family:var(--font-head);font-size:.9rem;font-weight:700;color:var(--blue)}
+.table-actions{display:flex;gap:.5rem}
+table{width:100%;border-collapse:collapse}
+thead th{padding:.75rem 1.25rem;text-align:left;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--gray-400);background:var(--gray-bg);border-bottom:1px solid var(--gray-100)}
+tbody tr{border-bottom:1px solid var(--gray-100);transition:background .15s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:var(--gray-bg)}
+tbody td{padding:.875rem 1.25rem;font-size:.84rem;color:var(--gray-800)}
+.td-avatar{display:flex;align-items:center;gap:.75rem}
+.t-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--blue-pale),var(--blue-light));display:flex;align-items:center;justify-content:center;font-size:.875rem;flex-shrink:0}
+.t-name{font-weight:600;color:var(--blue)}
+.t-sub{font-size:.72rem;color:var(--gray-400)}
+
+/* ── STATUS PILLS ── */
+.status-pill{display:inline-flex;align-items:center;gap:4px;padding:.2rem .625rem;border-radius:9999px;font-size:.7rem;font-weight:700}
+.sp-pending{background:var(--yellow-pale);color:#996600}
+.sp-verified{background:var(--green-pale);color:var(--green-dark)}
+.sp-rejected{background:var(--red-pale);color:var(--red)}
+.sp-active{background:var(--green-pale);color:var(--green-dark)}
+.sp-suspended{background:var(--yellow-pale);color:#996600}
+.sp-banned{background:var(--red-pale);color:var(--red)}
+.sp-completed{background:var(--green-pale);color:var(--green-dark)}
+.sp-inprogress{background:var(--blue-pale);color:var(--blue)}
+.sp-disputed{background:var(--red-pale);color:var(--red)}
+
+/* ── ACTION BUTTONS ── */
+.btn-act{display:inline-flex;align-items:center;gap:4px;padding:.3rem .625rem;border-radius:var(--r-sm);border:none;cursor:pointer;font-size:.72rem;font-weight:600;transition:all .2s}
+.btn-approve{background:var(--green-pale);color:var(--green-dark)}
+.btn-approve:hover{background:var(--green);color:#fff}
+.btn-reject{background:var(--red-pale);color:var(--red)}
+.btn-reject:hover{background:var(--red);color:#fff}
+.btn-view{background:var(--blue-pale);color:var(--blue)}
+.btn-view:hover{background:var(--blue);color:#fff}
+.btn-ban{background:#FFF0EE;color:var(--red)}
+.btn-ban:hover{background:var(--red);color:#fff}
+.btn-primary-sm{background:var(--blue);color:#fff;border:none;padding:.45rem 1rem;border-radius:9999px;font-family:var(--font-head);font-size:.78rem;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-primary-sm:hover{background:var(--blue-mid)}
+.btn-green-sm{background:var(--green);color:#fff;border:none;padding:.45rem 1rem;border-radius:9999px;font-family:var(--font-head);font-size:.78rem;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-green-sm:hover{background:var(--green-dark)}
+.btn-outline-sm{background:transparent;border:1.5px solid var(--gray-200);color:var(--gray-800);padding:.4rem .875rem;border-radius:9999px;font-size:.78rem;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-outline-sm:hover{border-color:var(--blue);color:var(--blue)}
+
+/* ── VERIFICATION PANEL ── */
+.verify-panel{background:var(--white);border-radius:var(--r-lg);border:1.5px solid var(--gray-100);overflow:hidden}
+.vp-head{display:flex;align-items:center;gap:1rem;padding:1.25rem 1.5rem;border-bottom:1px solid var(--gray-100);background:var(--blue);color:#fff}
+.vp-av{width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:1.5rem}
+.vp-name{font-family:var(--font-head);font-size:1rem;font-weight:700}
+.vp-role{font-size:.78rem;opacity:.75}
+.vp-body{padding:1.25rem 1.5rem}
+.vp-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem}
+.id-img-wrap{border-radius:var(--r-sm);overflow:hidden;border:1.5px solid var(--gray-100);aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;background:var(--gray-bg);font-size:2rem;position:relative}
+.id-img-wrap img{width:100%;height:100%;object-fit:cover}
+.id-img-label{position:absolute;bottom:.5rem;left:.5rem;background:rgba(0,0,0,.6);color:#fff;padding:.2rem .5rem;border-radius:4px;font-size:.65rem;font-weight:700}
+.selfie-img-wrap{width:120px;height:120px;border-radius:50%;overflow:hidden;border:3px solid var(--blue-pale);display:flex;align-items:center;justify-content:center;background:var(--gray-bg);font-size:3rem;margin:0 auto}
+.check-list{display:flex;flex-direction:column;gap:.625rem;margin-bottom:1.25rem}
+.check-item{display:flex;align-items:center;gap:.75rem;padding:.625rem .875rem;border-radius:var(--r-sm);font-size:.82rem}
+.check-item.pass{background:var(--green-pale);color:var(--green-dark)}
+.check-item.fail{background:var(--red-pale);color:var(--red)}
+.check-item.pending{background:var(--yellow-pale);color:#996600}
+.vp-actions{display:flex;gap:.75rem;padding-top:1rem;border-top:1px solid var(--gray-100)}
+
+/* ── REVENUE CHART ── */
+.chart-wrap{background:var(--white);border-radius:var(--r);border:1.5px solid var(--gray-100);padding:1.25rem;margin-bottom:1.5rem}
+.chart-bars{display:flex;align-items:flex-end;gap:.5rem;height:140px;margin-top:1rem}
+.chart-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:.3rem}
+.chart-bar{width:100%;border-radius:4px 4px 0 0;background:var(--blue-pale);transition:height .8s ease}
+.chart-bar.highlight{background:var(--green)}
+.chart-bar:hover{opacity:.85}
+.chart-label{font-size:.62rem;color:var(--gray-400);font-weight:600}
+.chart-val{font-size:.65rem;color:var(--blue);font-weight:700}
+
+/* ── ALERT BOX ── */
+.alert{border-radius:var(--r-sm);padding:.875rem 1rem;font-size:.82rem;font-weight:500;display:flex;align-items:flex-start;gap:.75rem;margin-bottom:1rem}
+.alert-warn{background:var(--yellow-pale);border:1.5px solid var(--yellow);color:#665200}
+.alert-danger{background:var(--red-pale);border:1.5px solid var(--red);color:var(--red)}
+.alert-success{background:var(--green-pale);border:1.5px solid var(--green);color:var(--green-dark)}
+.alert-info{background:var(--blue-pale);border:1.5px solid var(--blue-pale);color:var(--blue)}
+
+/* ── MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(10,37,64,.75);z-index:2000;backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:1rem}
+.modal-overlay.open{display:flex}
+.modal-box{background:var(--white);border-radius:var(--r-lg);padding:2rem;max-width:520px;width:100%;max-height:90vh;overflow-y:auto}
+.modal-title{font-family:var(--font-head);font-size:1.125rem;font-weight:800;color:var(--blue);margin-bottom:1.25rem;display:flex;align-items:center;gap:.5rem}
+
+/* ── DISPUTE ── */
+.dispute-card{background:var(--white);border-radius:var(--r);border:1.5px solid var(--gray-100);padding:1.25rem;margin-bottom:1rem}
+.dc-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1rem;gap:1rem}
+.dc-id{font-family:var(--font-head);font-size:.78rem;font-weight:700;color:var(--blue)}
+.dc-type{font-size:.82rem;font-weight:600;color:var(--gray-800);margin:.2rem 0}
+.dc-parties{font-size:.75rem;color:var(--gray-600)}
+.dc-body{font-size:.82rem;color:var(--gray-600);line-height:1.6;margin-bottom:1rem;background:var(--gray-bg);border-radius:var(--r-sm);padding:.75rem}
+.dc-actions{display:flex;gap:.5rem;flex-wrap:wrap}
+
+/* ── RISK METER ── */
+.risk-row{display:flex;gap:0;border-radius:var(--r-sm);overflow:hidden;margin:.75rem 0}
+.risk-seg{flex:1;padding:.625rem .5rem;text-align:center;font-size:.62rem;font-weight:700}
+.rs-0{background:var(--green-pale);color:var(--green-dark)}
+.rs-1{background:#FFFDE7;color:#CC8800}
+.rs-2{background:#FFF3E0;color:#CC5500}
+.rs-3{background:var(--red-pale);color:var(--red)}
+
+/* ── TOAST ── */
+#admin-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--blue);color:#fff;padding:.875rem 1.75rem;border-radius:9999px;font-size:.84rem;font-weight:600;box-shadow:var(--sh-lg);z-index:9999;transition:all .35s;opacity:0;pointer-events:none;white-space:nowrap;max-width:90vw;text-align:center}
+#admin-toast.show{opacity:1}
+
+/* ── MOBILE SIDEBAR ── */
+.sidebar-toggle{display:none;position:fixed;bottom:20px;left:20px;z-index:700;background:var(--blue);color:#fff;border:none;width:48px;height:48px;border-radius:50%;font-size:1.25rem;cursor:pointer;box-shadow:var(--sh-lg)}
+@media(max-width:900px){
+  .sidebar{position:fixed;left:-240px;z-index:600;transition:left .3s}
+  .sidebar.open{left:0}
+  .sidebar-toggle{display:flex;align-items:center;justify-content:center}
+  .main-content{margin-left:0}
+}
+@media(max-width:600px){
+  .stat-cards{grid-template-columns:1fr 1fr}
+  .vp-grid{grid-template-columns:1fr}
+  .admin-page{padding:1rem}
+  .topbar{padding:.75rem 1rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ LOGIN SCREEN ════════════════════════════════════ -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">QS</div>
+    <div class="login-title">Admin Dashboard</div>
+    <div class="login-sub">QuickServe Pro · Secure Access Only</div>
+    <div class="alert alert-warn">⚠️ This area is restricted to authorised QuickServe Pro administrators only. Unauthorised access is a criminal offence under Ugandan law.</div>
+    <div class="login-field"><label>Admin Email</label><input type="email" id="loginEmail" placeholder="admin@quickservepro.ug" value="admin@quickservepro.ug"></div>
+    <div class="login-field"><label>Password</label><input type="password" id="loginPass" placeholder="••••••••" value="admin2025"></div>
+    <button class="login-btn" onclick="doLogin()">🔐 Sign In to Dashboard</button>
+    <div style="margin-top:1rem;font-size:.72rem;color:var(--gray-400)">Demo: use pre-filled credentials above</div>
+  </div>
+</div>
+
+<!-- ═══ SIDEBAR ════════════════════════════════════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-mark">QS</div>
+    <div class="sidebar-logo-text">Quick<span>Serve</span> Pro</div>
+  </div>
+
+  <span class="sidebar-label">Overview</span>
+  <div class="nav-item active" onclick="showAdminPage('dashboard')"><span class="ni-icon">📊</span> Dashboard</div>
+  <div class="nav-item" onclick="showAdminPage('analytics')"><span class="ni-icon">📈</span> Analytics</div>
+
+  <span class="sidebar-label">People</span>
+  <div class="nav-item" onclick="showAdminPage('verification')">
+    <span class="ni-icon">🪪</span> Verify Workers
+    <span class="nav-badge">7</span>
+  </div>
+  <div class="nav-item" onclick="showAdminPage('workers')"><span class="ni-icon">👷</span> All Workers</div>
+  <div class="nav-item" onclick="showAdminPage('customers')"><span class="ni-icon">👥</span> Customers</div>
+
+  <span class="sidebar-label">Operations</span>
+  <div class="nav-item" onclick="showAdminPage('jobs')"><span class="ni-icon">📋</span> All Jobs</div>
+  <div class="nav-item" onclick="showAdminPage('disputes')">
+    <span class="ni-icon">⚖️</span> Disputes
+    <span class="nav-badge">3</span>
+  </div>
+  <div class="nav-item" onclick="showAdminPage('fraud')">
+    <span class="ni-icon">🚨</span> Fraud Alerts
+    <span class="nav-badge">2</span>
+  </div>
+
+  <span class="sidebar-label">Finance</span>
+  <div class="nav-item" onclick="showAdminPage('payments')"><span class="ni-icon">💳</span> Payments</div>
+  <div class="nav-item" onclick="showAdminPage('revenue')"><span class="ni-icon">💰</span> Revenue</div>
+
+  <span class="sidebar-label">System</span>
+  <div class="nav-item" onclick="showAdminPage('settings')"><span class="ni-icon">⚙️</span> Settings</div>
+  <div class="nav-item" onclick="adminLogout()"><span class="ni-icon">🚪</span> Logout</div>
+
+  <div class="sidebar-footer">
+    <div class="admin-profile">
+      <div class="admin-av">👤</div>
+      <div>
+        <div class="admin-name">Super Admin</div>
+        <div class="admin-role">Full Access · Uganda</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ═══ MAIN CONTENT ════════════════════════════════════ -->
+<main class="main-content">
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="topbar-title" id="topbarTitle">📊 Dashboard</div>
+    <div class="topbar-search">
+      <span class="topbar-search-icon">🔍</span>
+      <input type="text" placeholder="Search workers, jobs, customers..." oninput="adminSearch(this.value)">
+    </div>
+    <div class="topbar-actions">
+      <div class="topbar-notif" onclick="adminToast('🔔 3 new alerts')">
+        🔔<div class="notif-dot"></div>
+      </div>
+      <button class="btn-primary-sm" onclick="showAdminPage('verification')">+ Verify Pending</button>
+    </div>
+  </div>
+
+  <!-- ═══ DASHBOARD PAGE ═══════════════════════════════ -->
+  <div class="admin-page active" id="page-dashboard">
+    <div class="alert alert-info">👋 Welcome back, Admin. You have <strong>7 pending verifications</strong>, <strong>3 open disputes</strong>, and <strong>2 fraud alerts</strong> today.</div>
+
+    <!-- Stats -->
+    <div class="stat-cards">
+      <div class="stat-card">
+        <div class="sc-top"><div class="sc-icon green">👷</div><span class="sc-change up">↑ 12%</span></div>
+        <div class="sc-val">1,247</div><div class="sc-label">Total Workers</div>
+      </div>
+      <div class="stat-card">
+        <div class="sc-top"><div class="sc-icon blue">👥</div><span class="sc-change up">↑ 8%</span></div>
+        <div class="sc-val">3,891</div><div class="sc-label">Registered Customers</div>
+      </div>
+      <div class="stat-card">
+        <div class="sc-top"><div class="sc-icon green">📋</div><span class="sc-change up">↑ 24%</span></div>
+        <div class="sc-val">15,482</div><div class="sc-label">Jobs Completed</div>
+      </div>
+      <div class="stat-card">
+        <div class="sc-top"><div class="sc-icon yellow">⏳</div><span class="sc-change down">7 waiting</span></div>
+        <div class="sc-val">7</div><div class="sc-label">Pending Verifications</div>
+      </div>
+      <div class="stat-card">
+        <div class="sc-top"><div class="sc-icon red">⚖️</div><span class="sc-change down">↑ 1</span></div>
+        <div class="sc-val">3</div><div class="sc-label">Open Disputes</div>
+      </div>
+      <div class="stat-card">
+        <div class="sc-top"><div class="sc-icon green">💰</div><span class="sc-change up">↑ 19%</span></div>
+        <div class="sc-val">UGX 4.2M</div><div class="sc-label">Revenue This Month</div>
+      </div>
+    </div>
+
+    <!-- Revenue Chart -->
+    <div class="chart-wrap">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div style="font-family:var(--font-head);font-size:.9rem;font-weight:700;color:var(--blue)">📈 Monthly Revenue (UGX)</div>
+        <select style="border:1.5px solid var(--gray-100);border-radius:var(--r-sm);padding:.3rem .75rem;font-size:.78rem;color:var(--gray-800)"><option>2025</option></select>
+      </div>
+      <div class="chart-bars" id="revenueChart"></div>
+    </div>
+
+    <!-- Recent Jobs + Pending Verifications -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+
+      <!-- Recent Jobs -->
+      <div class="table-wrap">
+        <div class="table-head">
+          <div class="table-title">📋 Recent Jobs</div>
+          <button class="btn-outline-sm" onclick="showAdminPage('jobs')">View All</button>
+        </div>
+        <table>
+          <thead><tr><th>Customer</th><th>Service</th><th>Status</th><th>UGX</th></tr></thead>
+          <tbody>
+            <tr><td><div class="td-avatar"><div class="t-av">👩</div><div><div class="t-name">Annet M.</div><div class="t-sub">Ntinda</div></div></div></td><td>House Cleaning</td><td><span class="status-pill sp-completed">✓ Done</span></td><td>35,000</td></tr>
+            <tr><td><div class="td-avatar"><div class="t-av">👨</div><div><div class="t-name">Daniel K.</div><div class="t-sub">Bukoto</div></div></div></td><td>Car Wash</td><td><span class="status-pill sp-inprogress">⏳ Active</span></td><td>18,000</td></tr>
+            <tr><td><div class="td-avatar"><div class="t-av">👩‍💼</div><div><div class="t-name">Diana N.</div><div class="t-sub">Naguru</div></div></div></td><td>Laundry</td><td><span class="status-pill sp-disputed">⚠️ Dispute</span></td><td>12,000</td></tr>
+            <tr><td><div class="td-avatar"><div class="t-av">👨‍💼</div><div><div class="t-name">Peter S.</div><div class="t-sub">Muyenga</div></div></div></td><td>Errands</td><td><span class="status-pill sp-completed">✓ Done</span></td><td>8,000</td></tr>
+            <tr><td><div class="td-avatar"><div class="t-av">👩‍🦱</div><div><div class="t-name">Rose K.</div><div class="t-sub">Kira</div></div></div></td><td>MaidMatch</td><td><span class="status-pill sp-inprogress">⏳ Active</span></td><td>60,000</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pending Verifications -->
+      <div class="table-wrap">
+        <div class="table-head">
+          <div class="table-title">🪪 Pending Verifications</div>
+          <button class="btn-outline-sm" onclick="showAdminPage('verification')">View All</button>
+        </div>
+        <table>
+          <thead><tr><th>Name</th><th>Service</th><th>Submitted</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td><div class="td-avatar"><div class="t-av">👨</div><div><div class="t-name">Moses K.</div><div class="t-sub">Kira</div></div></div></td><td>Cleaning</td><td style="font-size:.72rem;color:var(--gray-400)">2 hrs ago</td><td><div style="display:flex;gap:.35rem"><button class="btn-act btn-view" onclick="openVerifyModal('Moses Kizito','Cleaning')">👁 View</button></div></td></tr>
+            <tr><td><div class="td-avatar"><div class="t-av">👩</div><div><div class="t-name">Alice M.</div><div class="t-sub">Ntinda</div></div></div></td><td>Laundry</td><td style="font-size:.72rem;color:var(--gray-400)">5 hrs ago</td><td><div style="display:flex;gap:.35rem"><button class="btn-act btn-view" onclick="openVerifyModal('Alice Mutesi','Laundry')">👁 View</button></div></td></tr>
+            <tr><td><div class="td-avatar"><div class="t-av">👨</div><div><div class="t-name">John S.</div><div class="t-sub">Bukoto</div></div></div></td><td>Car Wash</td><td style="font-size:.72rem;color:var(--gray-400)">1 day ago</td><td><div style="display:flex;gap:.35rem"><button class="btn-act btn-view" onclick="openVerifyModal('John Ssali','Car Wash')">👁 View</button></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Fraud Alerts -->
+    <div class="table-wrap">
+      <div class="table-head">
+        <div class="table-title">🚨 Active Fraud Alerts</div>
+        <button class="btn-outline-sm" onclick="showAdminPage('fraud')">View All</button>
+      </div>
+      <table>
+        <thead><tr><th>User</th><th>Alert Type</th><th>Risk Score</th><th>Triggered</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td><div class="td-avatar"><div class="t-av">❓</div><div><div class="t-name">Unknown Device</div><div class="t-sub">3 accounts same IP</div></div></div></td><td>Multiple accounts · Same device</td><td><span class="status-pill sp-rejected">🔴 Critical</span></td><td style="font-size:.72rem;color:var(--gray-400)">30 min ago</td><td><div style="display:flex;gap:.35rem"><button class="btn-act btn-ban" onclick="handleFraud('block')">🚫 Block IP</button><button class="btn-act btn-view" onclick="handleFraud('view')">👁 Investigate</button></div></td></tr>
+          <tr><td><div class="td-avatar"><div class="t-av">⚠️</div><div><div class="t-name">David O.</div><div class="t-sub">Fake ID suspected</div></div></div></td><td>Face mismatch · ID unverifiable</td><td><span class="status-pill sp-rejected">🔴 High</span></td><td style="font-size:.72rem;color:var(--gray-400)">2 hrs ago</td><td><div style="display:flex;gap:.35rem"><button class="btn-act btn-reject" onclick="handleFraud('reject')">❌ Reject & Ban</button></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══ VERIFICATION PAGE ══════════════════════════════ -->
+  <div class="admin-page" id="page-verification">
+    <div style="margin-bottom:1.25rem;display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div style="font-family:var(--font-head);font-size:1.125rem;font-weight:800;color:var(--blue)">🪪 Worker ID Verification Queue</div>
+        <div style="font-size:.82rem;color:var(--gray-600);margin-top:.25rem">Review submitted IDs, selfies, and NIN details before approving workers</div>
+      </div>
+      <div style="display:flex;gap:.5rem">
+        <button class="btn-outline-sm">📥 Export CSV</button>
+        <button class="btn-green-sm">✅ Approve All Clean</button>
+      </div>
+    </div>
+
+    <!-- Verification Card -->
+    <div class="verify-panel" id="verifyPanel">
+      <div class="vp-head">
+        <div class="vp-av">👷</div>
+        <div>
+          <div class="vp-name">Moses Kizito</div>
+          <div class="vp-role">Car Wash · Kira, Kampala · Submitted 2 hours ago</div>
+        </div>
+        <div style="margin-left:auto;display:flex;gap:.5rem">
+          <span class="status-pill sp-pending">⏳ Pending Review</span>
+        </div>
+      </div>
+      <div class="vp-body">
+        <div style="font-family:var(--font-head);font-size:.82rem;font-weight:700;color:var(--blue);margin-bottom:.875rem">📋 Submitted Documents</div>
+        <div class="vp-grid">
+          <div>
+            <div style="font-size:.72rem;font-weight:700;color:var(--gray-400);margin-bottom:.5rem">NATIONAL ID — FRONT</div>
+            <div class="id-img-wrap"><span>🪪</span><div class="id-img-label">Front · CM98765432</div></div>
+          </div>
+          <div>
+            <div style="font-size:.72rem;font-weight:700;color:var(--gray-400);margin-bottom:.5rem">NATIONAL ID — BACK</div>
+            <div class="id-img-wrap"><span>🪪</span><div class="id-img-label">Back · Verified format</div></div>
+          </div>
+        </div>
+        <div style="font-size:.72rem;font-weight:700;color:var(--gray-400);margin-bottom:.5rem">LIVE SELFIE (Face Match)</div>
+        <div style="display:flex;align-items:center;gap:1.25rem;margin-bottom:1.25rem">
+          <div class="selfie-img-wrap">😊</div>
+          <div>
+            <div style="font-size:.78rem;font-weight:600;color:var(--blue);margin-bottom:.35rem">Face Match Score</div>
+            <div style="font-family:var(--font-head);font-size:1.875rem;font-weight:800;color:var(--green)">94%</div>
+            <div style="font-size:.72rem;color:var(--gray-600)">✅ Above 85% threshold — PASS</div>
+          </div>
+        </div>
+
+        <div style="font-family:var(--font-head);font-size:.82rem;font-weight:700;color:var(--blue);margin-bottom:.75rem">🔍 Automated Checks</div>
+        <div class="check-list">
+          <div class="check-item pass">✅ NIN format valid (CM98765432KZAM)</div>
+          <div class="check-item pass">✅ No duplicate NIN found in database</div>
+          <div class="check-item pass">✅ Face match score 94% — passed 85% threshold</div>
+          <div class="check-item pass">✅ Phone number verified via OTP</div>
+          <div class="check-item pass">✅ Single device / IP — no multi-account flag</div>
+          <div class="check-item pass">✅ ID image quality — clear and unedited</div>
+        </div>
+
+        <div style="font-family:var(--font-head);font-size:.82rem;font-weight:700;color:var(--blue);margin:.875rem 0 .5rem">📝 Worker Details</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1rem">
+          <div style="background:var(--gray-bg);border-radius:var(--r-sm);padding:.75rem"><div style="font-size:.65rem;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:.05em">Full Name</div><div style="font-size:.82rem;font-weight:600;color:var(--blue);margin-top:.2rem">Moses Kizito Ssali</div></div>
+          <div style="background:var(--gray-bg);border-radius:var(--r-sm);padding:.75rem"><div style="font-size:.65rem;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:.05em">NIN</div><div style="font-size:.82rem;font-weight:600;color:var(--blue);margin-top:.2rem">CM98765432KZAM</div></div>
+          <div style="background:var(--gray-bg);border-radius:var(--r-sm);padding:.75rem"><div style="font-size:.65rem;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:.05em">Phone</div><div style="font-size:.82rem;font-weight:600;color:var(--blue);margin-top:.2rem">+256 772 345 678</div></div>
+          <div style="background:var(--gray-bg);border-radius:var(--r-sm);padding:.75rem"><div style="font-size:.65rem;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:.05em">Service</div><div style="font-size:.82rem;font-weight:600;color:var(--blue);margin-top:.2rem">Car Washing</div></div>
+          <div style="background:var(--gray-bg);border-radius:var(--r-sm);padding:.75rem"><div style="font-size:.65rem;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:.05em">Area</div><div style="font-size:.82rem;font-weight:600;color:var(--blue);margin-top:.2rem">Kira, Kampala</div></div>
+          <div style="background:var(--gray-bg);border-radius:var(--r-sm);padding:.75rem"><div style="font-size:.65rem;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:.05em">Risk Score</div><div style="font-size:.82rem;font-weight:600;color:var(--green-dark);margin-top:.2rem">🟢 Clean (0)</div></div>
+        </div>
+
+        <div class="vp-actions">
+          <button class="btn-green-sm" onclick="approveWorker('Moses Kizito')">✅ Approve Worker</button>
+          <button class="btn-act btn-reject" style="padding:.45rem 1rem;border-radius:9999px" onclick="rejectWorker('Moses Kizito')">❌ Reject</button>
+          <button class="btn-outline-sm" onclick="adminToast('📋 Report sent to legal team')">⚠️ Flag for Legal</button>
+          <button class="btn-outline-sm" onclick="adminToast('💬 Message sent to applicant')">💬 Request More Info</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ WORKERS PAGE ════════════════════════════════ -->
+  <div class="admin-page" id="page-workers">
+    <div class="table-wrap">
+      <div class="table-head">
+        <div class="table-title">👷 All Workers (1,247)</div>
+        <div class="table-actions">
+          <select style="border:1.5px solid var(--gray-100);border-radius:var(--r-sm);padding:.35rem .75rem;font-size:.78rem"><option>All Status</option><option>Verified</option><option>Pending</option><option>Suspended</option><option>Banned</option></select>
+          <button class="btn-outline-sm">📥 Export</button>
+        </div>
+      </div>
+      <table>
+        <thead><tr><th>Worker</th><th>Service</th><th>Status</th><th>Jobs</th><th>Rating</th><th>Risk</th><th>Actions</th></tr></thead>
+        <tbody>
+          <tr><td><div class="td-avatar"><div class="t-av">👩</div><div><div class="t-name">Grace Namukasa</div><div class="t-sub">Ntinda · +256772111222</div></div></div></td><td>House Cleaning</td><td><span class="status-pill sp-verified">✅ Verified</span></td><td>312</td><td>⭐ 4.9</td><td><span class="status-pill" style="background:var(--green-pale);color:var(--green-dark)">🟢 0</span></td><td><div style="display:flex;gap:.35rem"><button class="btn-act btn-view" onclick="adminToast('👤 Viewing Grace profile...')">👁</button><button class="btn-act btn-ban" onclick="adminToast('⚠️ Suspension modal would open')">⏸</button></div></td></tr>
+          <tr><td><div class="td-avatar"><div class="t-av">👨</div><div><div class="t-name">Patrick Ssekandi</div><div class="t-sub">Naalya · +256702333444</div></div></div></td><td>Car Washing</td><td><span class="status-pill sp-verified">✅ Verified</span></td><td>201</td><td>⭐ 4.8</td><td><span class="status-pill" style="background:var(--green-pale);color:var(--green-dark)">🟢 0</span></td><td><div style="display:flex;gap:.35rem"><button class="btn-act btn-view" onclick="adminToast('👤 Viewing Patrick profile...')">👁</button><button class="btn-act btn-ban" onclick="adminToast('⚠️ Suspension modal would open')">⏸</button></div></td></tr>
+          <tr><td><div class="td-avatar"><div class="t-av">👨</div><div><div class="t-name">David Opolot</div><div class="t-sub">Bukoto · +256750555666</div></div></div></td><td>Errands</td><td><span class="status-pill sp-suspended">⏸ Suspended</span></td><td>45</td><td>⭐ 3.8</td><td><span class="status-pill" style="background:var(--yellow-pale);color:#996600">🟡 3</span></td><td><div style="display:flex;gap:.35rem"><button class="btn-act btn-view">👁</button><button class="btn-act btn-ban" onclick="adminToast('🚫 David permanently banned')">🚫 Ban</button></div></td></tr>
+          <tr><td><div class="td-avatar"><div class="t-av">👩</div><div><div class="t-name">Jane Auma</div><div class="t-sub">Kira · +256776777888</div></div></div></td><td>Laundry</td><td><span class="status-pill sp-pending">⏳ Pending</span></td><td>0</td><td>—</td><td><span class="status-pill" style="background:var(--gray-100);color:var(--gray-600)">⚪ New</span></td><td><div style="display:flex;gap:.35rem"><button class="btn-act btn-approve" onclick="approveWorker('Jane Auma')">✅</button><button class="btn-act btn-reject" onclick="rejectWorker('Jane Auma')">❌</button></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══ DISPUTES PAGE ════════════════════════════════ -->
+  <div class="admin-page" id="page-disputes">
+    <div style="margin-bottom:1.25rem"><div style="font-family:var(--font-head);font-size:1.125rem;font-weight:800;color:var(--blue)">⚖️ Open Disputes</div><div style="font-size:.82rem;color:var(--gray-600);margin-top:.25rem">Payment frozen on all disputes until resolved</div></div>
+
+    <div class="dispute-card">
+      <div class="dc-head">
+        <div><div class="dc-id">#DSP-001 · House Cleaning</div><div class="dc-type">Property Damage Claim</div><div class="dc-parties">Customer: Diana N. (Naguru) ↔ Worker: Grace K.</div></div>
+        <span class="status-pill sp-disputed">🔴 Open · 6hrs</span>
+      </div>
+      <div class="dc-body">"The cleaner broke my TV remote and scratched my glass table. I have photos. I want a full refund of UGX 45,000."</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1rem">
+        <div style="background:var(--gray-bg);border-radius:var(--r-sm);padding:.75rem"><div style="font-size:.65rem;font-weight:700;color:var(--gray-400);text-transform:uppercase">Evidence Collected</div><div style="font-size:.78rem;color:var(--blue);margin-top:.3rem">✅ Chat logs · ✅ Photos x3 · ✅ GPS · ✅ Timestamps</div></div>
+        <div style="background:var(--gray-bg);border-radius:var(--r-sm);padding:.75rem"><div style="font-size:.65rem;font-weight:700;color:var(--gray-400);text-transform:uppercase">Payment Status</div><div style="font-size:.78rem;color:var(--red);margin-top:.3rem">🔐 Frozen · UGX 45,000</div></div>
+      </div>
+      <div class="dc-actions">
+        <button class="btn-green-sm" onclick="resolveDispute('full-refund','Diana')">💰 Full Refund to Customer</button>
+        <button class="btn-act btn-approve" onclick="resolveDispute('partial','both')">⚖️ Partial Refund (50/50)</button>
+        <button class="btn-act btn-view" onclick="resolveDispute('release','Grace')">✅ Release to Worker</button>
+        <button class="btn-act btn-ban" onclick="resolveDispute('ban','Grace')">🚫 Ban Worker + Refund</button>
+      </div>
+    </div>
+
+    <div class="dispute-card">
+      <div class="dc-head">
+        <div><div class="dc-id">#DSP-002 · Car Wash</div><div class="dc-type">Worker No-Show</div><div class="dc-parties">Customer: Peter S. (Muyenga) ↔ Worker: John K.</div></div>
+        <span class="status-pill sp-disputed">🟡 Open · 2hrs</span>
+      </div>
+      <div class="dc-body">"The worker never arrived. I waited 2 hours. GPS shows he was never near my location. I need a full refund and this worker removed."</div>
+      <div class="dc-actions">
+        <button class="btn-green-sm" onclick="resolveDispute('full-refund','Peter')">💰 Full Refund + Warning</button>
+        <button class="btn-act btn-ban" onclick="resolveDispute('ban','John K.')">🚫 Ban Worker</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PAYMENTS PAGE ════════════════════════════════ -->
+  <div class="admin-page" id="page-payments">
+    <div class="stat-cards">
+      <div class="stat-card"><div class="sc-top"><div class="sc-icon green">💰</div><span class="sc-change up">Today</span></div><div class="sc-val">UGX 182K</div><div class="sc-label">Collected Today</div></div>
+      <div class="stat-card"><div class="sc-top"><div class="sc-icon blue">🔐</div><span class="sc-change down">3 frozen</span></div><div class="sc-val">UGX 113K</div><div class="sc-label">Escrowed (Frozen)</div></div>
+      <div class="stat-card"><div class="sc-top"><div class="sc-icon yellow">⏳</div></div><div class="sc-val">UGX 67K</div><div class="sc-label">Awaiting Release</div></div>
+      <div class="stat-card"><div class="sc-top"><div class="sc-icon green">📤</div><span class="sc-change up">↑ 15%</span></div><div class="sc-val">UGX 4.2M</div><div class="sc-label">Month Total</div></div>
+    </div>
+
+    <div class="table-wrap">
+      <div class="table-head"><div class="table-title">💳 Recent Transactions</div><button class="btn-outline-sm">📥 Export</button></div>
+      <table>
+        <thead><tr><th>Reference</th><th>Customer</th><th>Worker</th><th>Service</th><th>Amount</th><th>Commission</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td style="font-family:monospace;font-size:.75rem">TXN-8821</td><td>Annet M.</td><td>Grace N.</td><td>Cleaning</td><td>UGX 35,000</td><td>UGX 7,000</td><td><span class="status-pill sp-completed">Released</span></td></tr>
+          <tr><td style="font-family:monospace;font-size:.75rem">TXN-8820</td><td>Diana N.</td><td>Grace K.</td><td>Cleaning</td><td>UGX 45,000</td><td>—</td><td><span class="status-pill sp-disputed">🔐 Frozen</span></td></tr>
+          <tr><td style="font-family:monospace;font-size:.75rem">TXN-8819</td><td>Daniel K.</td><td>Patrick S.</td><td>Car Wash</td><td>UGX 18,000</td><td>UGX 3,600</td><td><span class="status-pill sp-inprogress">Escrow</span></td></tr>
+          <tr><td style="font-family:monospace;font-size:.75rem">TXN-8818</td><td>Peter S.</td><td>Moses K.</td><td>Errands</td><td>UGX 8,000</td><td>UGX 1,600</td><td><span class="status-pill sp-completed">Released</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══ SETTINGS PAGE ════════════════════════════════ -->
+  <div class="admin-page" id="page-settings">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+      <div style="background:var(--white);border-radius:var(--r);border:1.5px solid var(--gray-100);padding:1.5rem">
+        <div style="font-family:var(--font-head);font-size:.95rem;font-weight:700;color:var(--blue);margin-bottom:1.25rem">⚙️ Platform Settings</div>
+        <div style="display:flex;flex-direction:column;gap:.875rem">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:.75rem;background:var(--gray-bg);border-radius:var(--r-sm)"><div><div style="font-size:.84rem;font-weight:600;color:var(--blue)">Commission Rate</div><div style="font-size:.72rem;color:var(--gray-400)">Per completed job</div></div><div style="display:flex;align-items:center;gap:.5rem"><input type="number" value="20" min="5" max="35" style="width:60px;border:1.5px solid var(--gray-200);border-radius:var(--r-sm);padding:.35rem .5rem;font-size:.84rem;text-align:center"> %</div></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:.75rem;background:var(--gray-bg);border-radius:var(--r-sm)"><div><div style="font-size:.84rem;font-weight:600;color:var(--blue)">Face Match Threshold</div><div style="font-size:.72rem;color:var(--gray-400)">Minimum score to pass</div></div><input type="number" value="85" min="70" max="99" style="width:70px;border:1.5px solid var(--gray-200);border-radius:var(--r-sm);padding:.35rem .5rem;font-size:.84rem;text-align:center"></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:.75rem;background:var(--gray-bg);border-radius:var(--r-sm)"><div><div style="font-size:.84rem;font-weight:600;color:var(--blue)">Auto-suspend at Risk Score</div><div style="font-size:.72rem;color:var(--gray-400)">Reports threshold</div></div><input type="number" value="3" min="2" max="10" style="width:60px;border:1.5px solid var(--gray-200);border-radius:var(--r-sm);padding:.35rem .5rem;font-size:.84rem;text-align:center"></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:.75rem;background:var(--gray-bg);border-radius:var(--r-sm)"><div><div style="font-size:.84rem;font-weight:600;color:var(--blue)">Permanent Ban at Score</div><div style="font-size:.72rem;color:var(--gray-400)">Reports threshold</div></div><input type="number" value="5" min="3" max="20" style="width:60px;border:1.5px solid var(--gray-200);border-radius:var(--r-sm);padding:.35rem .5rem;font-size:.84rem;text-align:center"></div>
+          <button class="btn-primary-sm" onclick="adminToast('✅ Settings saved successfully!')">Save Settings</button>
+        </div>
+      </div>
+      <div style="background:var(--white);border-radius:var(--r);border:1.5px solid var(--gray-100);padding:1.5rem">
+        <div style="font-family:var(--font-head);font-size:.95rem;font-weight:700;color:var(--blue);margin-bottom:1.25rem">🔐 Admin Access Control</div>
+        <div class="alert alert-warn">⚠️ Change credentials immediately after first login. Use strong passwords.</div>
+        <div style="display:flex;flex-direction:column;gap:.875rem;margin-top:1rem">
+          <div class="login-field"><label>New Admin Email</label><input type="email" placeholder="new-admin@quickservepro.ug"></div>
+          <div class="login-field"><label>New Password</label><input type="password" placeholder="Minimum 12 characters"></div>
+          <div class="login-field"><label>Confirm Password</label><input type="password" placeholder="Repeat password"></div>
+          <button class="btn-primary-sm" onclick="adminToast('✅ Admin credentials updated!')">Update Credentials</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stub pages -->
+  <div class="admin-page" id="page-analytics"><div class="alert alert-info">📈 Analytics dashboard — connect Google Analytics or Mixpanel in production for full data. Showing demo charts below.</div>
+    <div class="chart-wrap"><div style="font-family:var(--font-head);font-size:.9rem;font-weight:700;color:var(--blue)">📊 Jobs by Service Type</div><div class="chart-bars" id="serviceChart"></div></div>
+  </div>
+  <div class="admin-page" id="page-customers"><div class="table-wrap"><div class="table-head"><div class="table-title">👥 All Customers</div><button class="btn-outline-sm">📥 Export</button></div><table><thead><tr><th>Customer</th><th>Phone</th><th>Jobs</th><th>Spend</th><th>Status</th><th>Action</th></tr></thead><tbody><tr><td><div class="td-avatar"><div class="t-av">👩</div><div><div class="t-name">Annet Mutesi</div><div class="t-sub">Ntinda</div></div></div></td><td>+256 772 111 000</td><td>14</td><td>UGX 420,000</td><td><span class="status-pill sp-active">✅ Active</span></td><td><button class="btn-act btn-view" onclick="adminToast('👤 Customer profile opened')">View</button></td></tr><tr><td><div class="td-avatar"><div class="t-av">👨</div><div><div class="t-name">Daniel Kizito</div><div class="t-sub">Bukoto</div></div></div></td><td>+256 702 222 111</td><td>8</td><td>UGX 215,000</td><td><span class="status-pill sp-active">✅ Active</span></td><td><button class="btn-act btn-view" onclick="adminToast('👤 Customer profile opened')">View</button></td></tr></tbody></table></div></div>
+  <div class="admin-page" id="page-jobs"><div class="table-wrap"><div class="table-head"><div class="table-title">📋 All Jobs (15,482)</div><div class="table-actions"><select style="border:1.5px solid var(--gray-100);border-radius:var(--r-sm);padding:.35rem .75rem;font-size:.78rem"><option>All Status</option><option>Active</option><option>Completed</option><option>Disputed</option></select><button class="btn-outline-sm">📥 Export</button></div></div><table><thead><tr><th>Job ID</th><th>Customer</th><th>Worker</th><th>Service</th><th>Amount</th><th>Status</th></tr></thead><tbody><tr><td style="font-family:monospace;font-size:.75rem">#JOB-4821</td><td>Annet M.</td><td>Grace N.</td><td>House Cleaning</td><td>UGX 35,000</td><td><span class="status-pill sp-completed">✓ Done</span></td></tr><tr><td style="font-family:monospace;font-size:.75rem">#JOB-4820</td><td>Daniel K.</td><td>Patrick S.</td><td>Car Wash</td><td>UGX 18,000</td><td><span class="status-pill sp-inprogress">⏳ Active</span></td></tr><tr><td style="font-family:monospace;font-size:.75rem">#JOB-4819</td><td>Diana N.</td><td>Grace K.</td><td>Cleaning</td><td>UGX 45,000</td><td><span class="status-pill sp-disputed">⚠️ Dispute</span></td></tr></tbody></table></div></div>
+  <div class="admin-page" id="page-fraud"><div class="alert alert-danger">🚨 2 active fraud alerts require immediate attention.</div><div class="table-wrap"><div class="table-head"><div class="table-title">🚨 Fraud Alerts</div></div><table><thead><tr><th>Type</th><th>Severity</th><th>Details</th><th>Action</th></tr></thead><tbody><tr><td>Multiple Accounts — Same IP</td><td><span class="status-pill sp-rejected">Critical</span></td><td>3 accounts from 197.239.x.x</td><td><button class="btn-act btn-ban" onclick="handleFraud('block')">🚫 Block IP</button></td></tr><tr><td>Fake ID Suspected</td><td><span class="status-pill sp-rejected">High</span></td><td>Face mismatch 42% — David O.</td><td><button class="btn-act btn-reject" onclick="handleFraud('reject')">❌ Reject & Ban</button></td></tr></tbody></table></div></div>
+  <div class="admin-page" id="page-revenue"><div class="stat-cards"><div class="stat-card"><div class="sc-top"><div class="sc-icon green">💰</div><span class="sc-change up">↑ 19%</span></div><div class="sc-val">UGX 4.2M</div><div class="sc-label">This Month</div></div><div class="stat-card"><div class="sc-top"><div class="sc-icon blue">📊</div><span class="sc-change up">↑ 12%</span></div><div class="sc-val">UGX 38.7M</div><div class="sc-label">Year to Date</div></div><div class="stat-card"><div class="sc-top"><div class="sc-icon yellow">💳</div></div><div class="sc-val">20%</div><div class="sc-label">Avg Commission</div></div></div><div class="chart-wrap"><div style="font-family:var(--font-head);font-size:.9rem;font-weight:700;color:var(--blue)">📈 Revenue by Month (UGX)</div><div class="chart-bars" id="revenueChart2"></div></div></div>
+</main>
+
+<!-- ═══ VERIFY MODAL ════════════════════════════════════ -->
+<div class="modal-overlay" id="verifyModal">
+  <div class="modal-box">
+    <div class="modal-title">🪪 Quick Verify: <span id="verifyModalName"></span></div>
+    <div class="check-list" style="margin-bottom:1.25rem">
+      <div class="check-item pass">✅ NIN format valid</div>
+      <div class="check-item pass">✅ No duplicate NIN</div>
+      <div class="check-item pass">✅ Face match 91%</div>
+      <div class="check-item pass">✅ Phone OTP verified</div>
+      <div class="check-item pass">✅ Single account per device</div>
+    </div>
+    <div style="display:flex;gap:.75rem">
+      <button class="btn-green-sm" style="flex:1" onclick="closeModal();approveWorker(document.getElementById('verifyModalName').textContent)">✅ Approve</button>
+      <button class="btn-act btn-reject" style="padding:.45rem 1rem;border-radius:9999px;flex:1" onclick="closeModal();rejectWorker(document.getElementById('verifyModalName').textContent)">❌ Reject</button>
+      <button class="btn-outline-sm" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="admin-toast"></div>
+
+<!-- Mobile sidebar toggle -->
+<button class="sidebar-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+
+<script>
+/* ── ADMIN JS ── */
+function doLogin() {
+  const email = document.getElementById('loginEmail').value;
+  const pass = document.getElementById('loginPass').value;
+  if (email && pass) {
+    document.getElementById('loginScreen').style.opacity = '0';
+    document.getElementById('loginScreen').style.transform = 'scale(1.05)';
+    setTimeout(() => document.getElementById('loginScreen').style.display = 'none', 400);
+    adminToast('✅ Logged in as Super Admin', 'success');
+    renderCharts();
+  } else {
+    adminToast('❌ Please enter credentials', 'error');
+  }
+}
+
+function adminLogout() {
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('loginScreen').style.opacity = '1';
+  document.getElementById('loginScreen').style.transform = 'none';
+}
+
+function showAdminPage(id) {
+  document.querySelectorAll('.admin-page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const titles = { dashboard:'📊 Dashboard', analytics:'📈 Analytics', verification:'🪪 Worker Verification', workers:'👷 All Workers', customers:'👥 Customers', jobs:'📋 All Jobs', disputes:'⚖️ Disputes', fraud:'🚨 Fraud Alerts', payments:'💳 Payments', revenue:'💰 Revenue', settings:'⚙️ Settings' };
+  const topTitle = document.getElementById('topbarTitle');
+  if (topTitle) topTitle.textContent = titles[id] || id;
+  if (id === 'analytics' || id === 'revenue') renderCharts();
+}
+
+function adminToast(msg) {
+  const t = document.getElementById('admin-toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window._adt);
+  window._adt = setTimeout(() => t.classList.remove('show'), 3800);
+}
+
+function approveWorker(name) {
+  adminToast('✅ ' + name + ' approved and notified via SMS!');
+  const badge = document.querySelector('.nav-badge');
+  if (badge && parseInt(badge.textContent) > 0) {
+    badge.textContent = parseInt(badge.textContent) - 1;
+  }
+}
+
+function rejectWorker(name) {
+  adminToast('❌ ' + name + ' rejected. Reason sent by SMS.');
+}
+
+function resolveDispute(action, party) {
+  const msgs = {
+    'full-refund': '💰 Full refund issued to ' + party + '. Worker risk score +1.',
+    'partial': '⚖️ Partial refund split. Both parties notified.',
+    'release': '✅ Payment released to ' + party + '.',
+    'ban': '🚫 Worker banned. Full refund issued to customer.',
+  };
+  adminToast(msgs[action] || '✅ Dispute resolved.');
+  const badge = document.querySelectorAll('.nav-badge')[1];
+  if (badge && parseInt(badge.textContent) > 0) badge.textContent = parseInt(badge.textContent) - 1;
+}
+
+function handleFraud(action) {
+  if (action === 'block') adminToast('🚫 IP blocked. All associated accounts suspended.');
+  if (action === 'view') adminToast('👁 Opening investigation panel...');
+  if (action === 'reject') adminToast('❌ Account rejected and permanently banned. Legal team notified.');
+}
+
+function openVerifyModal(name, service) {
+  document.getElementById('verifyModalName').textContent = name;
+  document.getElementById('verifyModal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('verifyModal').classList.remove('open');
+}
+
+function adminSearch(val) {
+  if (val.length > 2) adminToast('🔍 Searching for: "' + val + '"...');
+}
+
+/* ── CHARTS ── */
+function renderCharts() {
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const vals = [1.2,1.8,2.1,1.9,2.8,3.2,2.7,3.8,4.1,3.5,4.2,0];
+  const max = Math.max(...vals);
+
+  ['revenueChart','revenueChart2'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = vals.map((v,i) => `
+      <div class="chart-bar-wrap">
+        <div class="chart-val">${v > 0 ? v + 'M' : ''}</div>
+        <div class="chart-bar ${i===10?'highlight':''}" style="height:${(v/max)*120}px" title="UGX ${v}M"></div>
+        <div class="chart-label">${months[i]}</div>
+      </div>
+    `).join('');
+  });
+
+  const svcEl = document.getElementById('serviceChart');
+  if (svcEl) {
+    const svcs = [{n:'Cleaning',v:42},{n:'Laundry',v:28},{n:'Car Wash',v:18},{n:'Errands',v:12},{n:'MaidMatch',v:8},{n:'Babysit',v:5}];
+    const sm = Math.max(...svcs.map(s=>s.v));
+    svcEl.innerHTML = svcs.map(s=>`<div class="chart-bar-wrap"><div class="chart-val">${s.v}%</div><div class="chart-bar highlight" style="height:${(s.v/sm)*120}px"></div><div class="chart-label">${s.n}</div></div>`).join('');
+  }
+}
+
+document.addEventListener('click', e => {
+  if (e.target.classList.contains('modal-overlay')) closeModal();
+});
+
+// Add transition style to login screen
+document.getElementById('loginScreen').style.transition = 'opacity .4s ease, transform .4s ease';
+</script>
+</body>
+</html>
