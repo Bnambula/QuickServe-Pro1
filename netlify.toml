@@ -1,0 +1,75 @@
+# QuickServe Pro — Netlify Configuration
+# Deploy settings, headers, and redirects
+
+[build]
+  publish = "."
+  # No build command needed — pure static HTML/CSS/JS
+
+# ── Security Headers ────────────────────────────────────
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=self, microphone=()"
+
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Cache-Control = "no-store, no-cache, must-revalidate"
+    # Pragma: no-cache
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=3600, must-revalidate"
+
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800, immutable"
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800, immutable"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000, immutable"
+
+# ── Redirects ────────────────────────────────────────────
+[[redirects]]
+  from = "/admin"
+  to = "/admin/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/*"
+  to = "/admin/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/register"
+  to = "/register.html"
+  status = 200
+
+[[redirects]]
+  from = "/join"
+  to = "/register.html"
+  status = 301
+
+[[redirects]]
+  from = "/worker"
+  to = "/register.html"
+  status = 301
+
+# Catch-all — serve index.html for any unmatched route (SPA behaviour)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

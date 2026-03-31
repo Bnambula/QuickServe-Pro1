@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="QuickServe Pro — Uganda's most trusted home services platform. Verified workers, MoMo payments, real-time tracking. Book cleaning, laundry, car wash & more.">
+<meta name="theme-color" content="#0A2540">
+<meta property="og:title" content="QuickServe Pro — Verified Home Services Uganda">
+<meta property="og:description" content="Book cleaning, laundry, car wash & errands in minutes. ID-verified workers, MoMo payments, live tracking.">
+<meta property="og:type" content="website">
+<title>QuickServe Pro — Verified Home Services in Uganda</title>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Styles -->
+<link rel="stylesheet" href="css/styles.css">
+
+<style>
+/* ── INLINE: page-specific & critical above-fold ── */
+
+/* HERO extra */
+.hero-inner{position:relative;z-index:2;display:grid;grid-template-columns:1fr 420px;gap:3.5rem;align-items:center;width:100%;max-width:1160px;margin:0 auto}
+.hero-badge-row{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;margin-bottom:1.375rem;animation:fadeUp .5s ease both}
+.hero-live-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,200,83,.12);border:1px solid rgba(0,200,83,.3);color:#7DFFC0;padding:.35rem 1rem;border-radius:9999px;font-size:.75rem;font-weight:600;letter-spacing:.04em}
+.hero-neighborhood{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.8);padding:.3rem .875rem;border-radius:9999px;font-size:.72rem;font-weight:600}
+.hero-h1{font-family:'Poppins',sans-serif;font-size:clamp(2.2rem,4.5vw,3.75rem);font-weight:800;color:#fff;line-height:1.1;letter-spacing:-.035em;margin-bottom:1.375rem;animation:fadeUp .5s .1s ease both}
+.hero-h1 em{font-style:normal;color:var(--green)}
+.hero-cycle{display:block;color:var(--green)}
+.hero-cycle-text{display:inline-block;transition:opacity .4s ease,transform .4s ease}
+
+/* Animated ticker in hero */
+.activity-ticker{position:relative;overflow:hidden;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:9999px;padding:.4rem 1rem;margin-bottom:1.5rem;font-size:.73rem;color:rgba(255,255,255,.75);max-width:380px;animation:fadeUp .5s .35s ease both}
+.ticker-inner{display:flex;gap:3rem;animation:ticker 22s linear infinite;white-space:nowrap}
+.ticker-item{display:flex;align-items:center;gap:.5rem;flex-shrink:0}
+
+/* Moving icons row */
+.hero-moving-icons{display:flex;align-items:center;gap:1.5rem;margin-bottom:1rem;animation:fadeUp .5s .25s ease both}
+.moving-icon{font-size:1.5rem}
+.icon-car{animation:car-move 8s linear infinite;display:inline-block}
+.icon-wash{animation:spin-laundry 3s linear infinite;display:inline-block}
+.icon-home{animation:float 3s ease-in-out infinite;display:inline-block}
+
+/* 10-second challenge */
+.challenge-wrap{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:1rem;margin-top:1.25rem;animation:fadeUp .5s .5s ease both}
+.challenge-title{font-size:.72rem;font-weight:700;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.4rem}
+.challenge-row{display:flex;align-items:center;gap:.875rem}
+.challenge-num{font-family:'Poppins',sans-serif;font-size:2rem;font-weight:900;color:var(--green);width:44px;text-align:center;line-height:1}
+.challenge-text{font-size:.8rem;color:rgba(255,255,255,.7);flex:1}
+
+/* Neighbourhood social proof */
+.neighborhood-proof{
+  background:var(--blue);padding:12px 5%;
+  text-align:center;font-size:.8rem;font-weight:600;color:rgba(255,255,255,.8);
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+/* Gamification section */
+.gam-section{background:linear-gradient(145deg,var(--blue),var(--blue-mid));padding:80px 5%}
+.gam-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:1.5rem}
+.gam-val{font-family:'Poppins',sans-serif;font-size:2.25rem;font-weight:800;color:var(--green);line-height:1}
+.gam-label{font-size:.78rem;color:rgba(255,255,255,.6);margin-top:.3rem}
+.gam-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(0,200,83,.12);border:1px solid rgba(0,200,83,.2);color:#7DFFC0;padding:.25rem .7rem;border-radius:9999px;font-size:.68rem;font-weight:700;margin-top:.625rem}
+.progress-bar-outer{background:rgba(255,255,255,.1);border-radius:9999px;height:6px;margin:.625rem 0}
+.progress-bar-inner{background:linear-gradient(90deg,var(--green),var(--teal));border-radius:9999px;height:100%;width:0%;transition:width 1.5s ease}
+
+/* Provider stories */
+.stories-row{display:flex;gap:.875rem;overflow-x:auto;scrollbar-width:none;padding-bottom:.5rem;-webkit-overflow-scrolling:touch}
+.stories-row::-webkit-scrollbar{display:none}
+.story-bubble{display:flex;flex-direction:column;align-items:center;gap:.4rem;flex-shrink:0;cursor:pointer}
+.story-ring{width:64px;height:64px;border-radius:50%;padding:2.5px;background:linear-gradient(135deg,var(--green),var(--teal));animation:glow-pulse 3s infinite}
+.story-inner{width:100%;height:100%;border-radius:50%;background:linear-gradient(135deg,var(--blue-pale),var(--blue-light));display:flex;align-items:center;justify-content:center;font-size:1.625rem;border:2px solid var(--white)}
+.story-name{font-size:.62rem;font-weight:600;color:var(--gray-600);max-width:64px;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* Referral */
+.referral-section{background:linear-gradient(135deg,var(--green),var(--teal));padding:80px 5%;text-align:center;color:var(--white)}
+.ref-code-box{display:inline-flex;align-items:center;gap:.875rem;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);padding:.875rem 1.75rem;border-radius:9999px;font-family:'Poppins',sans-serif;font-size:1.25rem;font-weight:800;letter-spacing:.1em;cursor:pointer;transition:all .25s;margin:1.25rem auto}
+.ref-code-box:hover{background:rgba(255,255,255,.3)}
+
+/* Verify stepper */
+.verify-stepper{display:flex;align-items:flex-start;justify-content:center;gap:0;margin-bottom:2.5rem;overflow-x:auto}
+.v-step{display:flex;flex-direction:column;align-items:center;gap:.4rem;flex:1;min-width:72px;position:relative}
+.v-step::before{content:'';position:absolute;top:18px;left:50%;width:100%;height:2px;background:var(--gray-200);z-index:0}
+.v-step:last-child::before{display:none}
+.v-step-num{width:36px;height:36px;border-radius:50%;background:var(--gray-200);color:var(--gray-600);display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;position:relative;z-index:1;transition:all .3s}
+.v-step.active .v-step-num{background:var(--blue);color:var(--white);box-shadow:0 0 0 4px var(--blue-pale)}
+.v-step.done .v-step-num{background:var(--green);color:var(--white)}
+.v-step-label{font-size:.62rem;font-weight:600;color:var(--gray-400);text-align:center}
+.v-step.active .v-step-label{color:var(--blue)}
+
+/* verify-card */
+.verify-card{background:var(--white);border-radius:24px;padding:2.25rem;border:1.5px solid var(--gray-100);max-width:560px;margin:0 auto;box-shadow:0 8px 32px rgba(10,37,64,.12)}
+.verify-card-title{font-family:'Poppins',sans-serif;font-size:1.25rem;font-weight:800;color:var(--blue);margin-bottom:.5rem}
+.verify-card-sub{font-size:.875rem;color:var(--gray-600);margin-bottom:1.75rem}
+.upload-zone{border:2px dashed var(--gray-200);border-radius:16px;padding:2.25rem 1rem;text-align:center;cursor:pointer;transition:all .25s;margin-bottom:1rem}
+.upload-zone:hover{border-color:var(--blue);background:var(--blue-pale)}
+.selfie-frame{width:180px;height:180px;border-radius:50%;border:4px solid var(--blue-light);margin:0 auto 1rem;background:var(--gray-bg);display:flex;align-items:center;justify-content:center;font-size:2.5rem;position:relative}
+
+/* status cards */
+.status-card{border-radius:16px;padding:1.75rem;text-align:center}
+.status-card.pending{background:var(--yellow-pale);border:1.5px solid var(--yellow)}
+.status-card.approved{background:var(--green-pale);border:1.5px solid var(--green)}
+
+/* legal */
+.legal-tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:2rem}
+.l-tab{padding:.5rem 1.125rem;border-radius:9999px;border:1.5px solid var(--gray-200);background:var(--white);color:var(--gray-600);font-size:.82rem;font-weight:600;cursor:pointer;transition:all .25s}
+.l-tab:hover,.l-tab.active{border-color:var(--blue);background:var(--blue-pale);color:var(--blue)}
+.legal-doc{display:none}.legal-doc.active{display:block}
+.legal-doc-card{background:var(--white);border-radius:24px;padding:2.5rem;border:1.5px solid var(--gray-100)}
+.l-clause{margin-bottom:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--gray-100)}
+.l-clause:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.l-clause h4{font-family:'Poppins',sans-serif;font-size:.95rem;font-weight:700;color:var(--blue);margin-bottom:.5rem}
+.l-clause p{font-size:.875rem;color:var(--gray-600);line-height:1.8}
+.l-highlight{background:var(--blue-pale);border-left:3px solid var(--blue);padding:.75rem 1rem;border-radius:0 8px 8px 0;font-size:.84rem;color:var(--blue);font-weight:500;margin:.75rem 0}
+.l-highlight.red{background:var(--red-pale);border-color:var(--red);color:var(--red)}
+.l-highlight.green{background:var(--green-pale);border-color:var(--green);color:var(--green-dark)}
+
+/* payment page */
+.payment-track{display:grid;grid-template-columns:repeat(5,1fr);gap:0;position:relative;margin:2.5rem 0}
+.pt-step{display:flex;flex-direction:column;align-items:center;gap:.5rem;position:relative}
+.pt-step::after{content:'';position:absolute;top:24px;left:50%;width:100%;height:3px;background:var(--gray-200);z-index:0}
+.pt-step:last-child::after{display:none}
+.pt-icon{width:48px;height:48px;border-radius:50%;background:var(--gray-100);color:var(--gray-400);display:flex;align-items:center;justify-content:center;font-size:1.25rem;position:relative;z-index:1;border:3px solid var(--gray-200);transition:all .3s}
+.pt-step.done .pt-icon{background:var(--green-pale);border-color:var(--green);color:var(--green-dark)}
+.pt-step.active .pt-icon{background:var(--blue-pale);border-color:var(--blue);color:var(--blue);box-shadow:0 0 0 4px var(--blue-pale)}
+.pt-label{font-size:.65rem;font-weight:600;color:var(--gray-400);text-align:center;max-width:70px;line-height:1.3}
+.pt-step.active .pt-label{color:var(--blue)}
+.pt-step.done .pt-label{color:var(--green-dark)}
+
+/* momo */
+.momo-card{background:var(--white);border-radius:24px;padding:2rem;border:1.5px solid var(--gray-100);max-width:400px;margin:0 auto;box-shadow:0 8px 32px rgba(10,37,64,.12);text-align:center}
+.momo-logo{width:68px;height:68px;border-radius:16px;background:linear-gradient(135deg,#FFCC00,#FF8C00);margin:0 auto 1rem;display:flex;align-items:center;justify-content:center;font-size:2rem}
+.pin-dots{display:flex;justify-content:center;gap:.75rem;margin:1.25rem 0}
+.pin-dot{width:14px;height:14px;border-radius:50%;background:var(--blue);opacity:.2;transition:all .25s}
+.pin-dot.filled{opacity:1}
+
+/* safety */
+.risk-levels{display:flex;gap:0;overflow:hidden;border-radius:12px;margin:1.25rem 0}
+.risk-bar{flex:1;padding:1rem .5rem;text-align:center}
+.risk-bar.low{background:var(--green-pale)}.risk-bar.med{background:var(--yellow-pale)}
+.risk-bar.high{background:#FFF3E0}.risk-bar.critical{background:var(--red-pale)}
+.esc-step{display:flex;gap:1rem;align-items:flex-start;padding:1rem 1.25rem;border-radius:10px;background:var(--gray-bg);border:1.5px solid var(--gray-100);transition:all .25s;margin-bottom:.875rem}
+.esc-step:hover{border-color:var(--blue)}
+.esc-num{width:28px;height:28px;border-radius:50%;background:var(--blue);color:var(--white);font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+/* branding page */
+.palette-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:1rem;margin-top:2rem}
+.palette-swatch{border-radius:10px;overflow:hidden;border:1.5px solid var(--gray-100)}
+.swatch-color{height:72px}
+.swatch-info{padding:.625rem;background:var(--white)}
+.swatch-name{font-size:.72rem;font-weight:700;color:var(--gray-800)}
+.swatch-hex{font-size:.68rem;color:var(--gray-400);font-family:monospace}
+
+/* report demo */
+.rep-opt{display:flex;align-items:center;gap:.875rem;padding:.875rem 1rem;border-radius:10px;border:1.5px solid var(--gray-100);background:var(--white);cursor:pointer;transition:all .25s;font-size:.875rem;font-weight:500;color:var(--gray-800);margin-bottom:.625rem}
+.rep-opt:hover,.rep-opt.sel{border-color:var(--red);background:var(--red-pale);color:var(--red)}
+
+/* page heroes */
+.page-hero{padding:100px 5% 60px;text-align:center}
+.hero-blue{background:linear-gradient(145deg,var(--blue),#0D3361)}
+.hero-red{background:linear-gradient(145deg,#1A0A0A,#3D0B0B)}
+
+@media(max-width:1024px){.hero-inner{grid-template-columns:1fr}.hero-card{max-width:460px}}
+@media(max-width:768px){
+  .hero-inner{gap:2.5rem}
+  .payment-track{grid-template-columns:1fr}.pt-step::after{display:none}
+  .challenge-wrap{display:none}
+}
+@media(max-width:480px){.svc-selector{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════ NAVBAR ═══════════════════════════ -->
+<nav class="navbar" id="navbar">
+  <div class="nav-logo" onclick="showPage('home')">
+    <div class="logo-mark">QS</div>
+    <span class="logo-text">QuickServe<span> Pro</span></span>
+  </div>
+
+  <div class="nav-live-bar">
+    <span class="dot-live"></span>
+    <span id="nearbyCount">3</span> providers near you
+  </div>
+
+  <ul class="nav-links">
+    <li><a href="#" onclick="showPage('home')" id="nav-home" class="active">Home</a></li>
+    <li><a href="#" onclick="showPage('services')" id="nav-services">Services</a></li>
+    <li><a href="#" onclick="showPage('about')" id="nav-about">About</a></li>
+    <li><a href="#" onclick="showPage('safety')" id="nav-safety">Safety</a></li>
+    <li><a href="#" onclick="showPage('legal')" id="nav-legal">Legal</a></li>
+    <li><a href="#" onclick="showPage('branding')" id="nav-branding">Brand</a></li>
+    <li><a href="#" onclick="showPage('register')" id="nav-register">Join as Worker</a></li>
+  </ul>
+
+  <div class="nav-actions">
+    <button class="btn btn-ghost btn-sm" onclick="openModal('login')">Sign In</button>
+    <button class="btn btn-primary btn-sm" onclick="openModal('book')">📲 Book Now</button>
+  </div>
+
+  <div class="hamburger" onclick="toggleMobile()" id="ham">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#" onclick="showPage('home');closeMobile()">🏠 Home</a>
+  <a href="#" onclick="showPage('services');closeMobile()">📦 Services</a>
+  <a href="#" onclick="showPage('about');closeMobile()">ℹ️ About</a>
+  <a href="#" onclick="showPage('safety');closeMobile()">🛡️ Safety</a>
+  <a href="#" onclick="showPage('legal');closeMobile()">⚖️ Legal</a>
+  <a href="#" onclick="showPage('branding');closeMobile()">🎨 Brand</a>
+  <a href="#" onclick="showPage('register');closeMobile()">👷 Join as Worker</a>
+  <a href="#" onclick="showPage('payment');closeMobile()">💳 How Payments Work</a>
+  <div class="mobile-actions">
+    <button class="btn btn-outline btn-full" onclick="openModal('login');closeMobile()">Sign In</button>
+    <button class="btn btn-primary btn-full" onclick="openModal('book');closeMobile()">📲 Book a Service</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     HOME PAGE
+══════════════════════════════════════════════════════════ -->
+<div class="page active" id="page-home">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-dots"></div>
+    <div class="hero-glow hero-glow-1"></div>
+    <div class="hero-glow hero-glow-2"></div>
+
+    <div class="hero-inner">
+      <!-- LEFT -->
+      <div>
+        <!-- Badge row -->
+        <div class="hero-badge-row">
+          <div class="hero-live-badge">
+            <span class="dot-live"></span>
+            Uganda's #1 Verified Service Platform
+          </div>
+        </div>
+
+        <!-- Moving icons -->
+        <div class="hero-moving-icons">
+          <span class="moving-icon icon-car">🚗</span>
+          <span class="moving-icon icon-wash">🧺</span>
+          <span class="moving-icon icon-home">🏠</span>
+          <span style="font-size:.8rem;color:rgba(255,255,255,.5);font-weight:600;">Services happening now →</span>
+        </div>
+
+        <!-- Headline with cycling text -->
+        <h1 class="hero-h1">
+          Verified Home Services<br>
+          in <span class="hero-cycle"><span id="heroCycleText" class="hero-cycle-text">Minutes</span></span>
+        </h1>
+
+        <!-- Activity ticker -->
+        <div class="activity-ticker">
+          <div class="ticker-inner">
+            <div class="ticker-item"><span>📍</span>3 cleaners booked in Ntinda just now</div>
+            <div class="ticker-item"><span>⭐</span>Sarah from Kira rated Grace 5 stars</div>
+            <div class="ticker-item"><span>🚗</span>Car wash booked in Bukoto · 2 min ago</div>
+            <div class="ticker-item"><span>✅</span>Job complete — Grace paid via MoMo</div>
+            <div class="ticker-item"><span>🧺</span>Laundry pickup confirmed · Naalya</div>
+            <div class="ticker-item"><span>📍</span>3 cleaners booked in Ntinda just now</div>
+            <div class="ticker-item"><span>⭐</span>Sarah from Kira rated Grace 5 stars</div>
+            <div class="ticker-item"><span>🚗</span>Car wash booked in Bukoto · 2 min ago</div>
+            <div class="ticker-item"><span>✅</span>Job complete — Grace paid via MoMo</div>
+            <div class="ticker-item"><span>🧺</span>Laundry pickup confirmed · Naalya</div>
+          </div>
+        </div>
+
+        <p class="hero-sub">Only real, National ID-verified professionals. Safe, fast, and reliable home services across Kampala — paid via MTN MoMo or Airtel Money.</p>
+
+        <div class="hero-cta">
+          <button class="btn btn-primary btn-xl" onclick="openModal('book')">📲 Book a Service</button>
+          <button class="btn btn-outline-white btn-xl" onclick="showPage('register')">👷 Become a Provider</button>
+        </div>
+
+        <div class="hero-trust" style="margin-bottom:1rem">
+          <div class="hero-trust-item"><span>✅</span> ID-Verified</div>
+          <div class="hero-trust-item"><span>🔒</span> Escrow Payments</div>
+          <div class="hero-trust-item"><span>⭐</span> Real Ratings</div>
+          <div class="hero-trust-item"><span>📍</span> Live Tracking</div>
+        </div>
+
+        <!-- 10-Second Challenge -->
+        <div class="challenge-wrap">
+          <div class="challenge-title">⚡ Book in 10 Seconds Challenge</div>
+          <div class="challenge-row">
+            <div class="challenge-num" id="challengeNum">10</div>
+            <div class="challenge-text">Can you book a service before the timer hits 0? Try it!</div>
+            <button class="btn btn-primary btn-sm" id="challengeBtn" onclick="startChallenge()">⚡ Start</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Booking Card -->
+      <div>
+        <div class="hero-card">
+          <div class="hero-card-title">⚡ Book Instantly</div>
+
+          <div class="svc-selector">
+            <button class="svc-btn active" onclick="selectSvc(this,'Laundry','UGX 8,000–25,000')">
+              <span class="si icon-wash">🧺</span>Laundry
+            </button>
+            <button class="svc-btn" onclick="selectSvc(this,'Cleaning','UGX 25,000–60,000')">
+              <span class="si icon-float">🏠</span>Cleaning
+            </button>
+            <button class="svc-btn" onclick="selectSvc(this,'Car Wash','UGX 12,000–28,000')">
+              <span class="si">🚗</span>Car Wash
+            </button>
+            <button class="svc-btn" onclick="selectSvc(this,'Errands','UGX 5,000–20,000')">
+              <span class="si">🛒</span>Errands
+            </button>
+          </div>
+
+          <div class="form-field">
+            <label>Your Location</label>
+            <input type="text" id="heroLoc" placeholder="e.g. Ntinda, Kampala">
+          </div>
+
+          <div class="time-toggle">
+            <button class="time-btn active" onclick="selectTime(this)">⚡ Now (ASAP)</button>
+            <button class="time-btn" onclick="selectTime(this)">📅 Schedule</button>
+          </div>
+
+          <div class="price-preview">
+            <span class="price-label">Estimated Price</span>
+            <span class="price-value" id="priceVal">UGX 8,000–25,000</span>
+          </div>
+
+          <!-- Live activity inside card -->
+          <div class="live-activity-item" style="font-size:.72rem;color:var(--gray-600);display:flex;align-items:center;gap:.4rem;margin-bottom:.875rem;background:var(--green-pale);padding:.5rem .75rem;border-radius:9999px;"></div>
+
+          <button class="btn btn-primary btn-full btn-lg" onclick="openModal('book')">
+            🟢 Book Now — Pay via MoMo
+          </button>
+
+          <!-- Nearby pill -->
+          <div class="nearby-pill" style="margin-top:.875rem;justify-content:center;display:flex;">
+            <span class="dot-live"></span>
+            <span id="nearbyCount2">3</span> verified providers near you
+          </div>
+        </div>
+
+        <!-- Tap-to-Rebook -->
+        <div onclick="openModal('book')" style="margin-top:.875rem;background:var(--blue-pale);border:1.5px solid var(--blue);border-radius:12px;padding:.875rem 1rem;cursor:pointer;display:flex;align-items:center;gap:.75rem;transition:all .25s;" onmouseover="this.style.background='var(--blue)'" onmouseout="this.style.background='var(--blue-pale)'">
+          <span style="font-size:1.5rem;">🔁</span>
+          <div>
+            <div style="font-size:.75rem;font-weight:700;color:var(--blue);" class="rebook-color">Tap-to-Rebook</div>
+            <div style="font-size:.7rem;color:var(--gray-600);">Book your last service again — 1 tap</div>
+          </div>
+          <span style="margin-left:auto;font-size:1rem;color:var(--blue);">→</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOCIAL PROOF STRIP -->
+  <div class="proof-strip">
+    <div class="proof-ticker">
+      <div class="proof-item"><span>⭐</span> Sarah from Kira: "Absolutely amazing service!"</div>
+      <div class="proof-item"><span>🏠</span> 15 homes in Ntinda booked cleaning today</div>
+      <div class="proof-item"><span>✅</span> Patrick just earned UGX 45,000 · 3 jobs</div>
+      <div class="proof-item"><span>🚗</span> "Car wash in 20 minutes. Incredible!" — Daniel, Bukoto</div>
+      <div class="proof-item"><span>🧺</span> Laundry subscription: 200+ active users</div>
+      <div class="proof-item"><span>⭐</span> Sarah from Kira: "Absolutely amazing service!"</div>
+      <div class="proof-item"><span>🏠</span> 15 homes in Ntinda booked cleaning today</div>
+      <div class="proof-item"><span>✅</span> Patrick just earned UGX 45,000 · 3 jobs</div>
+      <div class="proof-item"><span>🚗</span> "Car wash in 20 minutes. Incredible!" — Daniel, Bukoto</div>
+      <div class="proof-item"><span>🧺</span> Laundry subscription: 200+ active users</div>
+    </div>
+  </div>
+
+  <!-- NEIGHBOURHOOD SOCIAL PROOF -->
+  <div class="neighborhood-proof">
+    🏘️ <span id="neighborhoodProof">20 homes in Ntinda use QuickServe Pro</span> — Join them today
+  </div>
+
+  <!-- TRUST STRIP -->
+  <div class="trust-strip">
+    <div class="trust-item"><span>🪪</span> National ID Verified</div>
+    <div class="trust-item"><span>📱</span> MTN MoMo & Airtel Money</div>
+    <div class="trust-item"><span>⭐</span> Real Customer Ratings</div>
+    <div class="trust-item"><span>🔄</span> Escrow Payment Protection</div>
+    <div class="trust-item"><span>🚨</span> Instant Report System</div>
+    <div class="trust-item"><span>📍</span> Live Job Tracking</div>
+  </div>
+
+  <!-- SERVICES SNAPSHOT -->
+  <section class="section services-bg">
+    <div style="text-align:center;margin-bottom:2.5rem;" class="reveal">
+      <div class="eyebrow eyebrow-green">📦 Services</div>
+      <h2 class="heading-lg text-blue">Everything Your Home Needs,<br>One Platform</h2>
+    </div>
+
+    <!-- Before/After Slider -->
+    <div style="max-width:560px;margin:0 auto 2.5rem;" class="reveal">
+      <div style="text-align:center;margin-bottom:1rem;">
+        <div class="eyebrow">🖼️ See the Difference</div>
+        <p style="font-size:.84rem;color:var(--gray-600);">Drag the slider to see a cleaning transformation</p>
+      </div>
+      <div class="ba-slider" id="baSlider">
+        <div class="ba-after">✨ After Cleaning</div>
+        <div class="ba-before">🏚️ Before Cleaning</div>
+        <div class="ba-label ba-label-before">BEFORE</div>
+        <div class="ba-label ba-label-after">AFTER ✨</div>
+        <div class="ba-handle">
+          <div class="ba-handle-circle">⇔</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-auto">
+      <div class="svc-card featured reveal">
+        <span class="svc-emoji icon-wash">🧺</span>
+        <div class="svc-title">Laundry Pickup & Wash</div>
+        <div class="svc-desc">Same-day pickup, wash, fold & delivery. Freshness guaranteed.</div>
+        <div class="svc-tags"><span class="svc-tag">Same-day</span><span class="svc-tag">Pickup+Drop</span></div>
+        <span class="svc-price">From UGX 8,000</span>
+        <div style="margin-top:1rem"><button class="btn btn-primary btn-sm" onclick="openModal('book')">Book Now</button></div>
+      </div>
+      <div class="svc-card reveal">
+        <span class="svc-emoji icon-float">🏠</span>
+        <div class="svc-title">House Cleaning</div>
+        <div class="svc-desc">Deep-clean pros. Bedroom to bathroom in 2–4 hours.</div>
+        <div class="svc-tags"><span class="svc-tag">2–4hrs</span><span class="svc-tag">Photo Proof</span></div>
+        <span class="svc-price">From UGX 25,000</span>
+        <div style="margin-top:1rem"><button class="btn btn-primary btn-sm" onclick="openModal('book')">Book Now</button></div>
+      </div>
+      <div class="svc-card reveal">
+        <span class="svc-emoji">🚗</span>
+        <div class="svc-title">Mobile Car Wash</div>
+        <div class="svc-desc">We come to you — full interior/exterior. No queuing.</div>
+        <div class="svc-tags"><span class="svc-tag">At Location</span><span class="svc-tag">Full Detail</span></div>
+        <span class="svc-price">From UGX 12,000</span>
+        <div style="margin-top:1rem"><button class="btn btn-primary btn-sm" onclick="openModal('book')">Book Now</button></div>
+      </div>
+      <div class="svc-card reveal">
+        <span class="svc-emoji">👩‍🍳</span>
+        <div class="svc-title">MaidMatch UG</div>
+        <div class="svc-desc">AI-matched domestic helpers. 3-day trial + replacement guarantee.</div>
+        <div class="svc-tags"><span class="svc-tag">AI Matched</span><span class="svc-tag">Trial Period</span></div>
+        <span class="svc-price">From UGX 20,000/day</span>
+        <div style="margin-top:1rem"><button class="btn btn-primary btn-sm" onclick="openModal('maid')">Find Match</button></div>
+      </div>
+      <div class="svc-card reveal">
+        <span class="svc-emoji">🛒</span>
+        <div class="svc-title">Errands & Delivery</div>
+        <div class="svc-desc">Groceries, pharmacy, bank runs — tracked to your door.</div>
+        <div class="svc-tags"><span class="svc-tag">Same-day</span><span class="svc-tag">Tracked</span></div>
+        <span class="svc-price">From UGX 5,000</span>
+        <div style="margin-top:1rem"><button class="btn btn-primary btn-sm" onclick="openModal('book')">Book Now</button></div>
+      </div>
+      <div class="svc-card reveal">
+        <span class="svc-emoji">⚡</span>
+        <div class="svc-title">Express Service</div>
+        <div class="svc-desc">Need it NOW? Priority response — verified worker in 30 minutes.</div>
+        <div class="svc-tags"><span class="svc-tag">30-Min</span><span class="svc-tag">Premium</span></div>
+        <span class="svc-price">+50% Express Fee</span>
+        <div style="margin-top:1rem"><button class="btn btn-primary btn-sm" onclick="openModal('book')">Express Book</button></div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:2rem;">
+      <button class="btn btn-blue btn-lg" onclick="showPage('services')">View All 11 Services →</button>
+    </div>
+  </section>
+
+  <!-- PROVIDER STORIES (like Instagram) -->
+  <section class="section" style="background:var(--white);">
+    <div style="margin-bottom:1.75rem;" class="reveal">
+      <div class="eyebrow">📸 Provider Stories</div>
+      <h2 class="heading-lg text-blue">Real Providers, Real Work</h2>
+      <p style="font-size:.875rem;color:var(--gray-600);">See live before/after jobs and short video clips from our verified providers</p>
+    </div>
+    <div class="stories-row reveal">
+      <div class="story-bubble" onclick="showToast('📸 Grace\'s cleaning story — 5 photos')">
+        <div class="story-ring"><div class="story-inner">👩</div></div>
+        <div class="story-name">Grace</div>
+      </div>
+      <div class="story-bubble" onclick="showToast('🚗 Patrick\'s car wash story')">
+        <div class="story-ring"><div class="story-inner">👨</div></div>
+        <div class="story-name">Patrick</div>
+      </div>
+      <div class="story-bubble" onclick="showToast('👩‍🍳 Sarah\'s cooking story')">
+        <div class="story-ring"><div class="story-inner">👩‍🦱</div></div>
+        <div class="story-name">Sarah</div>
+      </div>
+      <div class="story-bubble" onclick="showToast('🧺 Moses\'s laundry story')">
+        <div class="story-ring"><div class="story-inner">👨‍🦳</div></div>
+        <div class="story-name">Moses</div>
+      </div>
+      <div class="story-bubble" onclick="showToast('🌿 John\'s garden story')">
+        <div class="story-ring"><div class="story-inner">👨</div></div>
+        <div class="story-name">John</div>
+      </div>
+      <div class="story-bubble" onclick="showToast('👶 Harriet\'s babysitting story')">
+        <div class="story-ring"><div class="story-inner">👩‍🦱</div></div>
+        <div class="story-name">Harriet</div>
+      </div>
+      <div class="story-bubble" onclick="showToast('🏠 Alice\'s deep clean story')">
+        <div class="story-ring"><div class="story-inner">👩‍🦳</div></div>
+        <div class="story-name">Alice</div>
+      </div>
+    </div>
+
+    <!-- Rolling Reviews -->
+    <div style="margin-top:2.5rem;" class="reveal">
+      <div class="eyebrow">💬 Live Reviews</div>
+      <div class="review-ticker-wrap" style="margin-top:1rem;">
+        <div class="review-ticker">
+          <div class="review-card-mini"><div class="rc-head"><div class="rc-av">👩</div><div><div class="rc-name">Annet M.</div><div class="rc-loc">Ntinda</div></div><div class="stars" style="margin-left:auto">★★★★★</div></div><div class="rc-text">"Booked a cleaner in 2 minutes. She arrived on time. This is exactly what Kampala needed."</div></div>
+          <div class="review-card-mini"><div class="rc-head"><div class="rc-av">👨</div><div><div class="rc-name">Daniel K.</div><div class="rc-loc">Bukoto</div></div><div class="stars" style="margin-left:auto">★★★★★</div></div><div class="rc-text">"Car wash was done in 25 minutes right in my compound. Paid via MoMo. Seamless experience!"</div></div>
+          <div class="review-card-mini"><div class="rc-head"><div class="rc-av">👩‍👧</div><div><div class="rc-name">Kakooza Family</div><div class="rc-loc">Kira</div></div><div class="stars" style="margin-left:auto">★★★★★</div></div><div class="rc-text">"MaidMatch found us the perfect housekeeper in one day. The trial period was a brilliant idea."</div></div>
+          <div class="review-card-mini"><div class="rc-head"><div class="rc-av">👨‍💼</div><div><div class="rc-name">Peter S.</div><div class="rc-loc">Muyenga</div></div><div class="stars" style="margin-left:auto">★★★★☆</div></div><div class="rc-text">"Had a dispute, used the report button, resolved in 4 hours. Full refund. Incredible support."</div></div>
+          <div class="review-card-mini"><div class="rc-head"><div class="rc-av">👩</div><div><div class="rc-name">Diana N.</div><div class="rc-loc">Naguru</div></div><div class="stars" style="margin-left:auto">★★★★★</div></div><div class="rc-text">"The workers are genuinely verified. I felt safe having someone in my home. 10/10."</div></div>
+          <!-- Duplicate for seamless loop -->
+          <div class="review-card-mini"><div class="rc-head"><div class="rc-av">👩</div><div><div class="rc-name">Annet M.</div><div class="rc-loc">Ntinda</div></div><div class="stars" style="margin-left:auto">★★★★★</div></div><div class="rc-text">"Booked a cleaner in 2 minutes. She arrived on time. This is exactly what Kampala needed."</div></div>
+          <div class="review-card-mini"><div class="rc-head"><div class="rc-av">👨</div><div><div class="rc-name">Daniel K.</div><div class="rc-loc">Bukoto</div></div><div class="stars" style="margin-left:auto">★★★★★</div></div><div class="rc-text">"Car wash was done in 25 minutes right in my compound. Paid via MoMo. Seamless experience!"</div></div>
+          <div class="review-card-mini"><div class="rc-head"><div class="rc-av">👩‍👧</div><div><div class="rc-name">Kakooza Family</div><div class="rc-loc">Kira</div></div><div class="stars" style="margin-left:auto">★★★★★</div></div><div class="rc-text">"MaidMatch found us the perfect housekeeper in one day. The trial period was a brilliant idea."</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section" style="background:var(--gray-bg)">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;">
+      <div class="reveal-left">
+        <div class="eyebrow">⚡ Process</div>
+        <h2 class="heading-lg text-blue">Booked in Under<br>60 Seconds</h2>
+        <p style="color:var(--gray-600);font-size:.95rem;line-height:1.75;margin-bottom:2rem;">Our AI does the matching so you don't have to scroll through profiles.</p>
+        <div style="display:flex;flex-direction:column;gap:1rem;">
+          <div class="step-card reveal"><div class="step-num">01</div><div class="step-info"><h4>Choose Your Service</h4><p>Tap the service. Set your location. Done.</p></div></div>
+          <div class="step-card reveal"><div class="step-num">02</div><div class="step-info"><h4>AI Matches You Instantly</h4><p>Best available, highest-rated, nearest verified worker — auto-selected.</p></div></div>
+          <div class="step-card reveal"><div class="step-num">03</div><div class="step-info"><h4>Track Live Like Uber</h4><p>Watch your worker en route. Real-time ETA updates.</p></div></div>
+          <div class="step-card reveal"><div class="step-num">04</div><div class="step-info"><h4>Pay Safely via MoMo</h4><p>Escrow holds your money until you confirm the job is done.</p></div></div>
+          <div class="step-card reveal"><div class="step-num">05</div><div class="step-info"><h4>Rate & Rebook</h4><p>Found a great provider? Save them as favourite. Rebook in 1 tap.</p></div></div>
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:center;align-items:center;" class="reveal-right">
+        <div class="phone-outer">
+          <div class="phone-screen">
+            <div class="ph-bar">
+              <div class="ph-av">🧹</div>
+              <div>
+                <div class="ph-name">QuickServe Pro</div>
+                <div class="ph-status"><span class="dot-live" style="width:6px;height:6px;"></span> 4 providers near you</div>
+              </div>
+            </div>
+            <div class="ph-body">
+              <div class="ph-card">
+                <div class="ph-l">Active Job</div>
+                <div class="ph-v">🏠 House Cleaning</div>
+                <div style="display:inline-flex;align-items:center;gap:4px;background:var(--green-pale);color:var(--green-dark);padding:2px 8px;border-radius:9999px;font-size:.58rem;font-weight:700;margin-top:4px;">
+                  <span class="dot-live" style="width:5px;height:5px;"></span> Worker en route
+                </div>
+              </div>
+              <div class="ph-card">
+                <div class="ph-l">Live Tracking</div>
+                <div style="display:flex;gap:4px;align-items:center;">
+                  <div style="width:22px;height:22px;border-radius:50%;background:var(--green-pale);color:var(--green-dark);display:flex;align-items:center;justify-content:center;font-size:.58rem;font-weight:800">✓</div>
+                  <div style="flex:1;height:2px;background:var(--green);border-radius:1px"></div>
+                  <div style="width:22px;height:22px;border-radius:50%;background:var(--blue-pale);border:2px solid var(--blue);display:flex;align-items:center;justify-content:center;font-size:.7rem;animation:pulse-anim 2s infinite">📍</div>
+                  <div style="flex:1;height:2px;background:var(--gray-200);border-radius:1px"></div>
+                  <div style="width:22px;height:22px;border-radius:50%;background:var(--gray-100);display:flex;align-items:center;justify-content:center;font-size:.6rem">🏠</div>
+                </div>
+                <div style="font-size:.6rem;color:var(--gray-400);margin-top:.25rem">ETA: 6 minutes</div>
+              </div>
+              <div class="ph-card">
+                <div class="ph-l">Your Provider</div>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <div style="width:28px;height:28px;border-radius:50%;background:var(--blue-pale);display:flex;align-items:center;justify-content:center;font-size:.875rem">👩</div>
+                  <div><div style="font-size:.72rem;font-weight:700;color:var(--blue)">Grace Namukasa</div><div style="font-size:.58rem;color:var(--gray-400)">⭐ 4.9 · 312 jobs · ✅ Verified</div></div>
+                </div>
+              </div>
+              <button style="width:100%;background:var(--red);color:var(--white);border:none;padding:.5rem;border-radius:8px;font-size:.68rem;font-weight:700;cursor:pointer" onclick="showPage('safety')">⚠️ Report Issue</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIME SAVED GAMIFICATION -->
+  <section class="gam-section">
+    <div style="text-align:center;margin-bottom:2.5rem;" class="reveal">
+      <div class="eyebrow" style="background:rgba(0,200,83,.12);color:#7DFFC0;">🎮 Your Impact</div>
+      <h2 class="heading-lg" style="color:var(--white)">Your Time Saved Dashboard</h2>
+      <p style="color:rgba(255,255,255,.6);font-size:.95rem">"This platform improves my life" — make users feel this every session</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;max-width:860px;margin:0 auto;">
+      <div class="gam-card reveal">
+        <div class="gam-val" id="savedHours">6</div>
+        <div class="gam-label">Hours Saved This Week</div>
+        <div class="progress-bar-outer"><div class="progress-bar-inner" data-width="72%" style="width:0%"></div></div>
+        <div class="gam-badge">🏆 Power User</div>
+      </div>
+      <div class="gam-card reveal">
+        <div class="gam-val" id="savedJobs">4</div>
+        <div class="gam-label">Services Completed</div>
+        <div class="progress-bar-outer"><div class="progress-bar-inner" data-width="80%" style="width:0%"></div></div>
+        <div class="gam-badge">⭐ 1 more = discount</div>
+      </div>
+      <div class="gam-card reveal">
+        <div class="gam-val" id="savedMoney" style="font-size:1.5rem">UGX 72K</div>
+        <div class="gam-label">Total Spent (Loyalty Points)</div>
+        <div class="progress-bar-outer"><div class="progress-bar-inner" data-width="60%" style="width:0%"></div></div>
+        <div class="gam-badge">🎁 Unlock reward at 100K</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROVIDERS -->
+  <section class="section" style="background:var(--gray-bg)">
+    <div style="text-align:center;margin-bottom:2.5rem;" class="reveal">
+      <div class="eyebrow">⭐ Top Providers</div>
+      <h2 class="heading-lg text-blue">Meet Our Verified Professionals</h2>
+    </div>
+    <div class="grid-4">
+      <div class="provider-card reveal"><div class="prov-av">👩<div class="prov-verified">✓</div></div><div class="prov-name">Grace Namukasa</div><div class="prov-role">House Cleaning · Ntinda</div><div class="stars">★★★★★</div><div class="prov-stats"><div><div class="ps-val">312</div><div class="ps-label">Jobs</div></div><div><div class="ps-val">4.9</div><div class="ps-label">Rating</div></div></div><button class="btn btn-primary btn-sm btn-full" style="margin-top:.875rem" onclick="openModal('book')">Book Grace</button></div>
+      <div class="provider-card reveal"><div class="prov-av">👨<div class="prov-verified">✓</div></div><div class="prov-name">Patrick Ssekandi</div><div class="prov-role">Car Wash · Naalya</div><div class="stars">★★★★★</div><div class="prov-stats"><div><div class="ps-val">201</div><div class="ps-label">Jobs</div></div><div><div class="ps-val">4.8</div><div class="ps-label">Rating</div></div></div><button class="btn btn-primary btn-sm btn-full" style="margin-top:.875rem" onclick="openModal('book')">Book Patrick</button></div>
+      <div class="provider-card reveal"><div class="prov-av">👩‍🦱<div class="prov-verified">✓</div></div><div class="prov-name">Sarah Nakato</div><div class="prov-role">Cook & Maid · Kira</div><div class="stars">★★★★★</div><div class="prov-stats"><div><div class="ps-val">178</div><div class="ps-label">Jobs</div></div><div><div class="ps-val">5.0</div><div class="ps-label">Rating</div></div></div><button class="btn btn-primary btn-sm btn-full" style="margin-top:.875rem" onclick="openModal('maid')">Book Sarah</button></div>
+      <div class="provider-card reveal"><div class="prov-av">👨‍🦳<div class="prov-verified">✓</div></div><div class="prov-name">Moses Kizito</div><div class="prov-role">Errands · Bukoto</div><div class="stars">★★★★☆</div><div class="prov-stats"><div><div class="ps-val">143</div><div class="ps-label">Jobs</div></div><div><div class="ps-val">4.7</div><div class="ps-label">Rating</div></div></div><button class="btn btn-primary btn-sm btn-full" style="margin-top:.875rem" onclick="openModal('book')">Book Moses</button></div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats-bg section-sm">
+    <div class="grid-4">
+      <div class="stat-item reveal"><div class="stat-num" data-count="1200" data-suffix="+">1,200+</div><div class="stat-label">Verified Workers</div></div>
+      <div class="stat-item reveal"><div class="stat-num" data-count="15000" data-suffix="+">15K+</div><div class="stat-label">Jobs Completed</div></div>
+      <div class="stat-item reveal"><div class="stat-num">4.8★</div><div class="stat-label">Average Rating</div></div>
+      <div class="stat-item reveal"><div class="stat-num" data-count="98" data-suffix="%">98%</div><div class="stat-label">Satisfaction Rate</div></div>
+    </div>
+  </section>
+
+  <!-- REFERRAL -->
+  <section class="referral-section">
+    <div class="reveal">
+      <div class="eyebrow" style="background:rgba(255,255,255,.2);color:var(--white)">🎁 Referral Program</div>
+      <h2 class="heading-lg" style="color:var(--white);margin-top:.5rem">Invite a Friend,<br>Both Get UGX 5,000</h2>
+      <p style="color:rgba(255,255,255,.85);font-size:1rem;margin:.875rem auto 0;max-width:480px">Share your unique referral code. When your friend books their first service, you both receive UGX 5,000 credit instantly.</p>
+      <div class="ref-code-box" onclick="copyRef()">
+        QSP-SAVE5000 <span style="font-size:1rem">📋</span>
+      </div>
+      <div style="display:flex;justify-content:center;gap:1rem;flex-wrap:wrap">
+        <button class="btn btn-blue btn-lg" onclick="showToast('📲 Opening WhatsApp share...')">💬 Share on WhatsApp</button>
+        <button class="btn btn-outline-white btn-lg" onclick="copyRef()">📋 Copy Code</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- HELP -->
+  <section class="help-section">
+    <h2 style="font-family:'Poppins',sans-serif;font-size:1.875rem;font-weight:800;color:var(--white);margin-bottom:.75rem">Need Help? Talk to Us Instantly</h2>
+    <p style="color:rgba(255,255,255,.85);font-size:1rem;margin-bottom:1.75rem">Support team available 7 days/week · WhatsApp · Phone · AI Chat</p>
+    <div style="display:flex;justify-content:center;gap:1rem;flex-wrap:wrap">
+      <button class="whatsapp-btn" onclick="showToast('Opening WhatsApp...')"><span style="font-size:1.3rem">💬</span> Chat on WhatsApp</button>
+      <button class="btn btn-outline-white btn-lg" onclick="showToast('Calling +256 700 000 000...')">📞 Call Support</button>
+      <button class="btn btn-outline-white btn-lg" onclick="toggleChat()">🤖 AI Chat</button>
+    </div>
+  </section>
+</div>
+
+<!-- ═══ OTHER PAGES (services/about/safety/legal/branding/register/payment) ═══
+     For brevity these pages load the same rich content as v2 — full structure maintained -->
+
+<div class="page" id="page-services">
+  <div class="page-hero hero-blue pt-nav">
+    <div class="eyebrow eyebrow-green" style="display:inline-flex">📦 All Services</div>
+    <h2 class="heading-lg text-white" style="margin-top:.5rem">Everything We Offer</h2>
+    <p style="color:rgba(255,255,255,.7);max-width:480px;margin:.75rem auto 0;font-size:.95rem">Verified, rated professionals for every home need.</p>
+  </div>
+  <div class="section services-bg">
+    <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:2rem;" class="reveal">
+      <button class="btn btn-primary btn-sm filter-btn" onclick="filterSvc(this,'all')">All</button>
+      <button class="btn btn-outline btn-sm filter-btn" onclick="filterSvc(this,'cleaning')">🏠 Cleaning</button>
+      <button class="btn btn-outline btn-sm filter-btn" onclick="filterSvc(this,'laundry')">🧺 Laundry</button>
+      <button class="btn btn-outline btn-sm filter-btn" onclick="filterSvc(this,'outdoor')">🌿 Outdoor</button>
+      <button class="btn btn-outline btn-sm filter-btn" onclick="filterSvc(this,'care')">👶 Care</button>
+      <button class="btn btn-outline btn-sm filter-btn" onclick="filterSvc(this,'maid')">👩‍🍳 MaidMatch</button>
+    </div>
+    <div class="grid-auto" id="svcGrid">
+      <div class="svc-card reveal" data-cat="laundry"><span class="svc-emoji">🧺</span><div class="svc-title">Laundry Pickup & Wash</div><div class="svc-desc">Same-day pickup, wash, fold & delivery.</div><div class="svc-tags"><span class="svc-tag">Same-day</span><span class="svc-tag">Pickup+Drop</span></div><span class="svc-price">From UGX 8,000</span><div style="margin-top:1rem"><button class="btn btn-primary btn-sm" onclick="openModal('book')">Book Now</button></div></div>
+      <div class="svc-card reveal" data-cat="laundry"><span class="svc-emoji">📦</span><div class="svc-title">Laundry Subscription</div><div class="svc-desc">Weekly pickup plan — auto-booked and discounted.</div><div class="svc-tags"><span class="svc-tag">Weekly</span><span class="svc-tag">Auto-Booked</span></div><span class="svc-price">UGX 55,000/week</span><div style="margin-top:1rem"><button class="btn btn-primary btn-sm" onclick="openModal('book')">Subscribe</button></div></div>
+      <div class="svc-card featured reveal" data-cat="cleaning"><span class="svc-emoji">🏠</span><div class="svc-title">House Cleaning</div><div class="svc-desc">Full deep-clean with before/after photo proof.</div><div class="svc-tags"><span class="svc-tag">2–4hrs</span><span class="svc-tag">Photo Proof</span></div><span class="svc-price">From UGX 25,000</span><div style="margin-top:1rem"><button class="btn btn-primary btn-sm" onclick="openModal('book')">Book Now</button></div></div>
+      <div class="svc-card reveal" data-cat="cleaning"><span class="svc-emoji">🏢</span><div class="svc-title">Office Cleaning</div><div class="svc-desc">Commercial cleaning for offices and shops.</div><div class="svc-tags"><span class="svc-tag">Commercial</span><span class="svc-tag">Scheduled</span></div><span class="svc-price">Custom Quote</span><div style="margin-top:1rem"><button class="btn btn-primary btn-sm" onclick="openModal('book')">Get Quote</button></div></div>
+      <div class="svc-card reveal" data-cat="cleaning"><span class="svc-emoji">🚗</span><div class="svc-title">Mobile Car Wash</div><div class="svc-desc">We come to you — full interior/exterior wash.</div><div class="svc-tags"><span class="svc-tag">At Location</span><span class="svc-tag">Full Detail</span></div><span class="svc-price">From UGX 12,000</span><div style="margin-top:1rem"><button class="btn btn-primary btn-sm" onclick="openModal('book')">Book Now</button></div></div>
+      <div class="svc-card reveal" data-cat="outdoor"><span class="svc-emoji">🌿</span><div class="svc-title">Gardening</div><div class="svc-desc">Mowing, trimming, planting & compound cleanup.</div><div class="svc-tags"><span class="svc-tag">Garden</span><span class="svc-tag">Weekly Plans</span></div><span class="svc-price">From UGX 18,000</span><div style="margin-top:1rem"><button class="btn btn-primary btn-sm" onclick="openModal('book')">Book Now</button></div></div>
+      <div class="svc-card reveal" data-cat="care"><span class="svc-emoji">👶</span><div class="svc-title">Babysitting</div><div class="svc-desc">Vetted caregivers — hourly or full-day.</div><div class="svc-tags"><span class="svc-tag">Background-Checked</span><span class="svc-tag">Hourly</span></div><span class="svc-price">From UGX 20,000/hr</span><div style="margin-top:1rem"><button class="btn btn-primary btn-sm" onclick="openModal('book')">Book Now</button></div></div>
+      <div class="svc-card reveal" data-cat="maid"><span class="svc-emoji">👩‍🍳</span><div class="svc-title">MaidMatch UG</div><div class="svc-desc">AI-matched domestic workers with 3-day trial.</div><div class="svc-tags"><span class="svc-tag">AI Matched</span><span class="svc-tag">Trial</span></div><span class="svc-price">From UGX 20,000/day</span><div style="margin-top:1rem"><button class="btn btn-primary btn-sm" onclick="openModal('maid')">Find Match</button></div></div>
+      <div class="svc-card reveal" data-cat="cleaning"><span class="svc-emoji">🛒</span><div class="svc-title">Errands & Delivery</div><div class="svc-desc">Groceries, pharmacy, bank runs — tracked.</div><div class="svc-tags"><span class="svc-tag">Same-day</span><span class="svc-tag">Tracked</span></div><span class="svc-price">From UGX 5,000</span><div style="margin-top:1rem"><button class="btn btn-primary btn-sm" onclick="openModal('book')">Book Now</button></div></div>
+      <div class="svc-card reveal" data-cat="cleaning"><span class="svc-emoji">📦</span><div class="svc-title">Moving Help</div><div class="svc-desc">Packing & transport across Kampala.</div><div class="svc-tags"><span class="svc-tag">Kampala Metro</span><span class="svc-tag">Packing</span></div><span class="svc-price">From UGX 50,000</span><div style="margin-top:1rem"><button class="btn btn-primary btn-sm" onclick="openModal('book')">Book Now</button></div></div>
+      <div class="svc-card reveal" data-cat="cleaning"><span class="svc-emoji">⚡</span><div class="svc-title">Express Service</div><div class="svc-desc">Verified worker in 30 minutes, guaranteed.</div><div class="svc-tags"><span class="svc-tag">30-Min</span><span class="svc-tag">Premium</span></div><span class="svc-price">+50% Express Fee</span><div style="margin-top:1rem"><button class="btn btn-primary btn-sm" onclick="openModal('book')">Express Book</button></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- About, Safety, Legal, Register, Payment, Branding pages — condensed but complete -->
+<div class="page" id="page-about"><div class="page-hero hero-blue pt-nav"><div class="eyebrow" style="display:inline-flex">ℹ️ About</div><h2 class="heading-lg text-white" style="margin-top:.5rem">Uganda's Most Trusted<br>Home Service Platform</h2><p style="color:rgba(255,255,255,.7);max-width:500px;margin:.75rem auto 0">"To bring trusted, verified home services to every home in Uganda — and across Africa."</p></div><section class="section"><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;"><div class="card reveal" style="text-align:center"><div style="font-size:2.5rem;margin-bottom:1rem">🛡️</div><div class="heading-sm text-blue" style="margin-bottom:.5rem">Safety First</div><p class="body-sm text-muted">Every interaction starts with verified identity. No NIN, no platform access.</p></div><div class="card reveal" style="text-align:center"><div style="font-size:2.5rem;margin-bottom:1rem">⚖️</div><div class="heading-sm text-blue" style="margin-bottom:.5rem">Fairness for All</div><p class="body-sm text-muted">Workers and customers are both equally protected. Our dispute system hears both sides.</p></div><div class="card reveal" style="text-align:center"><div style="font-size:2.5rem;margin-bottom:1rem">💰</div><div class="heading-sm text-blue" style="margin-bottom:.5rem">Financial Dignity</div><p class="body-sm text-muted">Automated, on-time MoMo payments help workers earn consistent, fair income.</p></div><div class="card reveal" style="text-align:center"><div style="font-size:2.5rem;margin-bottom:1rem">🤝</div><div class="heading-sm text-blue" style="margin-bottom:.5rem">Community First</div><p class="body-sm text-muted">We hire locally, operate locally, and reinvest in the communities we serve.</p></div><div class="card reveal" style="text-align:center"><div style="font-size:2.5rem;margin-bottom:1rem">🔬</div><div class="heading-sm text-blue" style="margin-bottom:.5rem">Continuous Improvement</div><p class="body-sm text-muted">Every rating and complaint makes our platform smarter and safer.</p></div><div class="card reveal" style="text-align:center"><div style="font-size:2.5rem;margin-bottom:1rem">🌱</div><div class="heading-sm text-blue" style="margin-bottom:.5rem">Long-Term Thinking</div><p class="body-sm text-muted">We're building Uganda's most trusted service institution — not chasing quick revenue.</p></div></div></section></div>
+
+<div class="page" id="page-safety"><div class="page-hero hero-red pt-nav"><div class="eyebrow eyebrow-red" style="display:inline-flex">🛡️ Safety</div><h2 class="heading-lg text-white" style="margin-top:.5rem">Zero Tolerance.<br>1-Click Reporting.</h2><p style="color:rgba(255,255,255,.7);max-width:500px;margin:.75rem auto 0">Report any issue instantly. Payment freezes. Admin alerted in real-time.</p></div><section class="section services-bg"><div style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start;"><div class="reveal"><div class="eyebrow eyebrow-red">🚨 Report System</div><h2 class="heading-lg text-blue">1-Click Report</h2><div style="background:var(--white);border-radius:16px;padding:1.75rem;border:1.5px solid var(--gray-100);box-shadow:0 8px 32px rgba(10,37,64,.12);margin-top:1.5rem"><div class="rep-opt sel" onclick="selReport(this)"><span>😡</span> Poor Service Quality</div><div class="rep-opt" onclick="selReport(this)"><span>🚫</span> Worker No-Show</div><div class="rep-opt" onclick="selReport(this)"><span>😤</span> Rude / Threatening Behaviour</div><div class="rep-opt" onclick="selReport(this)"><span>💸</span> Suspected Fraud</div><div class="rep-opt" onclick="selReport(this)"><span>🔨</span> Property Damage</div><button class="btn btn-red btn-full btn-lg" style="margin-top:.875rem" onclick="submitReport()">🚨 Submit Report Instantly</button><div id="reportConfirm" style="display:none;margin-top:.875rem;padding:.875rem;background:var(--green-pale);border:1.5px solid var(--green);border-radius:10px;font-size:.82rem;color:var(--green-dark);font-weight:500;text-align:center">✅ Report filed. Payment frozen. Admin notified. Update within 2 hours.</div></div></div><div class="reveal"><div class="eyebrow">⚙️ Escalation</div><h2 class="heading-lg text-blue">Auto-Actions</h2><div style="margin-top:1.5rem"><div class="esc-step"><div class="esc-num">1</div><div><div class="heading-sm text-blue">Instant Payment Freeze</div><p class="body-sm text-muted">Funds locked the moment you submit.</p></div></div><div class="esc-step"><div class="esc-num">2</div><div><div class="heading-sm text-blue">Evidence Auto-Collected</div><p class="body-sm text-muted">Chat logs, GPS, timestamps, photos pulled automatically.</p></div></div><div class="esc-step"><div class="esc-num">3</div><div><div class="heading-sm text-blue">Admin Alerted (Real-time)</div><p class="body-sm text-muted">Moderation team reviews all evidence within 24 hours.</p></div></div><div class="esc-step"><div class="esc-num">4</div><div><div class="heading-sm text-blue">Decision Issued</div><p class="body-sm text-muted">Full refund, partial refund, payment release, or worker ban.</p></div></div><div class="esc-step"><div class="esc-num">5</div><div><div class="heading-sm text-blue">Appeal (48hrs)</div><p class="body-sm text-muted">One appeal each. Final decision is binding.</p></div></div></div><div style="margin-top:2rem"><div class="eyebrow">📊 Risk Score</div><div class="risk-levels" style="margin-top:1rem"><div class="risk-bar low"><div style="font-size:.65rem;font-weight:700;color:var(--green-dark)">🟢 Clean</div><div style="font-family:'Poppins',sans-serif;font-size:1rem;font-weight:800;color:var(--green-dark)">0</div></div><div class="risk-bar med"><div style="font-size:.65rem;font-weight:700;color:#996600">🟡 Warning</div><div style="font-family:'Poppins',sans-serif;font-size:1rem;font-weight:800;color:#996600">1–2</div></div><div class="risk-bar high"><div style="font-size:.65rem;font-weight:700;color:#CC5500">🟠 Suspended</div><div style="font-family:'Poppins',sans-serif;font-size:1rem;font-weight:800;color:#CC5500">3–4</div></div><div class="risk-bar critical"><div style="font-size:.65rem;font-weight:700;color:var(--red)">🔴 Banned</div><div style="font-family:'Poppins',sans-serif;font-size:1rem;font-weight:800;color:var(--red)">5+</div></div></div></div></div></div></section></div>
+
+<div class="page" id="page-legal"><div class="page-hero hero-blue pt-nav"><div class="eyebrow" style="display:inline-flex">⚖️ Legal</div><h2 class="heading-lg text-white" style="margin-top:.5rem">Full Legal Coverage<br>for All Parties</h2></div><div class="section services-bg"><div class="legal-tabs reveal"><button class="l-tab active" onclick="switchLegal(this,'tos')">Terms & Conditions</button><button class="l-tab" onclick="switchLegal(this,'worker')">Worker Agreement</button><button class="l-tab" onclick="switchLegal(this,'customer')">Customer Agreement</button><button class="l-tab" onclick="switchLegal(this,'privacy')">Privacy Policy</button><button class="l-tab" onclick="switchLegal(this,'dispute')">Dispute Resolution</button></div><div class="legal-doc active" id="ldoc-tos"><div class="legal-doc-card"><div style="font-family:'Poppins',sans-serif;font-size:1.25rem;font-weight:800;color:var(--blue);margin-bottom:.5rem">📜 Terms & Conditions — QuickServe Pro</div><div style="font-size:.78rem;color:var(--gray-400);margin-bottom:1.75rem">Effective 2025 · Governed by laws of Uganda</div><div class="l-highlight">QuickServe Pro is a marketplace facilitator — NOT an employer or direct service provider.</div><div class="l-clause"><h4>1. Nature of Platform</h4><p>We act solely as an intermediary. We do not employ providers or deliver services directly.</p></div><div class="l-clause"><h4>2. Real Identity Required</h4><p>All users must register with their real legal identity per NIN. False information = immediate permanent ban.</p></div><div class="l-clause"><h4>3. Payments</h4><p>Via MoMo or Airtel Money held in escrow. Commission of 10–25% deducted per transaction.</p></div><div class="l-clause"><h4>4. Liability Disclaimer</h4><p>QuickServe Pro is NOT liable for property damage, theft, poor service, or personal injury.</p></div><div class="l-clause"><h4>5. Governing Law</h4><p>Governed by the laws of Uganda. Disputes resolved through platform process or Ugandan courts.</p></div></div></div><div class="legal-doc" id="ldoc-worker"><div class="legal-doc-card"><div style="font-family:'Poppins',sans-serif;font-size:1.25rem;font-weight:800;color:var(--blue);margin-bottom:1.75rem">👷 Worker Agreement</div><div class="l-highlight red">You are NOT an employee of QuickServe Pro. You are an independent contractor.</div><div class="l-clause"><h4>1. Independent Status</h4><p>No employment relationship. You set your own schedule and accept/reject jobs freely.</p></div><div class="l-clause"><h4>2. Mandatory Verification</h4><p>Valid NIN, legal name, live selfie, OTP phone required. Fake info = permanent ban.</p></div><div class="l-clause"><h4>3. Physical ID Confirmation</h4><p>Before every job you must show your National ID to the customer for confirmation.</p></div><div class="l-clause"><h4>4. Conduct Standards</h4><p>Respect customers, don't steal or damage property, no substances, all transactions on-platform.</p></div><div class="l-clause"><h4>5. Risk Score & Termination</h4><p>2 complaints = warning. 3–4 = suspension. 5+ = permanent ban. Serious offences = police report.</p></div></div></div><div class="legal-doc" id="ldoc-customer"><div class="legal-doc-card"><div style="font-family:'Poppins',sans-serif;font-size:1.25rem;font-weight:800;color:var(--blue);margin-bottom:1.75rem">🧑‍💼 Customer Agreement</div><div class="l-clause"><h4>1. Platform Role</h4><p>QuickServe Pro connects you with independent providers. Platform not responsible for delivery quality.</p></div><div class="l-clause"><h4>2. Verify Provider ID</h4><p>Before work begins, ask the provider to show their National ID and confirm it matches the app profile.</p><div class="l-highlight green">For your safety — verify the provider's ID before work begins.</div></div><div class="l-clause"><h4>3. Payment Obligations</h4><p>Pay through the platform only. Late cancellations may incur a penalty fee.</p></div><div class="l-clause"><h4>4. Safe Environment</h4><p>Provide a safe, respectful environment. Harassment results in immediate account termination.</p></div></div></div><div class="legal-doc" id="ldoc-privacy"><div class="legal-doc-card"><div style="font-family:'Poppins',sans-serif;font-size:1.25rem;font-weight:800;color:var(--blue);margin-bottom:1.75rem">🔒 Privacy Policy</div><div class="l-clause"><h4>1. Data Collected</h4><p>Full name, NIN, ID photo, selfie, phone, location (during jobs), job history, payment records, chat logs, device/IP data.</p></div><div class="l-clause"><h4>2. How We Use It</h4><p>Verification, matching, payment processing, dispute resolution, fraud prevention. We NEVER sell your data.</p></div><div class="l-clause"><h4>3. Your Rights</h4><p>Request access, correction, or deletion at any time. Contact: privacy@quickservepro.ug</p></div></div></div><div class="legal-doc" id="ldoc-dispute"><div class="legal-doc-card"><div style="font-family:'Poppins',sans-serif;font-size:1.25rem;font-weight:800;color:var(--blue);margin-bottom:1.75rem">⚖️ Dispute Resolution</div><div class="l-clause"><h4>Step 1: Report</h4><p>Click Report Issue → Select type → Submit. Done in under 10 seconds.</p></div><div class="l-clause"><h4>Step 2: Freeze & Collect</h4><p>Payment frozen instantly. Chat logs, GPS, photos, timestamps auto-collected.</p></div><div class="l-clause"><h4>Step 3: Review (24hrs)</h4><p>Admin reviews all evidence and may contact both parties for additional information.</p></div><div class="l-clause"><h4>Step 4: Decision & Appeal</h4><p>Full refund, partial refund, or payment release. One appeal within 48 hours. Final decision is binding.</p></div></div></div></div></div>
+
+<div class="page" id="page-register">
+  <div class="page-hero hero-blue pt-nav"><div class="eyebrow" style="display:inline-flex">👷 Join as Worker</div><h2 class="heading-lg text-white" style="margin-top:.5rem">Start Earning Today</h2><p style="color:rgba(255,255,255,.7);max-width:480px;margin:.75rem auto 0">5-step verified registration. Fake IDs are permanently rejected.</p></div>
+  <div class="section services-bg">
+    <div class="verify-stepper reveal" id="regStepper">
+      <div class="v-step active" id="vstep-1"><div class="v-step-num">1</div><div class="v-step-label">Personal Info</div></div>
+      <div class="v-step" id="vstep-2"><div class="v-step-num">2</div><div class="v-step-label">Upload ID</div></div>
+      <div class="v-step" id="vstep-3"><div class="v-step-num">3</div><div class="v-step-label">Selfie</div></div>
+      <div class="v-step" id="vstep-4"><div class="v-step-num">4</div><div class="v-step-label">Phone OTP</div></div>
+      <div class="v-step" id="vstep-5"><div class="v-step-num">5</div><div class="v-step-label">Status</div></div>
+    </div>
+    <div class="verify-card" id="reg-step-1"><div class="verify-card-title">📋 Personal Info</div><div class="verify-card-sub">Enter exactly as on your National ID.</div><div class="form-field"><label>Full Legal Name (as on NIN)</label><input type="text" placeholder="e.g. Grace Namukasa Ssali"></div><div class="form-field"><label>National ID Number (NIN)</label><input type="text" placeholder="e.g. CM98765432XXXX" style="text-transform:uppercase"></div><div class="form-field"><label>Primary Service</label><select><option>House Cleaning</option><option>Laundry</option><option>Car Washing</option><option>Errands & Delivery</option><option>Babysitting / Nanny</option><option>Gardening</option><option>Cooking / Home Manager</option></select></div><div class="form-field"><label>Your Area</label><input type="text" placeholder="e.g. Kira, Kampala"></div><button class="btn btn-primary btn-full btn-lg" style="margin-top:.5rem" onclick="regNext(1)">Continue →</button></div>
+    <div class="verify-card" id="reg-step-2" style="display:none"><div class="verify-card-title">🪪 Upload National ID</div><div class="verify-card-sub">Clear photos of both sides. Blurry or fake IDs are immediately permanently rejected.</div><div class="upload-zone" onclick="fakeUpload('id-front')"><div style="font-size:2.5rem;margin-bottom:.75rem">📄</div><div id="id-front-text" style="font-size:.875rem;color:var(--gray-600);font-weight:500">Click to upload Front of ID</div><div style="font-size:.72rem;color:var(--gray-400);margin-top:.3rem">JPG, PNG · Max 5MB · Clear and unedited only</div></div><div class="upload-zone" onclick="fakeUpload('id-back')"><div style="font-size:2.5rem;margin-bottom:.75rem">📄</div><div id="id-back-text" style="font-size:.875rem;color:var(--gray-600);font-weight:500">Click to upload Back of ID</div></div><div style="background:var(--yellow-pale);border:1.5px solid var(--yellow);border-radius:10px;padding:.875rem;margin-bottom:1rem;font-size:.82rem;color:#665200">⚠️ <strong>Strict rejection:</strong> Blurry, edited, or borrowed IDs = permanent ban and possible legal reporting.</div><div style="display:flex;gap:.75rem"><button class="btn btn-outline" onclick="regBack(2)">← Back</button><button class="btn btn-primary" style="flex:1" onclick="regNext(2)">Continue →</button></div></div>
+    <div class="verify-card" id="reg-step-3" style="display:none"><div class="verify-card-title">🤳 Live Selfie</div><div class="verify-card-sub">AI compares your face to ID photo. Mismatches instantly rejected.</div><div style="text-align:center;margin-bottom:1.5rem"><div class="selfie-frame" id="selfieFrame">📷</div><div style="font-size:.8rem;color:var(--gray-600)">Position your face within the circle</div></div><div style="background:var(--blue-pale);border-radius:10px;padding:.875rem;margin-bottom:1rem;font-size:.82rem;color:var(--blue)">🔒 Before each job you must also show your physical ID to the customer for confirmation.</div><div style="display:flex;gap:.75rem"><button class="btn btn-outline" onclick="regBack(3)">← Back</button><button class="btn btn-primary" style="flex:1" onclick="takeSelfie()">📷 Capture Selfie</button></div></div>
+    <div class="verify-card" id="reg-step-4" style="display:none"><div class="verify-card-title">📱 Phone Verification</div><div class="verify-card-sub">MTN or Airtel number required. OTP sent by SMS.</div><div class="form-field"><label>Phone Number</label><input type="tel" placeholder="e.g. 0772 123 456"></div><button class="btn btn-outline btn-full" onclick="sendOTP()" style="margin-bottom:1rem">Send OTP</button><div class="form-field"><label>Enter OTP Code</label><input type="text" placeholder="e.g. 847261" maxlength="6" style="letter-spacing:.3em;text-align:center;font-size:1.25rem"></div><div style="display:flex;gap:.75rem;margin-top:.5rem"><button class="btn btn-outline" onclick="regBack(4)">← Back</button><button class="btn btn-primary" style="flex:1" onclick="regNext(4)">Verify & Submit →</button></div></div>
+    <div class="verify-card" id="reg-step-5" style="display:none"><div class="status-card pending" id="statusPending"><div style="font-size:3.5rem;margin-bottom:1rem">⏳</div><div style="font-family:'Poppins',sans-serif;font-size:1.25rem;font-weight:800;color:#996600;margin-bottom:.5rem">Under Review</div><p style="font-size:.875rem;color:var(--gray-600);line-height:1.7">Your NIN, selfie, and device are being checked. SMS within 24 hours.</p><button class="btn btn-blue btn-full" style="margin-top:1.375rem" onclick="simulateApproval()">Simulate Approval ↓</button></div><div class="status-card approved" id="statusApproved" style="display:none"><div style="font-size:3.5rem;margin-bottom:1rem">✅</div><div style="font-family:'Poppins',sans-serif;font-size:1.25rem;font-weight:800;color:var(--green-dark);margin-bottom:.5rem">Verified & Approved!</div><p style="font-size:.875rem;color:var(--gray-600)">Welcome to QuickServe Pro. Your first job will appear within 48 hours.</p></div></div>
+  </div>
+</div>
+
+<div class="page" id="page-payment"><div class="page-hero hero-blue pt-nav"><div class="eyebrow" style="display:inline-flex">💳 Payments</div><h2 class="heading-lg text-white" style="margin-top:.5rem">How Payments Work</h2><p style="color:rgba(255,255,255,.7);max-width:480px;margin:.75rem auto 0">Every shilling protected. Escrow holds funds until you confirm the job is done.</p></div><div class="section services-bg"><div class="payment-track reveal"><div class="pt-step done"><div class="pt-icon">🛒</div><div class="pt-label">Select Service</div></div><div class="pt-step done"><div class="pt-icon">💰</div><div class="pt-label">Confirm Price</div></div><div class="pt-step active"><div class="pt-icon">📱</div><div class="pt-label">MoMo Prompt</div></div><div class="pt-step"><div class="pt-icon">🔐</div><div class="pt-label">Funds Held</div></div><div class="pt-step"><div class="pt-icon">✅</div><div class="pt-label">Job Done → Released</div></div></div><div class="momo-card reveal"><div class="momo-logo">📱</div><div style="font-family:'Poppins',sans-serif;font-size:1.1rem;font-weight:800;color:var(--blue);margin-bottom:.25rem">MTN Mobile Money</div><div style="font-size:.82rem;color:var(--gray-600);margin-bottom:1.375rem">Secure prompt sent to your number</div><div style="background:var(--blue-pale);border-radius:10px;padding:1rem;margin-bottom:1rem"><div style="font-size:.72rem;color:var(--gray-600);text-transform:uppercase;letter-spacing:.05em">Amount to Pay</div><div style="font-family:'Poppins',sans-serif;font-size:1.875rem;font-weight:800;color:var(--blue)">UGX 35,000</div></div><div style="font-size:.78rem;color:var(--gray-600);margin-bottom:.75rem">Enter your MoMo PIN to confirm</div><div class="pin-dots"><div class="pin-dot filled"></div><div class="pin-dot filled"></div><div class="pin-dot filled"></div><div class="pin-dot filled"></div><div class="pin-dot"></div><div class="pin-dot"></div></div><button class="btn btn-primary btn-full btn-lg" onclick="simulatePayment()">✓ Confirm Payment</button></div></div></div>
+
+<div class="page" id="page-branding"><div class="page-hero hero-blue pt-nav"><div class="eyebrow" style="display:inline-flex">🎨 Brand</div><h2 class="heading-lg text-white" style="margin-top:.5rem">QuickServe Pro Brand System</h2></div><div class="section services-bg"><div style="background:var(--white);border-radius:24px;padding:2.5rem;border:1.5px solid var(--gray-100);margin-bottom:2rem" class="reveal"><h3 style="font-family:'Poppins',sans-serif;font-size:1.25rem;font-weight:800;color:var(--blue);margin-bottom:1.5rem">🔷 Logo Concept A — Recommended</h3><div style="background:var(--blue);border-radius:16px;padding:2rem;display:flex;align-items:center;justify-content:center;margin-bottom:1rem"><div style="display:inline-flex;align-items:center;gap:14px"><div style="width:52px;height:52px;background:linear-gradient(135deg,var(--green),#00A040);border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-size:20px;font-weight:900;color:white;letter-spacing:-1px">QS</div><div style="text-align:left"><div style="font-family:'Poppins',sans-serif;font-size:1.625rem;font-weight:900;color:white;letter-spacing:-.04em;line-height:1">QuickServe<span style="color:var(--green)"> Pro</span></div><div style="font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-top:2px">Verified Home Services</div></div></div></div><div class="badge badge-green">⭐ Recommended for all digital use</div></div><div class="reveal"><h3 style="font-family:'Poppins',sans-serif;font-size:1.1rem;font-weight:800;color:var(--blue);margin-bottom:1rem">🎨 Color Palette</h3><div class="palette-grid"><div class="palette-swatch"><div class="swatch-color" style="background:#0A2540"></div><div class="swatch-info"><div class="swatch-name">Deep Blue</div><div class="swatch-hex">#0A2540 · Trust</div></div></div><div class="palette-swatch"><div class="swatch-color" style="background:#00C853"></div><div class="swatch-info"><div class="swatch-name">Bright Green</div><div class="swatch-hex">#00C853 · Action</div></div></div><div class="palette-swatch"><div class="swatch-color" style="background:#F5F7FA;border:1px solid #eee"></div><div class="swatch-info"><div class="swatch-name">Soft Gray</div><div class="swatch-hex">#F5F7FA · Background</div></div></div><div class="palette-swatch"><div class="swatch-color" style="background:#FF3B30"></div><div class="swatch-info"><div class="swatch-name">Alert Red</div><div class="swatch-hex">#FF3B30 · Danger</div></div></div><div class="palette-swatch"><div class="swatch-color" style="background:#FFC107"></div><div class="swatch-info"><div class="swatch-name">Warm Yellow</div><div class="swatch-hex">#FFC107 · Stars</div></div></div><div class="palette-swatch"><div class="swatch-color" style="background:#00BFA5"></div><div class="swatch-info"><div class="swatch-name">Teal</div><div class="swatch-hex">#00BFA5 · Live</div></div></div></div></div></div></div>
+
+<!-- ═══════════════════ FOOTER ═══════════════════════════ -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem"><div class="logo-mark">QS</div><span class="logo-text" style="color:white">QuickServe<span> Pro</span></span></div>
+      <div class="footer-desc">Uganda's most trusted home services marketplace. ID-verified workers, escrow payments, live tracking.</div>
+      <div class="footer-socials"><div class="soc-btn" onclick="showToast('Opening WhatsApp...')">💬</div><div class="soc-btn">📘</div><div class="soc-btn">🎵</div><div class="soc-btn">📷</div></div>
+    </div>
+    <div class="footer-col"><h5>Services</h5><ul><li><a href="#" onclick="showPage('services')">House Cleaning</a></li><li><a href="#" onclick="showPage('services')">Laundry</a></li><li><a href="#" onclick="showPage('services')">Car Wash</a></li><li><a href="#" onclick="showPage('services')">MaidMatch</a></li><li><a href="#" onclick="showPage('services')">Express Service</a></li></ul></div>
+    <div class="footer-col"><h5>Platform</h5><ul><li><a href="#" onclick="showPage('register')">Become a Worker</a></li><li><a href="#" onclick="showPage('payment')">How Payments Work</a></li><li><a href="#" onclick="showPage('safety')">Safety & Reporting</a></li><li><a href="#" onclick="showPage('about')">About Us</a></li><li><a href="#" onclick="showPage('branding')">Brand Identity</a></li></ul></div>
+    <div class="footer-col"><h5>Legal & Support</h5><ul><li><a href="#" onclick="showPage('legal')">Terms & Conditions</a></li><li><a href="#" onclick="showPage('legal')">Privacy Policy</a></li><li><a href="#" onclick="showPage('legal')">Worker Agreement</a></li><li><a href="#" onclick="showToast('Calling support...')">📞 +256 700 000 000</a></li><li><a href="#" onclick="showToast('Opening WhatsApp...')">💬 WhatsApp Support</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 QuickServe Pro. Registered in Uganda. All rights reserved.</p>
+    <div class="pay-badges"><div class="pay-badge">MTN MoMo</div><div class="pay-badge">Airtel Money</div><div class="pay-badge">Cash</div></div>
+  </div>
+</footer>
+
+<!-- ═══════════════════ MODALS ══════════════════════════ -->
+<div class="modal-overlay" id="modal-book"><div class="modal-box"><button class="modal-close" onclick="closeModal('book')">✕</button><div class="modal-title">📲 Book a Service</div><div class="modal-sub">Instant match with a verified provider near you.</div><div class="form-field"><label>Full Name (as on National ID)</label><input type="text" placeholder="e.g. Sarah Nakato"></div><div class="form-field"><label>Phone Number</label><input type="tel" placeholder="e.g. 0772 123 456"></div><div class="form-field"><label>Service Type</label><select><option>House Cleaning</option><option>Laundry Pickup</option><option>Car Washing</option><option>Errands/Delivery</option><option>MaidMatch UG</option><option>Babysitting</option><option>Express Service</option></select></div><div class="form-field"><label>Your Location</label><input type="text" placeholder="e.g. Ntinda, Kampala"></div><div class="form-field"><label>When?</label><select><option>ASAP (Now)</option><option>Today Afternoon</option><option>Tomorrow Morning</option><option>Schedule Later</option></select></div><button class="btn btn-primary btn-full btn-lg" style="margin-top:.5rem" onclick="closeModal('book');openConsent()">⚡ Book Now — Sign Agreement</button></div></div>
+
+<div class="modal-overlay" id="modal-maid"><div class="modal-box"><button class="modal-close" onclick="closeModal('maid')">✕</button><div class="modal-title">👩‍🍳 Find Your MaidMatch</div><div class="modal-sub">Tell us about your household and we'll find your perfect match.</div><div class="form-field"><label>Your Full Name</label><input type="text" placeholder="e.g. Diana Namutebi"></div><div class="form-field"><label>Phone</label><input type="tel" placeholder="e.g. 0752 789 012"></div><div class="form-field"><label>Service Needed</label><select><option>Cook & Home Manager</option><option>Cleaner (Part-time)</option><option>Live-in House Help</option><option>Nanny / Babysitter</option></select></div><div class="form-field"><label>Location</label><input type="text" placeholder="e.g. Bukoto, Kampala"></div><button class="btn btn-primary btn-full btn-lg" style="margin-top:.5rem" onclick="closeModal('maid');showToast('🔍 MaidMatch started! Profiles within 2 hours.')">🔍 Find My Match</button></div></div>
+
+<div class="modal-overlay" id="modal-login"><div class="modal-box"><button class="modal-close" onclick="closeModal('login')">✕</button><div class="modal-title">👋 Welcome Back</div><div class="modal-sub" id="personalGreeting">Good day, welcome back!</div><div class="form-field"><label>Phone Number</label><input type="tel" placeholder="e.g. 0772 123 456"></div><div class="form-field"><label>Password</label><input type="password" placeholder="••••••••"></div><button class="btn btn-primary btn-full btn-lg" style="margin-top:.5rem" onclick="closeModal('login');showToast('✅ Signed in successfully!')">Sign In</button><div style="text-align:center;margin-top:1rem;font-size:.82rem;color:var(--gray-600)">New here? <a href="#" onclick="closeModal('login');showPage('register')" style="color:var(--blue);font-weight:700">Join as Worker</a></div></div></div>
+
+<!-- Consent Modal -->
+<div class="consent-modal-overlay" id="consentModal">
+  <div class="modal-box">
+    <div class="modal-title">✍️ Digital Service Agreement</div>
+    <div class="modal-sub">Both parties must sign. This creates legal accountability.</div>
+    <div class="consent-box">
+      <p style="font-size:.84rem;color:var(--blue);line-height:1.7">By signing you confirm: you've verified the provider's National ID, you agree to the scope and pricing, payment is held in escrow, and disputes go through QuickServe Pro.</p>
+    </div>
+    <div class="form-field" style="margin-top:1rem">
+      <label>Type Your Full Legal Name to Sign</label>
+      <input type="text" id="consentName" placeholder="e.g. Sarah Nakato Ssali" oninput="updateConsent(this)" style="font-style:italic;letter-spacing:.02em">
+    </div>
+    <div class="consent-output" id="consentOutput" style="display:none;background:var(--green-pale);border:1.5px solid var(--green);border-radius:10px;padding:.875rem;font-size:.82rem;color:var(--green-dark);margin-bottom:1rem"></div>
+    <div style="display:flex;gap:.75rem;margin-top:.875rem">
+      <button class="btn btn-outline" onclick="closeConsent()">Cancel</button>
+      <button class="btn btn-primary" style="flex:1" id="consentSubmit" disabled onclick="submitConsent()">✍️ Sign & Proceed</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ AI CHAT ══════════════════════════ -->
+<div class="ai-chat-widget" id="aiChatWidget">
+  <div class="ai-chat-head">
+    <div class="ai-chat-av">🤖</div>
+    <div>
+      <div class="ai-chat-name">QuickServe AI</div>
+      <div class="ai-chat-status"><span class="dot-live" style="width:5px;height:5px"></span> Online now</div>
+    </div>
+    <button class="ai-close-btn" onclick="closeChat()">✕</button>
+  </div>
+  <div class="ai-chat-msgs" id="aiMsgs"></div>
+  <div class="ai-quick-btns">
+    <button class="ai-quick" onclick="aiQuick('I need laundry tomorrow')">🧺 Laundry</button>
+    <button class="ai-quick" onclick="aiQuick('Book cleaning now')">🏠 Cleaning</button>
+    <button class="ai-quick" onclick="aiQuick('What are the prices?')">💰 Prices</button>
+    <button class="ai-quick" onclick="aiQuick('Is it safe?')">🛡️ Safety</button>
+  </div>
+  <div class="ai-chat-input">
+    <input type="text" id="aiInput" placeholder="What do you need today?">
+    <button onclick="sendAIMessage()">→</button>
+  </div>
+</div>
+
+<!-- ═══════════════════ FABs ════════════════════════════ -->
+<div class="fab-wrap">
+  <div class="fab fab-ai" onclick="toggleChat()" title="AI Chat Assistant">🤖</div>
+  <div class="fab" onclick="openModal('book')" title="Quick Book">📲</div>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<!-- ═══════════════════ SCRIPTS ══════════════════════════ -->
+<script src="js/app.js"></script>
+</body>
+</html>
