@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Join as Worker — QuickServe Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#0A2540;--blue-mid:#0D3361;--blue-light:#1A4A8A;--blue-pale:#E8F0FE;--green:#00C853;--green-dark:#00A040;--green-pale:#E6FFF0;--gray-bg:#F5F7FA;--gray-100:#EEF1F6;--gray-200:#D8DDE8;--gray-400:#9AA3B4;--gray-600:#5A6478;--gray-800:#2D3548;--white:#FFFFFF;--red:#FF3B30;--red-pale:#FFF0EE;--yellow:#FFC107;--yellow-pale:#FFFBEE;--font-head:'Poppins',sans-serif;--font-body:'Plus Jakarta Sans',sans-serif}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px}
+body{font-family:var(--font-body);background:var(--gray-bg);color:var(--gray-800);-webkit-font-smoothing:antialiased}
+
+/* ── UPLOAD COMPONENTS ── */
+.upload-zone{border:2px dashed var(--gray-200);border-radius:16px;padding:1.75rem 1rem;text-align:center;cursor:pointer;transition:all .25s;margin-bottom:1rem;position:relative}
+.upload-zone:hover,.upload-zone.drag-over{border-color:var(--blue);background:var(--blue-pale)}
+.upload-zone-icon{font-size:2.25rem;margin-bottom:.625rem}
+.upload-zone-label{font-size:.875rem;font-weight:600;color:var(--gray-800);margin-bottom:.25rem}
+.upload-zone-hint{font-size:.72rem;color:var(--gray-400)}
+.upload-zone-or{font-size:.72rem;color:var(--gray-400);margin:.625rem 0}
+.upload-zone-btns{display:flex;justify-content:center;gap:.5rem;flex-wrap:wrap}
+.btn-upload-opt{background:var(--white);border:1.5px solid var(--gray-200);color:var(--gray-800);padding:.4rem .875rem;border-radius:9999px;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-upload-opt:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-pale)}
+
+.upload-preview{display:flex;align-items:center;gap:.875rem;padding:.875rem;background:var(--green-pale);border:1.5px solid var(--green);border-radius:12px;position:relative}
+.upload-preview-img{width:60px;height:40px;object-fit:cover;border-radius:6px;border:1px solid rgba(0,160,64,.2)}
+.upload-preview-name{font-size:.8rem;font-weight:600;color:var(--blue)}
+.upload-preview-size{font-size:.7rem;color:var(--gray-400)}
+.upload-preview-ok{font-size:.72rem;font-weight:700;color:var(--green-dark);margin-top:.2rem}
+.upload-preview-remove{position:absolute;top:.5rem;right:.5rem;background:var(--red);color:#fff;border:none;width:20px;height:20px;border-radius:50%;font-size:.65rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.cloud-preview{flex-direction:column;text-align:center;gap:.35rem}
+
+/* ── CAMERA ── */
+.camera-wrap{border-radius:16px;overflow:hidden;background:#000;position:relative;min-height:260px;display:flex;align-items:center;justify-content:center}
+.camera-wrap video{width:100%;display:none;border-radius:16px}
+.camera-placeholder{text-align:center;color:rgba(255,255,255,.6);padding:2rem}
+.face-guide-overlay{display:none;position:absolute;inset:0;align-items:center;justify-content:center;pointer-events:none}
+.face-oval{width:150px;height:190px;border:3px solid var(--green);border-radius:50%;box-shadow:0 0 0 9999px rgba(0,0,0,.35);animation:oval-pulse 2s ease-in-out infinite}
+@keyframes oval-pulse{0%,100%{border-color:var(--green)}50%{border-color:#7DFFC0;box-shadow:0 0 20px rgba(0,200,83,.4),0 0 0 9999px rgba(0,0,0,.35)}}
+.camera-flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;border-radius:16px;transition:opacity .1s}
+.camera-status{font-size:.78rem;color:var(--gray-600);text-align:center;margin:.625rem 0;font-weight:500}
+.camera-btns{display:flex;gap:.625rem;flex-wrap:wrap;justify-content:center;margin-top:.875rem}
+
+.selfie-result{display:flex;flex-direction:column;align-items:center;gap:.75rem}
+.selfie-result-img{width:140px;height:140px;border-radius:50%;object-fit:cover;border:4px solid var(--green);box-shadow:0 0 0 4px rgba(0,200,83,.2)}
+.selfie-ok{font-size:.84rem;font-weight:700;color:var(--green-dark)}
+.selfie-time{font-size:.72rem;color:var(--gray-400)}
+.selfie-actions{display:flex;gap:.625rem}
+.btn-retake{background:var(--gray-100);color:var(--gray-800);border:none;padding:.5rem 1rem;border-radius:9999px;font-size:.78rem;font-weight:600;cursor:pointer}
+.btn-use-selfie{background:var(--green);color:#fff;border:none;padding:.5rem 1rem;border-radius:9999px;font-size:.78rem;font-weight:600;cursor:pointer}
+
+/* ── CLOUD MODAL ── */
+.cloud-modal-overlay{display:none;position:fixed;inset:0;background:rgba(10,37,64,.8);z-index:2000;backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:1rem}
+.cloud-modal-overlay.open{display:flex}
+.cloud-modal{background:#fff;border-radius:24px;padding:2rem;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(10,37,64,.2)}
+.cloud-modal-title{font-family:var(--font-head);font-size:1.1rem;font-weight:800;color:var(--blue);margin-bottom:1.25rem}
+.cloud-opts{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1.25rem}
+.cloud-opt{display:flex;flex-direction:column;align-items:center;gap:.5rem;padding:1.25rem .75rem;border:1.5px solid var(--gray-100);border-radius:12px;cursor:pointer;transition:all .25s}
+.cloud-opt:hover{border-color:var(--blue);background:var(--blue-pale)}
+.cloud-opt-icon{font-size:2rem}
+.cloud-opt-name{font-size:.75rem;font-weight:700;color:var(--blue)}
+.cloud-divider{text-align:center;font-size:.72rem;color:var(--gray-400);margin:.875rem 0;position:relative}
+.cloud-divider::before,.cloud-divider::after{content:'';position:absolute;top:50%;width:40%;height:1px;background:var(--gray-100)}
+.cloud-divider::before{left:0}.cloud-divider::after{right:0}
+.cloud-url-input{width:100%;padding:.7rem .95rem;border:1.5px solid var(--gray-200);border-radius:10px;font-family:var(--font-body);font-size:.875rem;margin-bottom:.75rem}
+.cloud-url-input:focus{outline:none;border-color:var(--blue)}
+
+/* ── REGISTER FORM ── */
+.reg-page{min-height:100vh;display:flex;flex-direction:column}
+.reg-hero{background:linear-gradient(145deg,var(--blue),var(--blue-mid));padding:60px 5% 40px;text-align:center}
+.reg-hero-title{font-family:var(--font-head);font-size:clamp(1.5rem,4vw,2.25rem);font-weight:800;color:#fff;letter-spacing:-.03em}
+.reg-hero-sub{color:rgba(255,255,255,.7);font-size:.95rem;margin-top:.625rem;max-width:480px;margin-left:auto;margin-right:auto}
+
+.stepper{display:flex;align-items:flex-start;justify-content:center;padding:2rem 5% 0;overflow-x:auto;gap:0;background:var(--white);border-bottom:1px solid var(--gray-100)}
+.v-step{display:flex;flex-direction:column;align-items:center;gap:.35rem;flex:1;min-width:64px;position:relative}
+.v-step::before{content:'';position:absolute;top:18px;left:50%;width:100%;height:2px;background:var(--gray-200);z-index:0}
+.v-step:last-child::before{display:none}
+.v-step-num{width:36px;height:36px;border-radius:50%;background:var(--gray-200);color:var(--gray-600);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;position:relative;z-index:1;transition:all .3s}
+.v-step.active .v-step-num{background:var(--blue);color:#fff;box-shadow:0 0 0 4px var(--blue-pale)}
+.v-step.done .v-step-num{background:var(--green);color:#fff}
+.v-step-label{font-size:.6rem;font-weight:600;color:var(--gray-400);text-align:center;padding-bottom:.875rem}
+.v-step.active .v-step-label{color:var(--blue)}
+
+.reg-body{flex:1;padding:2rem 5%;max-width:600px;margin:0 auto;width:100%}
+
+.reg-card{background:var(--white);border-radius:20px;border:1.5px solid var(--gray-100);padding:2rem;box-shadow:0 4px 20px rgba(10,37,64,.08)}
+.reg-card-title{font-family:var(--font-head);font-size:1.125rem;font-weight:800;color:var(--blue);margin-bottom:.35rem}
+.reg-card-sub{font-size:.84rem;color:var(--gray-600);margin-bottom:1.5rem}
+
+.form-field{display:flex;flex-direction:column;gap:.3rem;margin-bottom:.875rem}
+.form-field label{font-size:.7rem;font-weight:700;color:var(--gray-600);text-transform:uppercase;letter-spacing:.05em}
+.form-field input,.form-field select{padding:.7rem .95rem;border:1.5px solid var(--gray-200);border-radius:10px;font-family:var(--font-body);font-size:.9rem;color:var(--gray-800);width:100%;transition:border-color .2s;background:#fff}
+.form-field input:focus,.form-field select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(10,37,64,.08)}
+
+.btn-next{width:100%;background:var(--blue);color:#fff;border:none;padding:.9rem;border-radius:9999px;font-family:var(--font-head);font-size:.95rem;font-weight:700;cursor:pointer;transition:all .25s;margin-top:.5rem}
+.btn-next:hover{background:var(--blue-mid)}
+.btn-next:disabled{opacity:.5;cursor:not-allowed}
+.btn-back{background:transparent;border:1.5px solid var(--gray-200);color:var(--gray-800);padding:.625rem 1.25rem;border-radius:9999px;font-size:.84rem;font-weight:600;cursor:pointer;transition:all .2s;margin-right:.625rem}
+.btn-back:hover{border-color:var(--blue);color:var(--blue)}
+
+.warn-box{background:var(--yellow-pale);border:1.5px solid var(--yellow);border-radius:10px;padding:.875rem;font-size:.8rem;color:#665200;margin-bottom:1rem}
+.info-box{background:var(--blue-pale);border:1.5px solid rgba(10,37,64,.1);border-radius:10px;padding:.875rem;font-size:.8rem;color:var(--blue);margin-bottom:1rem}
+
+.status-card{border-radius:16px;padding:2rem;text-align:center}
+.status-card.pending{background:var(--yellow-pale);border:1.5px solid var(--yellow)}
+.status-card.approved{background:var(--green-pale);border:1.5px solid var(--green)}
+
+/* ── TOAST ── */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--blue);color:#fff;padding:.875rem 1.75rem;border-radius:9999px;font-size:.84rem;font-weight:600;box-shadow:0 12px 40px rgba(10,37,64,.2);z-index:9999;transition:all .35s;opacity:0;pointer-events:none;white-space:nowrap;max-width:90vw;text-align:center}
+#toast.show{opacity:1}
+
+/* ── MOBILE ── */
+@media(max-width:480px){
+  .reg-hero{padding:50px 5% 30px}
+  .reg-body{padding:1.25rem}
+  .reg-card{padding:1.375rem}
+  .cloud-opts{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<div class="reg-page">
+
+  <!-- HERO -->
+  <div class="reg-hero">
+    <div class="reg-hero-title">👷 Join as a Verified Worker</div>
+    <div class="reg-hero-sub">Complete 5 steps including ID upload and live selfie. Fake identities are permanently rejected.</div>
+  </div>
+
+  <!-- STEPPER -->
+  <div class="stepper" id="regStepper">
+    <div class="v-step active" id="vstep-1"><div class="v-step-num">1</div><div class="v-step-label">Personal Info</div></div>
+    <div class="v-step" id="vstep-2"><div class="v-step-num">2</div><div class="v-step-label">Upload ID</div></div>
+    <div class="v-step" id="vstep-3"><div class="v-step-num">3</div><div class="v-step-label">Live Selfie</div></div>
+    <div class="v-step" id="vstep-4"><div class="v-step-num">4</div><div class="v-step-label">Phone OTP</div></div>
+    <div class="v-step" id="vstep-5"><div class="v-step-num">5</div><div class="v-step-label">Status</div></div>
+  </div>
+
+  <!-- BODY -->
+  <div class="reg-body">
+
+    <!-- STEP 1: Personal Info -->
+    <div class="reg-card" id="reg-step-1">
+      <div class="reg-card-title">📋 Personal Information</div>
+      <div class="reg-card-sub">Enter details EXACTLY as they appear on your National ID.</div>
+      <div class="warn-box">⚠️ <strong>Warning:</strong> Any false information results in immediate permanent ban and possible criminal reporting under Ugandan law.</div>
+      <div class="form-field"><label>Full Legal Name (as on NIN)</label><input type="text" id="reg-name" placeholder="e.g. Grace Namukasa Ssali" required></div>
+      <div class="form-field"><label>National ID Number (NIN)</label><input type="text" id="reg-nin" placeholder="e.g. CM98765432KZAM" style="text-transform:uppercase" required></div>
+      <div class="form-field"><label>Date of Birth</label><input type="date" id="reg-dob" required></div>
+      <div class="form-field"><label>Primary Service</label>
+        <select id="reg-service">
+          <option value="">Select service...</option>
+          <option>House Cleaning</option>
+          <option>Laundry</option>
+          <option>Car Washing</option>
+          <option>Errands & Delivery</option>
+          <option>Babysitting / Nanny</option>
+          <option>Gardening</option>
+          <option>Cooking / Home Manager</option>
+          <option>Multiple Services</option>
+        </select>
+      </div>
+      <div class="form-field"><label>Your Area / Location</label><input type="text" id="reg-area" placeholder="e.g. Kira, Kampala" required></div>
+      <button class="btn-next" onclick="step1Next()">Continue to ID Upload →</button>
+    </div>
+
+    <!-- STEP 2: Upload ID -->
+    <div class="reg-card" id="reg-step-2" style="display:none">
+      <div class="reg-card-title">🪪 Upload National ID</div>
+      <div class="reg-card-sub">Upload clear photos of both sides. You can upload from your device or link from cloud storage.</div>
+      <div class="warn-box">⚠️ <strong>Strict rejection:</strong> Blurry, cropped, edited, borrowed, or expired IDs = immediate permanent ban.</div>
+
+      <!-- Front ID -->
+      <div style="font-size:.75rem;font-weight:700;color:var(--gray-600);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.5rem">Front of National ID</div>
+      <div class="upload-zone" id="frontZone">
+        <input type="file" id="frontInput" accept="image/*" style="display:none" onchange="handleFileSelect(event,'front')">
+        <div class="upload-zone-icon">📄</div>
+        <div class="upload-zone-label">Upload Front of ID</div>
+        <div class="upload-zone-hint">JPG · PNG · WebP · HEIC · Max 8MB</div>
+        <div class="upload-zone-or">— or —</div>
+        <div class="upload-zone-btns">
+          <button class="btn-upload-opt" onclick="event.stopPropagation();document.getElementById('frontInput').click()">📁 From Device</button>
+          <button class="btn-upload-opt" onclick="event.stopPropagation();showCloudPicker('front')">☁️ Cloud Storage</button>
+        </div>
+      </div>
+      <div id="frontPreview"></div>
+
+      <!-- Back ID -->
+      <div style="font-size:.75rem;font-weight:700;color:var(--gray-600);text-transform:uppercase;letter-spacing:.05em;margin:.875rem 0 .5rem">Back of National ID</div>
+      <div class="upload-zone" id="backZone">
+        <input type="file" id="backInput" accept="image/*" style="display:none" onchange="handleFileSelect(event,'back')">
+        <div class="upload-zone-icon">📄</div>
+        <div class="upload-zone-label">Upload Back of ID</div>
+        <div class="upload-zone-hint">JPG · PNG · WebP · HEIC · Max 8MB</div>
+        <div class="upload-zone-or">— or —</div>
+        <div class="upload-zone-btns">
+          <button class="btn-upload-opt" onclick="event.stopPropagation();document.getElementById('backInput').click()">📁 From Device</button>
+          <button class="btn-upload-opt" onclick="event.stopPropagation();showCloudPicker('back')">☁️ Cloud Storage</button>
+        </div>
+      </div>
+      <div id="backPreview"></div>
+
+      <div style="margin-top:1rem;display:flex;align-items:center;gap:.625rem">
+        <button class="btn-back" onclick="regBack(2)">← Back</button>
+        <button class="btn-next" id="uploadContinueBtn" onclick="regNext(2)" disabled style="flex:1;opacity:.5">Continue to Selfie →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: Live Selfie / Camera -->
+    <div class="reg-card" id="reg-step-3" style="display:none">
+      <div class="reg-card-title">🤳 Live Selfie Verification</div>
+      <div class="reg-card-sub">Our AI compares your live selfie to your ID photo. Mismatches are instantly rejected.</div>
+      <div class="info-box">🔒 <strong>For your safety:</strong> Before every job, you must also show your physical ID to the customer for face confirmation.</div>
+
+      <!-- Camera -->
+      <div class="camera-wrap" id="cameraWrap">
+        <canvas id="selfieCanvas" style="display:none"></canvas>
+        <video id="cameraVideo" playsinline autoplay muted></video>
+        <div class="face-guide-overlay" id="faceGuideOverlay">
+          <div class="face-oval"></div>
+        </div>
+        <div class="camera-flash" id="cameraFlash"></div>
+        <div class="camera-placeholder" id="cameraPlaceholder">
+          <div style="font-size:3rem;margin-bottom:.75rem">📷</div>
+          <div>Camera preview will appear here</div>
+          <div style="font-size:.72rem;margin-top:.35rem;opacity:.7">Allow camera access when prompted</div>
+        </div>
+      </div>
+
+      <div class="camera-status" id="cameraStatus">Tap "Start Camera" to begin, or upload a photo</div>
+
+      <div class="camera-btns">
+        <button class="btn-upload-opt" id="cameraStartBtn" onclick="startCamera()" style="background:var(--blue);color:#fff;border-color:var(--blue)">📷 Start Camera</button>
+        <button class="btn-upload-opt" id="cameraCaptureBtn" style="display:none;background:var(--green);color:#fff;border-color:var(--green)" onclick="captureSelfie()">✅ Capture Selfie</button>
+        <button class="btn-upload-opt" id="cameraSwitchBtn" style="display:none" onclick="switchCamera()">🔄 Switch Camera</button>
+        <button class="btn-upload-opt" id="cameraStopBtn" style="display:none;color:var(--red);border-color:var(--red)" onclick="stopCamera()">⏹ Stop</button>
+        <button class="btn-upload-opt" onclick="uploadSelfieFromDevice()">📁 Upload Photo</button>
+        <button class="btn-upload-opt" onclick="showCloudPicker('selfie')">☁️ From Cloud</button>
+      </div>
+
+      <div id="selfiePreview" style="margin-top:1rem"></div>
+
+      <div style="margin-top:1rem;display:flex;align-items:center;gap:.625rem">
+        <button class="btn-back" onclick="regBack(3)">← Back</button>
+      </div>
+    </div>
+
+    <!-- STEP 4: OTP -->
+    <div class="reg-card" id="reg-step-4" style="display:none">
+      <div class="reg-card-title">📱 Phone Verification</div>
+      <div class="reg-card-sub">Enter your MTN or Airtel number. A 6-digit OTP will be sent. No phone = no account.</div>
+      <div class="form-field"><label>Phone Number</label><input type="tel" id="reg-phone" placeholder="e.g. 0772 123 456"></div>
+      <button class="btn-upload-opt" onclick="sendOTP()" style="margin-bottom:1rem;width:100%;justify-content:center;display:flex">📱 Send OTP</button>
+      <div class="form-field"><label>Enter OTP Code</label><input type="text" id="reg-otp" placeholder="e.g. 847261" maxlength="6" style="letter-spacing:.3em;text-align:center;font-size:1.375rem"></div>
+      <div style="display:flex;align-items:center;gap:.625rem;margin-top:.5rem">
+        <button class="btn-back" onclick="regBack(4)">← Back</button>
+        <button class="btn-next" style="flex:1" onclick="regNext(4)">Verify & Submit →</button>
+      </div>
+    </div>
+
+    <!-- STEP 5: Status -->
+    <div class="reg-card" id="reg-step-5" style="display:none">
+      <div class="status-card pending" id="statusPending">
+        <div style="font-size:3.5rem;margin-bottom:1rem">⏳</div>
+        <div style="font-family:var(--font-head);font-size:1.25rem;font-weight:800;color:#996600;margin-bottom:.5rem">Under Review</div>
+        <p style="font-size:.875rem;color:var(--gray-600);line-height:1.75">Your application is being checked — NIN, selfie face match, duplicate check, and device verification. You'll receive an SMS within 24 hours.<br><br><strong>What happens next:</strong> Our admin team reviews your ID photos manually before final approval.</p>
+        <button class="btn-next" style="margin-top:1.375rem;max-width:280px;margin-left:auto;margin-right:auto" onclick="simulateApproval()">Demo: Simulate Approval ↓</button>
+      </div>
+      <div class="status-card approved" id="statusApproved" style="display:none;margin-top:1rem">
+        <div style="font-size:3.5rem;margin-bottom:1rem">✅</div>
+        <div style="font-family:var(--font-head);font-size:1.25rem;font-weight:800;color:var(--green-dark);margin-bottom:.5rem">Verified & Approved!</div>
+        <p style="font-size:.875rem;color:var(--gray-600)">Welcome to QuickServe Pro! Your account is now active. Jobs matching your skills will appear in your worker dashboard. Expect your first job within 48 hours.</p>
+        <div style="display:inline-flex;align-items:center;gap:4px;background:var(--green-pale);border:1.5px solid var(--green);color:var(--green-dark);padding:.35rem .875rem;border-radius:9999px;font-size:.75rem;font-weight:700;margin:1rem auto 0">✅ Verified Worker · QuickServe Pro</div>
+      </div>
+    </div>
+
+  </div><!-- /reg-body -->
+</div><!-- /reg-page -->
+
+<!-- ═══ CLOUD PICKER MODAL ══════════════════════════════ -->
+<div class="cloud-modal-overlay" id="cloudPickerModal">
+  <div class="cloud-modal">
+    <div class="cloud-modal-title">☁️ Upload from Cloud Storage</div>
+    <div class="cloud-opts">
+      <div class="cloud-opt" onclick="openGoogleDrive(document.getElementById('cloudPickerModal').dataset.side)">
+        <div class="cloud-opt-icon">🟡</div>
+        <div class="cloud-opt-name">Google Drive</div>
+      </div>
+      <div class="cloud-opt" onclick="openDropbox(document.getElementById('cloudPickerModal').dataset.side)">
+        <div class="cloud-opt-icon">📦</div>
+        <div class="cloud-opt-name">Dropbox</div>
+      </div>
+      <div class="cloud-opt" onclick="showToast('iCloud: Use Safari on iPhone for best compatibility','warn')">
+        <div class="cloud-opt-icon">☁️</div>
+        <div class="cloud-opt-name">iCloud</div>
+      </div>
+      <div class="cloud-opt" onclick="showToast('OneDrive: Paste the sharing link below','info')">
+        <div class="cloud-opt-icon">🔵</div>
+        <div class="cloud-opt-name">OneDrive</div>
+      </div>
+    </div>
+    <div class="cloud-divider">or paste a direct image link</div>
+    <input class="cloud-url-input" type="url" id="cloudUrlInput" placeholder="https://drive.google.com/... or direct image URL">
+    <div style="display:flex;gap:.625rem">
+      <button class="btn-upload-opt" style="flex:1;justify-content:center" onclick="useCloudLink(document.getElementById('cloudPickerModal').dataset.side)">🔗 Use This Link</button>
+      <button class="btn-upload-opt" onclick="closeCloudPicker()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="../js/upload.js"></script>
+<script>
+// ── Standalone page registration flow ──
+let regStep = 1;
+
+function updateStepper() {
+  document.querySelectorAll('[id^="vstep-"]').forEach((el, i) => {
+    el.classList.remove('active','done');
+    if (i + 1 < regStep) el.classList.add('done');
+    if (i + 1 === regStep) el.classList.add('active');
+  });
+}
+
+function regNext(step) {
+  const cur = document.getElementById('reg-step-' + step);
+  const next = document.getElementById('reg-step-' + (step + 1));
+  if (!next) return;
+  cur.style.display = 'none';
+  next.style.display = 'block';
+  regStep = step + 1;
+  updateStepper();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  showToast('✅ Step ' + step + ' complete!', 'success');
+}
+
+function regBack(step) {
+  const cur = document.getElementById('reg-step-' + step);
+  const prev = document.getElementById('reg-step-' + (step - 1));
+  if (!prev) return;
+  if (step === 3) { stopCamera(); }
+  cur.style.display = 'none';
+  prev.style.display = 'block';
+  regStep = step - 1;
+  updateStepper();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function step1Next() {
+  const name = document.getElementById('reg-name').value.trim();
+  const nin  = document.getElementById('reg-nin').value.trim();
+  const svc  = document.getElementById('reg-service').value;
+  const area = document.getElementById('reg-area').value.trim();
+  if (!name || !nin || !svc || !area) {
+    showToast('❌ Please fill in all fields', 'error'); return;
+  }
+  if (nin.length < 12) {
+    showToast('❌ NIN must be at least 12 characters', 'error'); return;
+  }
+  regNext(1);
+}
+
+function sendOTP() {
+  const phone = document.getElementById('reg-phone').value.trim();
+  if (!phone) { showToast('❌ Enter your phone number first', 'error'); return; }
+  showToast('📱 OTP sent to ' + phone, 'success');
+}
+
+function simulateApproval() {
+  document.getElementById('statusPending').style.display = 'none';
+  document.getElementById('statusApproved').style.display = 'block';
+  showToast('🎉 Verified! Welcome to QuickServe Pro!', 'success');
+}
+</script>
+</body>
+</html>
