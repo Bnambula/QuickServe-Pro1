@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuickServe Pro — Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--g:#27AE60;--gd:#1E8449;--gl:#E9F7EF;--n:#1B2A3B;--n2:#243447;--bg:#F4F6F9;--bdr:#DDE3EB;--t1:#1B2A3B;--t2:#4A5568;--t3:#8A96A3;--wh:#FFFFFF;--red:#E74C3C;--redl:#FEF2F2;--amber:#E67E22;--ambl:#FFF8F0;--blue:#2980B9;--bluel:#EBF5FB;--fh:'Nunito',sans-serif;--fb:'Nunito Sans',sans-serif}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--fb);background:var(--bg);color:var(--t1);display:flex;min-height:100vh;-webkit-font-smoothing:antialiased}
+button{cursor:pointer;font-family:var(--fb);border:none}
+input,select,textarea{font-family:var(--fb)}
+
+/* LOGIN */
+.login-screen{position:fixed;inset:0;z-index:9999;background:linear-gradient(145deg,var(--n),var(--n2));display:flex;align-items:center;justify-content:center;padding:16px;transition:opacity .38s,transform .38s}
+.login-box{background:var(--wh);border-radius:24px;padding:40px 36px;max-width:400px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.2);text-align:center}
+.login-logo{width:54px;height:54px;background:var(--g);border-radius:16px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center}
+.login-title{font-family:var(--fh);font-size:1.375rem;font-weight:900;color:var(--n);margin-bottom:4px}
+.login-sub{font-size:.82rem;color:var(--t3);margin-bottom:18px}
+.lf{display:flex;flex-direction:column;gap:4px;margin-bottom:12px;text-align:left}
+.lf label{font-size:.7rem;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.06em}
+.lf input{padding:11px 13px;border:1.5px solid var(--bdr);border-radius:8px;font-size:.9rem;color:var(--t1);width:100%;transition:border-color .2s}
+.lf input:focus{outline:none;border-color:var(--g)}
+.login-btn{width:100%;padding:12px;background:var(--n);color:var(--wh);border-radius:10px;font-family:var(--fh);font-size:.95rem;font-weight:800;margin-top:6px;transition:all .2s}
+.login-btn:hover{background:var(--n2)}
+.login-warn{background:var(--ambl);border:1.5px solid rgba(230,126,34,.25);border-radius:8px;padding:9px 12px;font-size:.76rem;color:var(--amber);margin-bottom:14px;text-align:left}
+
+/* SIDEBAR */
+.sidebar{width:236px;background:var(--n);min-height:100vh;display:flex;flex-direction:column;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto}
+.sb-logo{display:flex;align-items:center;gap:10px;padding:18px 16px 16px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:8px}
+.sb-logo-icon{width:30px;height:30px;background:var(--g);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sb-logo-text{font-family:var(--fh);font-size:.9rem;font-weight:900;color:var(--wh)}
+.sb-logo-text em{color:var(--g);font-style:normal}
+.sb-sec{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);padding:10px 16px 5px;display:block}
+.sb-item{display:flex;align-items:center;gap:10px;padding:9px 16px;cursor:pointer;transition:all .18s;color:rgba(255,255,255,.6);font-size:.84rem;font-weight:600;border-left:3px solid transparent}
+.sb-item:hover{background:rgba(255,255,255,.06);color:var(--wh)}
+.sb-item.active{background:rgba(255,255,255,.1);color:var(--wh);border-left-color:var(--g)}
+.sb-badge{margin-left:auto;background:var(--red);color:var(--wh);padding:1px 7px;border-radius:100px;font-size:.65rem;font-weight:800}
+.sb-foot{margin-top:auto;padding:14px 16px;border-top:1px solid rgba(255,255,255,.07)}
+.sb-profile{display:flex;align-items:center;gap:10px}
+.sb-av{width:30px;height:30px;border-radius:50%;background:var(--g);display:flex;align-items:center;justify-content:center;font-size:.875rem}
+.sb-name{font-size:.78rem;font-weight:700;color:var(--wh)}
+.sb-role{font-size:.65rem;color:rgba(255,255,255,.4)}
+
+/* MAIN */
+.main{flex:1;overflow-x:hidden;min-height:100vh;display:flex;flex-direction:column}
+.topbar{background:var(--wh);border-bottom:1px solid var(--bdr);padding:12px 24px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.07)}
+.tb-title{font-family:var(--fh);font-size:1rem;font-weight:800;color:var(--n)}
+.tb-search{flex:1;max-width:360px;position:relative}
+.tb-search input{width:100%;padding:8px 12px 8px 32px;border:1.5px solid var(--bdr);border-radius:8px;font-size:.84rem;background:var(--bg)}
+.tb-search input:focus{outline:none;border-color:var(--g)}
+.tb-si{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:.8rem;color:var(--t3)}
+.tb-actions{display:flex;align-items:center;gap:8px;margin-left:auto}
+.notif{position:relative;cursor:pointer;padding:6px;background:var(--bg);border-radius:8px;font-size:1rem}
+.notif-dot{position:absolute;top:2px;right:2px;width:7px;height:7px;border-radius:50%;background:var(--red);border:2px solid var(--wh)}
+
+.page{padding:20px 24px;display:none;flex:1}
+.page.active{display:block}
+
+/* STATS */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px;margin-bottom:20px}
+.sc{background:var(--wh);border-radius:12px;border:1.5px solid var(--bdr);padding:18px;transition:all .2s}
+.sc:hover{box-shadow:0 4px 16px rgba(0,0,0,.09);transform:translateY(-2px)}
+.sc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px}
+.sc-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.ic-g{background:var(--gl)}.ic-b{background:var(--bluel)}.ic-r{background:var(--redl)}.ic-a{background:var(--ambl)}
+.sc-chg{font-size:.7rem;font-weight:800;padding:2px 7px;border-radius:100px}
+.up{background:var(--gl);color:var(--gd)}.dn{background:var(--redl);color:var(--red)}
+.sc-val{font-family:var(--fh);font-size:1.75rem;font-weight:900;color:var(--n);line-height:1;margin-bottom:3px}
+.sc-lbl{font-size:.76rem;color:var(--t3);font-weight:600}
+
+/* TABLE */
+.tbl-wrap{background:var(--wh);border-radius:12px;border:1.5px solid var(--bdr);overflow:hidden;margin-bottom:20px}
+.tbl-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--bdr)}
+.tbl-title{font-family:var(--fh);font-size:.9rem;font-weight:800;color:var(--n)}
+table{width:100%;border-collapse:collapse}
+thead th{padding:9px 18px;text-align:left;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);background:var(--bg);border-bottom:1px solid var(--bdr)}
+tbody tr{border-bottom:1px solid var(--bdr);transition:background .15s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:var(--bg)}
+tbody td{padding:11px 18px;font-size:.82rem;vertical-align:middle}
+.td-av{display:flex;align-items:center;gap:10px}
+.t-av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--gl),var(--g));display:flex;align-items:center;justify-content:center;font-size:.875rem;flex-shrink:0}
+.t-name{font-weight:700;color:var(--n);font-size:.84rem}
+.t-sub{font-size:.7rem;color:var(--t3)}
+
+/* PILLS */
+.pill{display:inline-flex;align-items:center;gap:3px;padding:2px 9px;border-radius:100px;font-size:.68rem;font-weight:800}
+.p-pending{background:var(--ambl);color:var(--amber)}.p-verified{background:var(--gl);color:var(--gd)}.p-rejected{background:var(--redl);color:var(--red)}.p-active{background:var(--gl);color:var(--gd)}.p-done{background:var(--gl);color:var(--gd)}.p-progress{background:var(--bluel);color:var(--blue)}.p-disputed{background:var(--redl);color:var(--red)}.p-info{background:var(--ambl);color:var(--amber)}
+
+/* ACTION BUTTONS */
+.act{display:inline-flex;align-items:center;gap:3px;padding:5px 10px;border-radius:8px;font-size:.72rem;font-weight:700;transition:all .18s;cursor:pointer;margin-right:3px}
+.a-approve{background:var(--gl);color:var(--gd)}.a-approve:hover{background:var(--g);color:var(--wh)}
+.a-reject{background:var(--redl);color:var(--red)}.a-reject:hover{background:var(--red);color:var(--wh)}
+.a-info{background:var(--ambl);color:var(--amber)}.a-info:hover{background:var(--amber);color:var(--wh)}
+.a-view{background:var(--bluel);color:var(--blue)}.a-view:hover{background:var(--blue);color:var(--wh)}
+.a-ban{background:var(--redl);color:var(--red)}.a-ban:hover{background:var(--red);color:var(--wh)}
+
+.btn-g{background:var(--g);color:var(--wh);padding:8px 18px;border-radius:100px;font-family:var(--fh);font-size:.78rem;font-weight:800;transition:all .2s}
+.btn-g:hover{background:var(--gd)}
+.btn-n{background:var(--n);color:var(--wh);padding:8px 18px;border-radius:100px;font-family:var(--fh);font-size:.78rem;font-weight:800;transition:all .2s}
+.btn-n:hover{background:var(--n2)}
+.btn-o{background:transparent;border:1.5px solid var(--bdr);color:var(--t1);padding:7px 16px;border-radius:100px;font-size:.78rem;font-weight:700;transition:all .2s}
+.btn-o:hover{border-color:var(--n);color:var(--n)}
+.btn-r{background:var(--red);color:var(--wh);padding:8px 18px;border-radius:100px;font-family:var(--fh);font-size:.78rem;font-weight:800;transition:all .2s}
+.btn-r:hover{background:#C0392B}
+
+/* MODAL */
+.mback{display:none;position:fixed;inset:0;background:rgba(27,42,59,.78);z-index:2000;backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:16px}
+.mback.open{display:flex}
+.mbox{background:var(--wh);border-radius:24px;padding:32px;max-width:500px;width:100%;position:relative;max-height:90vh;overflow-y:auto;animation:min .3s ease both}
+@keyframes min{from{opacity:0;transform:scale(.93) translateY(10px)}to{opacity:1;transform:none}}
+.mc{position:absolute;top:14px;right:14px;width:28px;height:28px;border-radius:50%;background:var(--bg);font-size:.8rem;color:var(--t2);display:flex;align-items:center;justify-content:center;transition:all .18s;border:none;cursor:pointer}
+.mc:hover{background:var(--redl);color:var(--red)}
+.mt{font-family:var(--fh);font-size:1.2rem;font-weight:900;color:var(--n);margin-bottom:4px}
+.ms{font-size:.82rem;color:var(--t3);margin-bottom:18px}
+.mf{display:flex;flex-direction:column;gap:4px;margin-bottom:13px}
+.mf label{font-size:.7rem;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.06em}
+.mf input,.mf select,.mf textarea{padding:10px 13px;border:1.5px solid var(--bdr);border-radius:8px;font-size:.875rem;color:var(--t1);width:100%;transition:border-color .2s;background:var(--wh);font-family:var(--fb)}
+.mf input:focus,.mf select:focus,.mf textarea:focus{outline:none;border-color:var(--g);box-shadow:0 0 0 3px rgba(39,174,96,.1)}
+.mf textarea{resize:vertical;min-height:90px;line-height:1.6}
+.btn-msub{width:100%;padding:12px;background:var(--g);color:var(--wh);border-radius:10px;font-family:var(--fh);font-size:.92rem;font-weight:800;margin-top:6px;transition:all .2s;border:none;cursor:pointer}
+.btn-msub:hover{background:var(--gd)}
+.btn-msub.danger{background:var(--red)}.btn-msub.danger:hover{background:#C0392B}
+.btn-msub.navy{background:var(--n)}.btn-msub.navy:hover{background:var(--n2)}
+
+.req-list{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.req-item{display:flex;align-items:flex-start;gap:8px}
+.req-item input[type=checkbox]{margin-top:2px;accent-color:var(--amber);flex-shrink:0}
+.req-item label{font-size:.82rem;color:var(--t2);cursor:pointer;line-height:1.4}
+
+.sms-preview{background:var(--n2);border-radius:12px;padding:14px 16px;margin-top:14px}
+.sms-preview-lbl{font-size:.65rem;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.sms-bubble{border-radius:12px 12px 12px 2px;padding:10px 14px;font-size:.78rem;line-height:1.6;max-width:88%;display:inline-block}
+.sms-bubble.green{background:var(--g);color:var(--wh)}
+.sms-bubble.red{background:var(--red);color:var(--wh)}
+.sms-bubble.amber{background:var(--amber);color:var(--wh)}
+.sms-meta{font-size:.65rem;color:rgba(255,255,255,.35);margin-top:6px}
+
+.alert-box{border-radius:8px;padding:10px 14px;font-size:.8rem;font-weight:600;display:flex;align-items:flex-start;gap:8px;margin-bottom:14px}
+.al-warn{background:var(--ambl);border:1.5px solid rgba(230,126,34,.25);color:var(--amber)}
+.al-danger{background:var(--redl);border:1.5px solid rgba(231,76,60,.25);color:var(--red)}
+.al-success{background:var(--gl);border:1.5px solid rgba(39,174,96,.25);color:var(--gd)}
+.al-info{background:var(--bluel);border:1.5px solid rgba(41,128,185,.2);color:var(--blue)}
+
+/* verify panel */
+.vp{background:var(--wh);border-radius:18px;border:1.5px solid var(--bdr);overflow:hidden;margin-bottom:16px}
+.vp-head{display:flex;align-items:center;gap:12px;padding:16px 20px;background:var(--n);color:var(--wh)}
+.vp-av{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:1.25rem}
+.vp-name{font-family:var(--fh);font-size:.95rem;font-weight:800}
+.vp-role{font-size:.72rem;opacity:.65}
+.vp-body{padding:16px 20px}
+.check-item{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;font-size:.8rem;margin-bottom:6px}
+.ci-pass{background:var(--gl);color:var(--gd)}.ci-fail{background:var(--redl);color:var(--red)}.ci-warn{background:var(--ambl);color:var(--amber)}
+.id-imgs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.id-img{border-radius:8px;overflow:hidden;border:1.5px solid var(--bdr);aspect-ratio:16/9;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:1.75rem;position:relative}
+.id-img-lbl{position:absolute;bottom:6px;left:6px;background:rgba(0,0,0,.6);color:var(--wh);padding:2px 7px;border-radius:4px;font-size:.62rem;font-weight:700}
+.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.info-cell{background:var(--bg);border-radius:8px;padding:8px 10px}
+.info-cell-lbl{font-size:.62rem;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.05em}
+.info-cell-val{font-size:.8rem;font-weight:700;color:var(--n);margin-top:2px}
+
+#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--n);color:var(--wh);padding:10px 20px;border-radius:100px;font-size:.82rem;font-weight:600;box-shadow:0 12px 40px rgba(0,0,0,.2);z-index:9999;transition:all .3s;opacity:0;pointer-events:none;white-space:nowrap;max-width:90vw;text-align:center}
+#toast.show{opacity:1}
+#toast.success{background:var(--g)}
+#toast.error{background:var(--red)}
+
+.spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.4);border-top-color:var(--wh);border-radius:50%;animation:spin .7s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.mob-toggle{display:none;position:fixed;bottom:18px;left:18px;z-index:700;background:var(--n);color:var(--wh);border:none;width:44px;height:44px;border-radius:50%;font-size:1.1rem;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.2)}
+@media(max-width:900px){.sidebar{position:fixed;left:-236px;z-index:600;transition:left .3s}.sidebar.open{left:0}.mob-toggle{display:flex;align-items:center;justify-content:center}.main{margin-left:0}}
+@media(max-width:600px){.stat-grid{grid-template-columns:1fr 1fr}.info-grid{grid-template-columns:1fr 1fr}.page{padding:14px 16px}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M7 12C7 9.24 9.24 7 12 7C13.68 7 15.16 7.84 16.06 9.1" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M15.4 7.8L16.2 10.4L13.6 11" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 12.5L11 14.5L15 10.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="login-title">Admin Dashboard</div>
+    <div class="login-sub">QuickServe Pro · Authorised Access Only</div>
+    <div class="login-warn">⚠️ Restricted to authorised administrators only.</div>
+    <div class="lf"><label>Admin Email</label><input type="email" id="liE" value="admin@quickservepro.ug"></div>
+    <div class="lf"><label>Password</label><input type="password" id="liP" value="admin2025"></div>
+    <button class="login-btn" onclick="doLogin()">🔐 Sign In</button>
+    <div style="margin-top:10px;font-size:.7rem;color:var(--t3)">Demo credentials are pre-filled</div>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sb">
+  <div class="sb-logo">
+    <div class="sb-logo-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 8C4 5.79 5.79 4 8 4C9.34 4 10.52 4.65 11.24 5.66" stroke="white" stroke-width="1.5" stroke-linecap="round"/><path d="M10.8 4.5L11.3 6.3L9.5 6.7" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.5 8.5L7 10L10.5 6.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="sb-logo-text">Quick<em>Serve</em> Pro</div>
+  </div>
+  <span class="sb-sec">Overview</span>
+  <div class="sb-item active" onclick="showPage('dashboard')">📊 Dashboard</div>
+  <span class="sb-sec">People</span>
+  <div class="sb-item" onclick="showPage('verification')">🪪 Verify Workers <span class="sb-badge" id="pendBadge">7</span></div>
+  <div class="sb-item" onclick="showPage('workers')">👷 All Workers</div>
+  <div class="sb-item" onclick="showPage('customers')">👥 Customers</div>
+  <div class="sb-item" onclick="showPage('legal')">📋 Legal Audit</div>
+  <span class="sb-sec">Operations</span>
+  <div class="sb-item" onclick="showPage('jobs')">📝 All Jobs</div>
+  <div class="sb-item" onclick="showPage('disputes')">⚖️ Disputes <span class="sb-badge">3</span></div>
+  <div class="sb-item" onclick="showPage('fraud')">🚨 Fraud Alerts <span class="sb-badge">2</span></div>
+  <span class="sb-sec">Finance</span>
+  <div class="sb-item" onclick="showPage('payments')">💳 Payments</div>
+  <span class="sb-sec">System</span>
+  <div class="sb-item" onclick="showPage('sms-log')">📱 SMS Log</div>
+  <div class="sb-item" onclick="adminLogout()">🚪 Logout</div>
+  <div class="sb-foot"><div class="sb-profile"><div class="sb-av">👤</div><div><div class="sb-name">Super Admin</div><div class="sb-role">Full Access · Uganda</div></div></div></div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <div class="tb-title" id="pgTitle">📊 Dashboard</div>
+    <div class="tb-search"><span class="tb-si">🔍</span><input type="text" placeholder="Search workers, jobs..."></div>
+    <div class="tb-actions">
+      <div class="notif" onclick="toast('🔔 3 new alerts','info')">🔔<div class="notif-dot"></div></div>
+      <button class="btn-g" onclick="showPage('verification')">+ Verify Pending</button>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="page active" id="page-dashboard">
+    <div class="alert-box al-info" id="dashAlert">⏳ Loading stats...</div>
+    <div class="stat-grid" id="statGrid"></div>
+  </div>
+
+  <!-- VERIFICATION -->
+  <div class="page" id="page-verification">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div><div style="font-family:var(--fh);font-size:1.1rem;font-weight:900;color:var(--n)">🪪 Worker Verification Queue</div><div style="font-size:.8rem;color:var(--t3);margin-top:2px">Review submitted IDs, selfies and NIN before approving</div></div>
+      <button class="btn-g" onclick="approveAll()">✅ Approve All Clean</button>
+    </div>
+
+    <!-- Featured verify panel -->
+    <div class="vp">
+      <div class="vp-head">
+        <div class="vp-av">👷</div>
+        <div style="flex:1"><div class="vp-name">Moses Kizito Ssali</div><div class="vp-role">Car Washing · Kira · Submitted 2hrs ago</div></div>
+        <span class="pill p-pending">⏳ Pending Review</span>
+      </div>
+      <div class="vp-body">
+        <div class="id-imgs"><div class="id-img">🪪<div class="id-img-lbl">Front · CM98765432</div></div><div class="id-img">🪪<div class="id-img-lbl">Back · Verified format</div></div></div>
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:14px">
+          <div style="width:86px;height:86px;border-radius:50%;border:3px solid var(--gl);background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:2.25rem">😊</div>
+          <div><div style="font-size:.78rem;font-weight:700;color:var(--n)">Face Match Score</div><div style="font-family:var(--fh);font-size:1.75rem;font-weight:900;color:var(--g)">94%</div><div style="font-size:.72rem;color:var(--t3)">✅ Above 85% threshold</div></div>
+        </div>
+        <div class="check-item ci-pass">✅ NIN format valid</div>
+        <div class="check-item ci-pass">✅ No duplicate NIN</div>
+        <div class="check-item ci-pass">✅ Face match 94% — passed</div>
+        <div class="check-item ci-pass">✅ Phone OTP verified</div>
+        <div class="check-item ci-pass" style="margin-bottom:14px">✅ Terms accepted — digital signature on file</div>
+        <div class="info-grid">
+          <div class="info-cell"><div class="info-cell-lbl">Full Name</div><div class="info-cell-val">Moses Kizito Ssali</div></div>
+          <div class="info-cell"><div class="info-cell-lbl">NIN</div><div class="info-cell-val">CM98765432KZAM</div></div>
+          <div class="info-cell"><div class="info-cell-lbl">Phone</div><div class="info-cell-val">+256 772 345 678</div></div>
+          <div class="info-cell"><div class="info-cell-lbl">Service</div><div class="info-cell-val">Car Washing</div></div>
+          <div class="info-cell"><div class="info-cell-lbl">Area</div><div class="info-cell-val">Kira, Kampala</div></div>
+          <div class="info-cell"><div class="info-cell-lbl">Risk Score</div><div class="info-cell-val" style="color:var(--g)">🟢 Clean (0)</div></div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;padding-top:14px;border-top:1px solid var(--bdr)">
+          <button class="btn-g" onclick="openApprove('w-001','Moses Kizito Ssali','+256772345678')">✅ Approve Worker</button>
+          <button class="btn-r" onclick="openReject('w-001','Moses Kizito Ssali','+256772345678')">❌ Reject</button>
+          <button class="act a-info" style="padding:8px 14px" onclick="openMoreInfo('w-001','Moses Kizito Ssali','+256772345678')">📋 Request More Info</button>
+          <button class="btn-o" onclick="toast('⚠️ Flagged for legal','info')">⚠️ Flag for Legal</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Queue table -->
+    <div class="tbl-wrap">
+      <div class="tbl-head"><div class="tbl-title">📋 Pending Queue</div></div>
+      <table><thead><tr><th>Applicant</th><th>Service</th><th>Face Match</th><th>Submitted</th><th>Actions</th></tr></thead>
+      <tbody id="workerQueue"></tbody></table>
+    </div>
+  </div>
+
+  <!-- LEGAL AUDIT -->
+  <div class="page" id="page-legal">
+    <div style="font-family:var(--fh);font-size:1.1rem;font-weight:900;color:var(--n);margin-bottom:6px">📋 Legal Audit Trail</div>
+    <div class="alert-box al-success">🔒 All records timestamped, encrypted with IP + device for legal compliance.</div>
+    <div class="tbl-wrap">
+      <div class="tbl-head"><div class="tbl-title">✍️ Digital Signature Records</div><div style="display:flex;gap:8px"><button class="btn-o" onclick="toast('📥 Exporting CSV...','info')">📥 CSV</button></div></div>
+      <table><thead><tr><th>Email</th><th>Signed Name</th><th>Role</th><th>Date Accepted</th><th>Terms Ver.</th><th>IP Address</th></tr></thead>
+      <tbody id="legalTable"></tbody></table>
+    </div>
+  </div>
+
+  <!-- SMS LOG -->
+  <div class="page" id="page-sms-log">
+    <div style="font-family:var(--fh);font-size:1.1rem;font-weight:900;color:var(--n);margin-bottom:16px">📱 SMS Log</div>
+    <div class="tbl-wrap">
+      <div class="tbl-head"><div class="tbl-title">All SMS Messages Sent</div></div>
+      <table><thead><tr><th>To</th><th>Type</th><th>Message</th><th>Sent At</th></tr></thead>
+      <tbody id="smsTable"></tbody></table>
+    </div>
+  </div>
+
+  <!-- Stub pages -->
+  <div class="page" id="page-workers"><div class="tbl-wrap"><div class="tbl-head"><div class="tbl-title">👷 All Workers</div><button class="btn-o">📥 Export</button></div><table><thead><tr><th>Worker</th><th>Service</th><th>Status</th><th>Risk</th><th>Actions</th></tr></thead><tbody id="allWorkers"></tbody></table></div></div>
+  <div class="page" id="page-customers"><div class="tbl-wrap"><div class="tbl-head"><div class="tbl-title">👥 Customers</div></div><table><thead><tr><th>Name</th><th>Email</th><th>Signed Name</th><th>Status</th></tr></thead><tbody><tr><td>Annet Mutesi</td><td>annet@gmail.com</td><td style="font-style:italic">Annet Mutesi Nakato</td><td><span class="pill p-active">Active</span></td></tr></tbody></table></div></div>
+  <div class="page" id="page-jobs"><div class="tbl-wrap"><div class="tbl-head"><div class="tbl-title">📝 All Jobs</div></div><table><thead><tr><th>ID</th><th>Service</th><th>Status</th></tr></thead><tbody><tr><td style="font-family:monospace;font-size:.72rem">#JOB-4821</td><td>House Cleaning</td><td><span class="pill p-done">✓ Done</span></td></tr></tbody></table></div></div>
+  <div class="page" id="page-disputes"><div class="alert-box al-danger">⚠️ 3 disputes require resolution.</div><div class="tbl-wrap"><div class="tbl-head"><div class="tbl-title">⚖️ Open Disputes</div></div><table><thead><tr><th>ID</th><th>Type</th><th>Amount</th><th>Status</th><th>Action</th></tr></thead><tbody><tr><td style="font-family:monospace;font-size:.72rem">#DSP-001</td><td>Property Damage</td><td>UGX 45,000</td><td><span class="pill p-disputed">🔴 Open</span></td><td><button class="act a-approve" onclick="toast('💰 Full refund issued','info')">💰 Refund</button><button class="act a-reject" onclick="toast('✅ Payment released','info')">✅ Release</button></td></tr></tbody></table></div></div>
+  <div class="page" id="page-fraud"><div class="alert-box al-danger">🚨 2 active fraud alerts.</div><div class="tbl-wrap"><div class="tbl-head"><div class="tbl-title">🚨 Fraud Alerts</div></div><table><thead><tr><th>Type</th><th>Severity</th><th>Action</th></tr></thead><tbody><tr><td>Multiple Accounts · Same IP</td><td><span class="pill p-rejected">Critical</span></td><td><button class="act a-ban" onclick="toast('🚫 IP blocked','info')">🚫 Block IP</button></td></tr></tbody></table></div></div>
+  <div class="page" id="page-payments"><div class="stat-grid"><div class="sc"><div class="sc-top"><div class="sc-icon ic-g">💰</div><span class="sc-chg up">Today</span></div><div class="sc-val">182K</div><div class="sc-lbl">Collected (UGX)</div></div><div class="sc"><div class="sc-top"><div class="sc-icon ic-b">🔐</div></div><div class="sc-val">113K</div><div class="sc-lbl">In Escrow (UGX)</div></div></div></div>
+</main>
+
+<!-- ══ APPROVE MODAL ══ -->
+<div class="mback" id="m-approve">
+  <div class="mbox">
+    <button class="mc" onclick="closeM('approve')">✕</button>
+    <div class="mt">✅ Approve Worker</div>
+    <div class="ms" id="approve-sub">An automatic SMS will be sent to the worker immediately.</div>
+    <div class="alert-box al-success">✅ All automated checks passed. Worker is ready for approval.</div>
+    <div class="mf"><label>Optional Approval Note (internal only)</label><textarea placeholder="e.g. Documents clear. Manual review confirmed."></textarea></div>
+    <div class="sms-preview">
+      <div class="sms-preview-lbl">📱 Auto SMS — sent to worker immediately on approval</div>
+      <div class="sms-bubble green" id="approveSms"></div>
+      <div class="sms-meta" id="approveSmsMeta"></div>
+    </div>
+    <button class="btn-msub" id="approveBtn" onclick="submitApprove()">✅ Approve & Send SMS</button>
+  </div>
+</div>
+
+<!-- ══ REJECT MODAL ══ -->
+<div class="mback" id="m-reject">
+  <div class="mbox">
+    <button class="mc" onclick="closeM('reject')">✕</button>
+    <div class="mt">❌ Reject Application</div>
+    <div class="ms" id="reject-sub">Provide a reason. An SMS and email will be sent to the applicant.</div>
+    <div class="alert-box al-danger">⚠️ This action will notify the applicant and record the rejection in the audit log.</div>
+    <div class="mf">
+      <label>Reason for Rejection <span style="color:var(--red)">*</span></label>
+      <select id="rejectReason" onchange="updateRejectSms()">
+        <option value="">Select reason...</option>
+        <option value="Face does not match National ID photo">Face does not match National ID photo</option>
+        <option value="National ID appears fraudulent or edited">National ID appears fraudulent or edited</option>
+        <option value="ID documents are blurry or unreadable">ID documents are blurry or unreadable</option>
+        <option value="Duplicate NIN — account already exists">Duplicate NIN — account already exists</option>
+        <option value="National ID is expired">National ID is expired</option>
+        <option value="Incomplete documents submitted">Incomplete documents submitted</option>
+        <option value="Does not meet platform requirements">Does not meet platform requirements</option>
+        <option value="Other">Other (specify below)</option>
+      </select>
+    </div>
+    <div class="mf">
+      <label>Additional Details <span style="color:var(--red)">*</span></label>
+      <textarea id="rejectDetails" placeholder="Explain clearly what the applicant needs to know..." oninput="updateRejectSms()"></textarea>
+    </div>
+    <div class="mf">
+      <label>Can they re-apply?</label>
+      <select id="rejectReapply" onchange="updateRejectSms()">
+        <option value="yes">Yes — they can submit a new application</option>
+        <option value="30days">Yes — but only after 30 days</option>
+        <option value="no">No — permanently rejected</option>
+      </select>
+    </div>
+    <div class="sms-preview">
+      <div class="sms-preview-lbl">📱 Auto SMS — sent to applicant immediately</div>
+      <div class="sms-bubble red" id="rejectSms">Select a reason above to preview the SMS...</div>
+      <div class="sms-meta" id="rejectSmsMeta"></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:14px">
+      <button class="btn-o" style="flex:1" onclick="closeM('reject')">Cancel</button>
+      <button class="btn-msub danger" id="rejectBtn" style="flex:2;margin:0" onclick="submitReject()">❌ Reject & Send SMS</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MORE INFO MODAL ══ -->
+<div class="mback" id="m-moreinfo">
+  <div class="mbox">
+    <button class="mc" onclick="closeM('moreinfo')">✕</button>
+    <div class="mt">📋 Request More Information</div>
+    <div class="ms" id="moreinfo-sub">Select requirements. An SMS and email will be sent to the applicant.</div>
+    <div class="mf" style="margin-bottom:8px"><label>What is required? (tick all that apply)</label></div>
+    <div class="req-list">
+      <div class="req-item"><input type="checkbox" id="r1" onchange="updateInfoSms()"><label for="r1">🪪 Clearer photo of National ID (front)</label></div>
+      <div class="req-item"><input type="checkbox" id="r2" onchange="updateInfoSms()"><label for="r2">🪪 Clearer photo of National ID (back)</label></div>
+      <div class="req-item"><input type="checkbox" id="r3" onchange="updateInfoSms()"><label for="r3">🤳 New live selfie (better lighting required)</label></div>
+      <div class="req-item"><input type="checkbox" id="r4" onchange="updateInfoSms()"><label for="r4">📱 Phone number re-verification via OTP</label></div>
+      <div class="req-item"><input type="checkbox" id="r5" onchange="updateInfoSms()"><label for="r5">📍 Proof of address / location</label></div>
+      <div class="req-item"><input type="checkbox" id="r6" onchange="updateInfoSms()"><label for="r6">🏅 Skills certification or proof</label></div>
+      <div class="req-item"><input type="checkbox" id="r7" onchange="updateInfoSms()"><label for="r7">📄 Additional identity document</label></div>
+    </div>
+    <div class="mf"><label>Custom Message</label><textarea id="infoMsg" placeholder="Additional instructions for the applicant..." oninput="updateInfoSms()"></textarea></div>
+    <div class="mf">
+      <label>Deadline to Respond</label>
+      <select id="infoDl" onchange="updateInfoSms()"><option value="48 hours">48 hours</option><option value="72 hours">72 hours</option><option value="7 days">7 days</option><option value="14 days">14 days</option></select>
+    </div>
+    <div class="sms-preview">
+      <div class="sms-preview-lbl">📱 Auto SMS — sent to applicant immediately</div>
+      <div class="sms-bubble amber" id="infoSms">Select requirements above to preview...</div>
+      <div class="sms-meta" id="infoSmsMeta"></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:14px">
+      <button class="btn-o" style="flex:1" onclick="closeM('moreinfo')">Cancel</button>
+      <button class="btn-msub navy" id="infoBtn" style="flex:2;margin:0" onclick="submitMoreInfo()">📋 Send Request & SMS</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+<button class="mob-toggle" onclick="document.getElementById('sb').classList.toggle('open')">☰</button>
+
+<script>
+/* ═══════════════════════════════════════════
+   ADMIN — Wired to Real API
+═══════════════════════════════════════════ */
+let _target = { id:'', name:'', phone:'' };
+
+// ── API helper ──
+async function api(method, path, body) {
+  const res = await fetch(path, {
+    method, credentials:'include',
+    headers:{'Content-Type':'application/json'},
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Request failed');
+  return data;
+}
+
+// ── LOGIN ──
+async function doLogin() {
+  const email = document.getElementById('liE').value;
+  const pw    = document.getElementById('liP').value;
+  try {
+    await api('POST', '/api/auth/login', { email, password: pw });
+    const ls = document.getElementById('loginScreen');
+    ls.style.opacity = '0'; ls.style.transform = 'scale(1.04)';
+    setTimeout(() => { ls.style.display = 'none'; loadDashboard(); }, 380);
+    toast('✅ Signed in as Super Admin', 'success');
+  } catch(e) { toast(e.message, 'error'); }
+}
+document.getElementById('loginScreen').style.transition = 'opacity .38s,transform .38s';
+function adminLogout() {
+  api('POST','/api/auth/logout').finally(() => {
+    document.getElementById('loginScreen').style.display='flex';
+    document.getElementById('loginScreen').style.opacity='1';
+    document.getElementById('loginScreen').style.transform='none';
+  });
+}
+
+// ── PAGE NAVIGATION ──
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelectorAll('.sb-item').forEach(s=>s.classList.remove('active'));
+  const titles = {dashboard:'📊 Dashboard',verification:'🪪 Worker Verification',workers:'👷 All Workers',customers:'👥 Customers',legal:'📋 Legal Audit',jobs:'📝 All Jobs',disputes:'⚖️ Disputes',fraud:'🚨 Fraud Alerts',payments:'💳 Payments','sms-log':'📱 SMS Log'};
+  document.getElementById('pgTitle').textContent = titles[id] || id;
+  if (id === 'legal') loadLegal();
+  if (id === 'sms-log') loadSmsLog();
+  if (id === 'verification') loadWorkers();
+  if (id === 'workers') loadAllWorkers();
+}
+
+// ── LOAD DASHBOARD ──
+async function loadDashboard() {
+  try {
+    const stats = await api('GET', '/api/admin/stats');
+    document.getElementById('dashAlert').textContent = `👋 Welcome back. ${stats.pendingWorkers} pending verifications · ${stats.openDisputes} open disputes · ${stats.smsSent} SMS sent total.`;
+    document.getElementById('statGrid').innerHTML = `
+      <div class="sc"><div class="sc-top"><div class="sc-icon ic-g">👷</div><span class="sc-chg up">↑ 12%</span></div><div class="sc-val">${stats.totalWorkers}</div><div class="sc-lbl">Total Workers</div></div>
+      <div class="sc"><div class="sc-top"><div class="sc-icon ic-b">👥</div><span class="sc-chg up">↑ 8%</span></div><div class="sc-val">${stats.totalUsers}</div><div class="sc-lbl">Registered Users</div></div>
+      <div class="sc"><div class="sc-top"><div class="sc-icon ic-a">⏳</div><span class="sc-chg dn">${stats.pendingWorkers} waiting</span></div><div class="sc-val">${stats.pendingWorkers}</div><div class="sc-lbl">Pending Verifications</div></div>
+      <div class="sc"><div class="sc-top"><div class="sc-icon ic-g">📋</div></div><div class="sc-val">${stats.totalLegalRecords}</div><div class="sc-lbl">Legal Records</div></div>
+      <div class="sc"><div class="sc-top"><div class="sc-icon ic-g">📱</div><span class="sc-chg up">↑</span></div><div class="sc-val">${stats.smsSent}</div><div class="sc-lbl">SMS Sent</div></div>
+      <div class="sc"><div class="sc-top"><div class="sc-icon ic-r">⚖️</div></div><div class="sc-val">${stats.openDisputes}</div><div class="sc-lbl">Open Disputes</div></div>
+    `;
+  } catch(e) { console.error(e); }
+}
+
+// ── LOAD WORKERS ──
+async function loadWorkers() {
+  try {
+    const {workers} = await api('GET', '/api/workers?status=pending');
+    document.getElementById('pendBadge').textContent = workers.length;
+    document.getElementById('workerQueue').innerHTML = workers.map(w => `
+      <tr>
+        <td><div class="td-av"><div class="t-av">${w.fullName.charAt(0)}</div><div><div class="t-name">${w.fullName}</div><div class="t-sub">${w.area}</div></div></div></td>
+        <td>${w.service}</td>
+        <td style="font-weight:700;color:${w.faceScore>=85?'var(--g)':w.faceScore>=70?'var(--amber)':'var(--red)'}">${w.faceScore}%</td>
+        <td style="font-size:.72rem;color:var(--t3)">${timeAgo(w.submittedAt)}</td>
+        <td>
+          <button class="act a-approve" onclick="openApprove('${w.id}','${w.fullName}','${w.phone}')">✅ Approve</button>
+          <button class="act a-reject" onclick="openReject('${w.id}','${w.fullName}','${w.phone}')">❌ Reject</button>
+          <button class="act a-info" onclick="openMoreInfo('${w.id}','${w.fullName}','${w.phone}')">📋 Info</button>
+        </td>
+      </tr>`).join('') || '<tr><td colspan="5" style="text-align:center;color:var(--t3);padding:24px">✅ No pending verifications</td></tr>';
+  } catch(e) { console.error(e); }
+}
+
+async function loadAllWorkers() {
+  try {
+    const {workers} = await api('GET', '/api/workers');
+    const pMap = {verified:'p-verified',pending:'p-pending',rejected:'p-rejected',more_info_required:'p-info'};
+    document.getElementById('allWorkers').innerHTML = workers.map(w => `
+      <tr>
+        <td><div class="td-av"><div class="t-av">${w.fullName.charAt(0)}</div><div><div class="t-name">${w.fullName}</div><div class="t-sub">${w.area} · ${w.phone}</div></div></div></td>
+        <td>${w.service}</td>
+        <td><span class="pill ${pMap[w.status]||'p-pending'}">${w.status}</span></td>
+        <td><span style="color:${w.riskScore===0?'var(--g)':w.riskScore<3?'var(--amber)':'var(--red)'};font-weight:700">🔴 ${w.riskScore}</span></td>
+        <td><button class="act a-view" onclick="toast('👁 Profile: ${w.fullName}','info')">View</button></td>
+      </tr>`).join('');
+  } catch(e) { console.error(e); }
+}
+
+// ── LEGAL AUDIT ──
+async function loadLegal() {
+  try {
+    const {records} = await api('GET', '/api/legal/records');
+    document.getElementById('legalTable').innerHTML = records.map(r => `
+      <tr>
+        <td style="font-size:.78rem">${r.email}</td>
+        <td style="font-style:italic;font-weight:600">${r.signedName}</td>
+        <td><span class="pill ${r.role==='provider'?'p-verified':'p-active'}">${r.role||'pending'}</span></td>
+        <td style="font-size:.72rem;color:var(--t3)">${r.timestamp.replace('T',' ').replace('Z','')}</td>
+        <td><span class="pill p-progress">${r.termsVersion}</span></td>
+        <td style="font-size:.72rem;font-family:monospace">${r.ip}</td>
+      </tr>`).join('');
+  } catch(e) { console.error(e); }
+}
+
+// ── SMS LOG ──
+async function loadSmsLog() {
+  try {
+    const {log} = await api('GET', '/api/sms/log');
+    document.getElementById('smsTable').innerHTML = log.map(s => `
+      <tr>
+        <td style="font-family:monospace;font-size:.78rem">${s.to}</td>
+        <td><span class="pill ${s.type==='worker_approved'?'p-verified':s.type==='worker_rejected'?'p-rejected':'p-progress'}">${s.type}</span></td>
+        <td style="font-size:.78rem;max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${s.message}</td>
+        <td style="font-size:.72rem;color:var(--t3)">${s.sentAt.replace('T',' ').replace('Z','')}</td>
+      </tr>`).join('') || '<tr><td colspan="4" style="text-align:center;color:var(--t3);padding:24px">No SMS sent yet</td></tr>';
+  } catch(e) { console.error(e); }
+}
+
+// ── MODALS ──
+function openM(id) { document.getElementById('m-'+id).classList.add('open'); document.body.style.overflow='hidden'; }
+function closeM(id) { document.getElementById('m-'+id).classList.remove('open'); document.body.style.overflow=''; }
+document.querySelectorAll('.mback').forEach(el => el.addEventListener('click', e => { if(e.target===el){el.classList.remove('open');document.body.style.overflow='';} }));
+
+// ── APPROVE ──
+function openApprove(id, name, phone) {
+  _target = {id, name, phone};
+  document.getElementById('approve-sub').textContent = `Approving: ${name} (${phone})`;
+  document.getElementById('approveSms').textContent = `✅ Congratulations ${name.split(' ')[0]}! Your QuickServe Pro worker account is APPROVED. You can now accept jobs. Login at quickservepro.ug to start earning. Welcome to the team!`;
+  document.getElementById('approveSmsMeta').textContent = `Sent via Africa's Talking SMS · ${phone}`;
+  openM('approve');
+}
+async function submitApprove() {
+  const {id, name, phone} = _target;
+  const btn = document.getElementById('approveBtn');
+  btn.innerHTML = '<div class="spinner"></div> Sending...'; btn.disabled = true;
+  try {
+    const res = await api('POST', `/api/workers/${id}/approve`, { note: '' });
+    closeM('approve');
+    toast(`✅ ${name} approved! SMS sent to ${phone}`, 'success');
+    loadWorkers();
+  } catch(e) { toast(e.message, 'error'); }
+  btn.innerHTML = '✅ Approve & Send SMS'; btn.disabled = false;
+}
+
+// ── REJECT ──
+function openReject(id, name, phone) {
+  _target = {id, name, phone};
+  document.getElementById('reject-sub').textContent = `Rejecting: ${name} (${phone})`;
+  document.getElementById('rejectReason').value = '';
+  document.getElementById('rejectDetails').value = '';
+  document.getElementById('rejectSms').textContent = 'Select a reason above to preview the SMS...';
+  document.getElementById('rejectSmsMeta').textContent = `Will be sent to: ${phone}`;
+  openM('reject');
+}
+function updateRejectSms() {
+  const reason = document.getElementById('rejectReason').value;
+  const details = document.getElementById('rejectDetails').value.trim();
+  const reapply = document.getElementById('rejectReapply').value;
+  if (!reason) return;
+  const reapplyTxt = reapply==='yes'?'You may submit a new application with correct documents.':reapply==='30days'?'You may re-apply after 30 days.':'This decision is final.';
+  const extra = details ? ' ' + details : '';
+  document.getElementById('rejectSms').textContent = `⚠️ QuickServe Pro: Your application was not approved. Reason: ${reason}.${extra} ${reapplyTxt} Questions? Email support@quickservepro.ug`;
+  document.getElementById('rejectSmsMeta').textContent = `Will be sent to: ${_target.phone}`;
+}
+async function submitReject() {
+  const reason = document.getElementById('rejectReason').value;
+  const details = document.getElementById('rejectDetails').value.trim();
+  const canReapply = document.getElementById('rejectReapply').value;
+  if (!reason) { toast('Select a rejection reason', 'error'); return; }
+  const btn = document.getElementById('rejectBtn');
+  btn.innerHTML = '<div class="spinner"></div> Sending...'; btn.disabled = true;
+  try {
+    await api('POST', `/api/workers/${_target.id}/reject`, { reason, details, canReapply });
+    closeM('reject');
+    toast(`❌ ${_target.name} rejected. SMS sent.`, 'error');
+    loadWorkers();
+  } catch(e) { toast(e.message, 'error'); }
+  btn.innerHTML = '❌ Reject & Send SMS'; btn.disabled = false;
+}
+
+// ── MORE INFO ──
+function openMoreInfo(id, name, phone) {
+  _target = {id, name, phone};
+  document.getElementById('moreinfo-sub').textContent = `Requesting info from: ${name} (${phone})`;
+  document.querySelectorAll('.req-list input[type=checkbox]').forEach(c => c.checked = false);
+  document.getElementById('infoMsg').value = '';
+  updateInfoSms();
+  openM('moreinfo');
+}
+function updateInfoSms() {
+  const checks = [];
+  const labels = ['clearer ID front','clearer ID back','new selfie','phone re-verification','proof of address','skills certification','additional document'];
+  [1,2,3,4,5,6,7].forEach((n,i) => { if(document.getElementById('r'+n).checked) checks.push(labels[i]); });
+  const msg = document.getElementById('infoMsg').value.trim();
+  const dl = document.getElementById('infoDl').value;
+  let sms = `📋 QuickServe Pro needs more information for your worker application.`;
+  if(checks.length) sms += ` Required: ${checks.join(', ')}.`;
+  if(msg) sms += ` ${msg}`;
+  sms += ` Please log in and resubmit within ${dl} at quickservepro.ug`;
+  document.getElementById('infoSms').textContent = sms;
+  document.getElementById('infoSmsMeta').textContent = `Will be sent to: ${_target.phone}`;
+}
+async function submitMoreInfo() {
+  const checks = [];
+  const labels = ['Clearer ID front photo','Clearer ID back photo','New live selfie','Phone re-verification','Proof of address','Skills certification','Additional identity document'];
+  [1,2,3,4,5,6,7].forEach((n,i) => { if(document.getElementById('r'+n).checked) checks.push(labels[i]); });
+  const msg = document.getElementById('infoMsg').value.trim();
+  const deadline = document.getElementById('infoDl').value;
+  if(!checks.length && !msg) { toast('Select at least one requirement or write a message','error'); return; }
+  const btn = document.getElementById('infoBtn');
+  btn.innerHTML = '<div class="spinner"></div> Sending...'; btn.disabled = true;
+  try {
+    await api('POST', `/api/workers/${_target.id}/request-info`, { requirements: checks, customMessage: msg, deadline });
+    closeM('moreinfo');
+    toast(`📋 Info request sent to ${_target.name}. SMS delivered to ${_target.phone}`, 'success');
+    loadWorkers();
+  } catch(e) { toast(e.message,'error'); }
+  btn.innerHTML = '📋 Send Request & SMS'; btn.disabled = false;
+}
+
+// ── APPROVE ALL ──
+async function approveAll() {
+  toast('✅ Approving all clean applications...','info');
+  loadWorkers();
+}
+
+// ── HELPERS ──
+function timeAgo(ts) {
+  const diff = Date.now() - new Date(ts).getTime();
+  const m = Math.floor(diff/60000);
+  if(m<60) return m+'m ago';
+  const h = Math.floor(m/60);
+  if(h<24) return h+'hrs ago';
+  return Math.floor(h/24)+'d ago';
+}
+
+// ── TOAST ──
+let _tt;
+function toast(msg, type='info') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className=''; t.classList.add('show',type);
+  clearTimeout(_tt); _tt = setTimeout(()=>t.classList.remove('show'),4000);
+}
+</script>
+</body>
+</html>
